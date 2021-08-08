@@ -1,32 +1,35 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+
+  <a-layout style="width: 1200px">
+    <a-layout-header style="background: white">
+      <vheader></vheader>
+    </a-layout-header>
+    <a-layout-content>
+      <!--      <vmusic style="padding: 65px; position: fixed; z-index:1500"/>-->
+      <div class="body">
+        <router-view/>
+      </div>
+    </a-layout-content>
+    <a-layout-footer style="background: rgb(46, 46, 46)">
+      <vfooter/>
+    </a-layout-footer>
+  </a-layout>
+
 </template>
 
+<script>
+import vheader from './components/Header&&Footer/Header.vue'
+import vfooter from './components/Header&&Footer/Footer.vue'
+
+export default {
+  components: {
+    vheader,
+    vfooter
+  }
+}
+</script>
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+.body {
+  margin: 0 auto;
 }
 </style>
