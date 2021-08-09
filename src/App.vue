@@ -31,5 +31,6 @@ export default {
 <style>
 .body {
   margin: 0 auto;
+  width: 80%;
 }
 </style>
