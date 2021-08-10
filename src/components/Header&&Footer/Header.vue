@@ -14,7 +14,7 @@
           </a-menu-item>
 
           <a-menu-item key="post">
-            <router-link to="/posts">文章</router-link>
+            <router-link to="/articles">文章</router-link>
           </a-menu-item>
 
           <a-menu-item key="tools">
