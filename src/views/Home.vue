@@ -33,7 +33,7 @@
     </a-row>
 
     <a-row>
-      <div v-for="item in toolsList" :key="item.id">
+      <div v-for="item in toolList" :key="item.id">
         <a-card-grid style="width:33%;text-align:center">
           <a-card hoverable @click="$router.push(item.link)">
             <template v-slot:cover>
@@ -63,7 +63,7 @@ export default {
   name: 'Home',
   data () {
     return {
-      toolsList: [
+      toolList: [
         {
           id: 0,
           img: 'http://dummyimage.com/400x300',

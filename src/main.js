@@ -12,7 +12,6 @@ Vue.prototype.$axios = axios
 axios.defaults.baseURL = 'https://api.pxm.edialect.top/'
 axios.interceptors.request.use(function (config) {
   // Do something before request is sent
-  localStorage.setItem('token', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNzIiwiaWQiOjMsImxvZ2luX3RpbWUiOiIyMDIxLTA4LTA1IDE0OjMzOjIyIiwidmFsdWUiOiJoenZ3OTMifQ.DK0yLWYDhJn2gG578kGS2KC-h-6Q9a2qtpNVu7gIr5g')
   const token = localStorage.getItem('token')
   if (token) {
     config.headers.token = token // 将token放到请求头发送给服务器
