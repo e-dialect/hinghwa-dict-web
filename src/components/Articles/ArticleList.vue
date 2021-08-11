@@ -1,34 +1,39 @@
 <template>
   <div>
-    <div v-if="listSource===null" style="text-align: center;">
-      <a-spin tip="Loading……" size="large"/>
-    </div>
-    <a-list
-      v-else
-      :data-source="listSource"
-      :pagination="pagination"
-      item-layout="vertical"
+    <a-spin
+      :spinning="listSource===null"
+      tip="Loading……"
+      size="large"
+      :delay="1000"
+      style="text-align: center;"
     >
-      <template v-slot:renderItem="item">
-        <a-list-item>
-          <template v-slot:extra>
-            <img
-              :src="item.article.cover"
-              alt="文章封面"
-              width="300"
-            />
-          </template>
-          <a-list-item-meta :description="item.article.title">
-            <template v-slot:title>
-              <router-link :to="{name:'ArticleDetails',params:{id:item.article.id}}">
-                <h2>{{ item.article.title }}</h2>
-              </router-link>
+      <a-list
+        :data-source="listSource"
+        :pagination="pagination"
+        item-layout="vertical"
+      >
+        <template v-slot:renderItem="item">
+          <a-list-item>
+            <template v-slot:extra>
+              <img
+                :src="item.article.cover"
+                alt="文章封面"
+                width="300"
+              />
             </template>
-          </a-list-item-meta>
-          {{ item.article.content.slice(0, 100) }}
-        </a-list-item>
-      </template>
-    </a-list>
+            <a-list-item-meta :description="item.article.title">
+              <template v-slot:title>
+                <router-link :to="{name:'ArticleDetails',params:{id:item.article.id}}">
+                  <h2>{{ item.article.title }}</h2>
+                </router-link>
+              </template>
+            </a-list-item-meta>
+            {{ item.article.content.slice(0, 100) }}
+          </a-list-item>
+        </template>
+      </a-list>
+    </a-spin>
+
   </div>
 </template>
 <script>
