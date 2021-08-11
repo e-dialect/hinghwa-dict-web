@@ -20,11 +20,17 @@
 <script>
 import vheader from './components/Header&&Footer/Header.vue'
 import vfooter from './components/Header&&Footer/Footer.vue'
+import store from '@/store'
 
 export default {
   components: {
     vheader,
     vfooter
+  },
+  created () {
+    if (window.localStorage.getItem('id')) {
+      store.commit('userLogin', window.localStorage.getItem('id'))
+    }
   }
 }
 </script>

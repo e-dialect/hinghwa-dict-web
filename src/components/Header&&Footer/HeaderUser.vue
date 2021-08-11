@@ -5,7 +5,7 @@
       <a-button class="link" size=small type="link">
         <router-link to="/login">登录</router-link>
       </a-button>
-      <a-popover trigger="hover">
+      <a-popover trigger="hover"  placement="bottom">
         <template v-slot:content>
           <div>请登录您的账户</div>
         </template>
@@ -17,7 +17,7 @@
   <!--登录后显示的内容-->
   <div v-else class="user">
 
-    <a-popover trigger="hover">
+    <a-popover trigger="hover" placement="bottom">
       <template v-slot:content>
         <p>你好，亲爱的{{ username }}！</p>
       </template>
@@ -33,10 +33,10 @@
       @close="closeDrawer"
     >
       <template v-slot:title>
-        <p><strong> 个人中心</strong> <img :src=avatar alt="个人中心" width="40"/></p>
+         <img :src="avatar" alt="个人中心" width="40"/>
       </template>
 
-      <!--      <userpage /> TODO: userpage-->
+            <UserPage />
 
     </a-drawer>
 
@@ -44,8 +44,12 @@
 </template>
 
 <script>
+import UserPage from '@/components/Header&&Footer/UserPage'
 export default {
   name: 'HeaderUser',
+  components: {
+    UserPage
+  },
   data () {
     return {
       drawer_visible: false
@@ -53,13 +57,13 @@ export default {
   },
   computed: {
     hasLogin () {
-      return false
+      return this.$store.getters.loginStatus
     },
     username () {
-      return 'username'
+      return this.$store.getters.user.username
     },
     avatar () {
-      return 'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png'
+      return this.$store.getters.user.avatar
     }
   },
 
@@ -68,7 +72,6 @@ export default {
      * 显示抽屉内容
      */
     showDrawer () {
-      this.$store.commit('userUpdate', this.$store.getters.uid)
       this.drawer_visible = true
     },
     /**
@@ -76,6 +79,13 @@ export default {
      */
     closeDrawer () {
       this.drawer_visible = false
+    }
+  },
+  watch: {
+    hasLogin (oldvalue, newvalue) {
+      if (newvalue === false) {
+        this.drawer_visible = false
+      }
     }
   }
 }

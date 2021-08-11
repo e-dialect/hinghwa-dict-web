@@ -65,9 +65,10 @@ export default {
         username: this.username,
         password: this.password
       }).then(res => {
-        // this.$store.commit('userLogin', res.data.uid)
+        this.$store.commit('userLogin', res.data.id)
         localStorage.setItem('token', res.data.token)
         this.$message.success('登录成功')
+        this.$router.push({ name: 'Home' })
       }).catch(err => {
         if (err.response.status === 401) {
           this.$message.destroy()

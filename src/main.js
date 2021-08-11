@@ -15,8 +15,8 @@ axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem('token')
   if (token) {
     config.headers.token = token // 将token放到请求头发送给服务器
-    return config
   }
+  return config
 }, function (error) {
   // Do something with request error
   message.error(error.toString())
