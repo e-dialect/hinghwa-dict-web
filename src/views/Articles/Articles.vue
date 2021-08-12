@@ -1,8 +1,8 @@
 <template>
-  <div class="body">
+  <a-spin :spinning="spinning" :delay="500" class="body">
   <ArticleList :page-size="8" :list-data="listData">
   </ArticleList>
-  </div>
+  </a-spin>
 </template>
 
 <script>
@@ -14,11 +14,17 @@ export default {
     ArticleList
   },
   data () {
-    return { listData: [] }
+    return {
+      listData: [],
+      spinning: false
+    }
   },
   created () {
+    this.spinning = true
     axios.get('/articles').then(res => {
       this.listData = res.data.articles
+    }).finally(() => {
+      this.spinning = false
     })
   }
 }
