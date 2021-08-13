@@ -13,6 +13,7 @@ const defaultUser = {
 export default new Vuex.Store({
   state: {
     tab: [],
+    drawerVisibility: false,
     user: Object.create(defaultUser),
     publish_articles: [],
     like_articles: []
@@ -31,6 +32,9 @@ export default new Vuex.Store({
     tab (state) {
       return state.tab
     },
+    drawerVisibility (state) {
+      return state.drawerVisibility
+    },
     user (state) {
       return state.user
     },
@@ -45,6 +49,9 @@ export default new Vuex.Store({
     tab (state, value) {
       state.tab = value
     },
+    drawerVisibility (state, value) {
+      state.drawerVisibility = value
+    },
     userLogin (state, id) {
       if (state.user.id.toString() === id) return
       state.user.id = Number(id)
@@ -57,6 +64,7 @@ export default new Vuex.Store({
       state.user = Object.create(defaultUser)
       state.publish_articles = []
       state.like_articles = []
+      state.drawerVisibility = false
     },
     userUpdate (state) {
       axios.get('/users/' + state.user.id).then(res => {

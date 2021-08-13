@@ -74,5 +74,6 @@ export default router
 
 router.beforeEach((to, from, next) => {
   store.commit('tab', [to.name])
+  store.commit('drawerVisibility', false)
   next()
 })

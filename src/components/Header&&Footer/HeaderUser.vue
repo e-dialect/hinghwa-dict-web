@@ -5,7 +5,7 @@
       <a-button class="link" size=small type="link">
         <router-link to="/login">登录</router-link>
       </a-button>
-      <a-popover trigger="hover"  placement="bottom">
+      <a-popover trigger="hover" placement="bottom">
         <template v-slot:content>
           <div>请登录您的账户</div>
         </template>
@@ -21,23 +21,22 @@
       <template v-slot:content>
         <p>你好，亲爱的{{ username }}！</p>
       </template>
-      <a-avatar :src="avatar" v-on:click="showDrawer"/>
+      <a-avatar :src="avatar" v-on:click="$store.commit('drawerVisibility',true)"/>
     </a-popover>
 
     <a-drawer
-      :visible="drawer_visible"
+      :visible="drawerVisibility"
       :z-index="1500"
       placement="right"
       style="text-align:center"
       width="700"
-      @close="closeDrawer"
+      @close="$store.commit('drawerVisibility',false)"
     >
       <template v-slot:title>
-         <img :src="avatar" alt="个人中心" width="40"/>
+        <img :src="avatar" alt="个人中心" width="40"/>
       </template>
 
-            <UserPage />
-
+      <UserPage/>
     </a-drawer>
 
   </div>
@@ -45,15 +44,11 @@
 
 <script>
 import UserPage from '@/components/Header&&Footer/UserPage'
+
 export default {
   name: 'HeaderUser',
   components: {
     UserPage
-  },
-  data () {
-    return {
-      drawer_visible: false
-    }
   },
   computed: {
     hasLogin () {
@@ -64,27 +59,13 @@ export default {
     },
     avatar () {
       return this.$store.getters.user.avatar
-    }
-  },
-
-  methods: {
-    /**
-     * 显示抽屉内容
-     */
-    showDrawer () {
-      this.drawer_visible = true
     },
-    /**
-     * 关闭抽屉
-     */
-    closeDrawer () {
-      this.drawer_visible = false
-    }
-  },
-  watch: {
-    hasLogin (oldvalue, newvalue) {
-      if (newvalue === false) {
-        this.drawer_visible = false
+    drawerVisibility: {
+      get () {
+        return this.$store.getters.drawerVisibility
+      },
+      set (value) {
+        this.$store.commit('drawerVisibility', value)
       }
     }
   }
