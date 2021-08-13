@@ -47,6 +47,19 @@ const routes = [
     name: 'ArticleDetails',
     props: true,
     component: () => import('../views/Articles/ArticleDetails.vue')
+  },
+  // Users区
+  {
+    path: '/users/:id',
+    name: 'UserDetails',
+    props: true,
+    component: () => import('../views/Users/UserDetails.vue')
+  },
+  {
+    path: '/usersettings',
+    name: 'UserSettings',
+    component: () => import('../views/Users/UserSettings.vue')
+
   }
 ]
 

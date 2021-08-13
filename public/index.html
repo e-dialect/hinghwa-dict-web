@@ -6,17 +6,6 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= htmlWebpackPlugin.options.title %></title>
-    <script>
-        function bodyScale() {
-            const devicewidth = document.documentElement.clientWidth;
-            document.body.style.zoom = devicewidth / 1200;
-        }
-
-        window.onload = window.onresize = function () {
-            bodyScale();
-        };
-
-    </script>
 </head>
 <body>
 <noscript>
