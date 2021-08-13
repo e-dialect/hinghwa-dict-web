@@ -44,10 +44,22 @@ const routes = [
     component: () => import('../views/Articles/Articles.vue')
   },
   {
+    path: '/articles/create',
+    name: 'ArticleCreate',
+    props: true,
+    component: () => import('../views/Articles/ArticleEdit.vue')
+  },
+  {
     path: '/articles/:id',
     name: 'ArticleDetails',
     props: true,
     component: () => import('../views/Articles/ArticleDetails.vue')
+  },
+  {
+    path: '/articles/edit/:id',
+    name: 'ArticleEdit',
+    props: true,
+    component: () => import('../views/Articles/ArticleEdit.vue')
   },
   // Users区
   {
@@ -61,6 +73,20 @@ const routes = [
     name: 'UserSettings',
     component: () => import('../views/Users/UserSettings.vue')
 
+  },
+  {
+    path: '*',
+    component: () => import('../views/NotFound.vue')
+  },
+  {
+    path: '/NotFound',
+    name: 'NotFound',
+    component: () => import('../views/NotFound.vue')
+  },
+  {
+    path: '/Forbidden',
+    name: 'Forbidden',
+    component: () => import('../views/Forbidden.vue')
   }
 ]
 
