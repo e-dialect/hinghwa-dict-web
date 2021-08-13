@@ -9,12 +9,12 @@
 
       <a-col :span="9">
         <a-menu mode="horizontal" v-model="tab">
-          <a-menu-item key="home">
-            <router-link to="/Home">主页</router-link>
+          <a-menu-item key="Home">
+            <router-link :to="{name:'Home'}">主页</router-link>
           </a-menu-item>
 
-          <a-menu-item key="post">
-            <router-link to="/articles">文章</router-link>
+          <a-menu-item key="Articles">
+            <router-link :to="{name:'Articles'}">文章</router-link>
           </a-menu-item>
 
           <a-menu-item key="tools">
@@ -51,9 +51,18 @@ export default {
   },
   data () {
     return {
-      search_content: '',
+      search_content: ''
       // TODO: 将tab转化为vuex中的状态，以保证页面首页的完整性
-      tab: null
+    }
+  },
+  computed: {
+    tab: {
+      get () {
+        return this.$store.getters.tab
+      },
+      set (value) {
+        this.$store.commit('tab', value)
+      }
     }
   }
 }

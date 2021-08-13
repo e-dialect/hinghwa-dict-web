@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '@/store'
 Vue.use(VueRouter)
 
 const routes = [
@@ -56,7 +57,7 @@ const routes = [
     component: () => import('../views/Users/UserDetails.vue')
   },
   {
-    path: '/usersettings',
+    path: '/settings',
     name: 'UserSettings',
     component: () => import('../views/Users/UserSettings.vue')
 
@@ -70,3 +71,8 @@ const router = new VueRouter({
 })
 
 export default router
+
+router.beforeEach((to, from, next) => {
+  store.commit('tab', [to.name])
+  next()
+})

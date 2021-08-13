@@ -12,13 +12,24 @@ const defaultUser = {
 }
 export default new Vuex.Store({
   state: {
+    tab: [],
     user: Object.create(defaultUser),
     publish_articles: [],
     like_articles: []
   },
   getters: {
+    /**
+     * 登录状态
+     * @param state
+     * @returns {boolean} 是否已经登录
+     */
     loginStatus (state) {
       return state.user.id > 0
+    },
+
+    // getter区
+    tab (state) {
+      return state.tab
     },
     user (state) {
       return state.user
@@ -31,6 +42,9 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    tab (state, value) {
+      state.tab = value
+    },
     userLogin (state, id) {
       if (state.user.id.toString() === id) return
       state.user.id = Number(id)
