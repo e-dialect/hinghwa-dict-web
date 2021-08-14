@@ -41,6 +41,7 @@ export default {
   data () {
     return {
       listSource: null,
+      listDataLock: null,
       loading: false
     }
   },
@@ -53,21 +54,19 @@ export default {
         pageSize: this.pageSize,
         total: (this.listDataLock && this.listDataLock.length) || 0
       }
-    },
-    listDataLock () {
-      return this.listData
     }
   },
   props: {
     listData: Array,
     pageSize: Number
   },
-  mounted () {
-    if (this.listData !== this.listDataLock) {
-      this.listDataLock = Object(this.listData)
-    }
+  created () {
+    this.listDataLock = Object.assign({}, this.listData)
   },
   watch: {
+    listData () {
+      this.listDataLock = Object.assign({}, this.listData)
+    },
     listDataLock () {
       if (!this.listDataLock || this.listDataLock.length === 0) return
       this.getCurrentPageData(1)
@@ -77,7 +76,7 @@ export default {
     getCurrentPageData (page) {
       this.loading = true
       axios.put('/articles', {
-        articles: this.listDataLock.slice((page - 1) * this.pageSize, page * this.pageSize)
+        articles: this.listData.slice((page - 1) * this.pageSize, page * this.pageSize)
       }).then(res => {
         this.listSource = res.data.articles
       }).finally(
