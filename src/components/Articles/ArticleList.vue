@@ -15,14 +15,18 @@
               width="300"
             />
           </template>
-          <a-list-item-meta :description="item.article.title">
+          <a-list-item-meta :description="item.article.description">
             <template v-slot:title>
-              <router-link :to="{name:'ArticleDetails',params:{id:item.article.id}}">
-                <h2>{{ item.article.title }}</h2>
-              </router-link>
+              <h2>
+                <router-link :to="{name:'ArticleDetails',params:{id:item.article.id.toString()}}">
+                  {{ item.article.title }}
+                </router-link>
+              </h2>
             </template>
           </a-list-item-meta>
-          {{ item.article.content.slice(0, 100) }}
+          <div style="word-break:break-all">
+            {{ item.article.content.slice(0, 100) }}
+          </div>
         </a-list-item>
       </template>
     </a-list>

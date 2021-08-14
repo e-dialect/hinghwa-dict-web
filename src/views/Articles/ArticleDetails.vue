@@ -1,5 +1,5 @@
 <template>
-  <a-spin :spinning="spinning" :delay="500" class="body">
+  <a-spin :spinning="spinning" :delay="500" class="body" v-if="hasDeleted===false">
     <a-row :gutter="20" type="flex" justify="center">
       <!--文章主体部分-->
       <a-col span="17">
@@ -11,10 +11,20 @@
           </template>
 
           <template #extra>
-            <!--              <a-button type="primary" v-if="authoruid===loginuid" @click="deletePost(tid)"> 删除 </a-button>-->
-            <!--              <router-link :to="'/PostEdit/'+tid"><a-button type="primary" v-if="authoruid===loginuid"> 编辑 </a-button></router-link>-->
-            <!--              <a-button type="primary" @click="shouchang" v-if="hasshoucang===false"> 收藏 </a-button>-->
-            <!--              <a-button type="primary" @click="quxiaoshouchang" v-if="hasshoucang===true"> 取消收藏 </a-button>-->
+            <a-button
+              type="primary"
+              v-if="me.is_author"
+              @click="deleteArticle"
+              :loading="btnDeleteLoading"
+            >
+              删除
+            </a-button>
+            <router-link :to="{name:'ArticleEdit',params:{id: id}}">
+              <a-button type="primary" v-if="me.is_author"> 编辑</a-button>
+            </router-link>
+            <a-button type="primary" @click="like" :loading="btnLikeLoading">
+              {{ me.liked?"取消":""}}收藏
+            </a-button>
           </template>
 
           <template #cover>
@@ -89,6 +99,18 @@
       </a-col>
     </a-row>
   </a-spin>
+  <a-result
+    v-else
+    status="success"
+    title="成功删除文章！"
+    class="body"
+  >
+    <template #extra>
+    <router-link :to="{name:'Home'}">
+      <a-button>返回首页</a-button>
+    </router-link>
+    </template>
+  </a-result>
 </template>
 
 <script>
@@ -100,10 +122,12 @@ import moment from 'moment'
 export default {
   name: 'ArticleDetails',
   components: { mavonEditor },
-  props: { id: String },
   data () {
     return {
       spinning: true,
+      btnLikeLoading: false,
+      btnDeleteLoading: false,
+      hasDeleted: false,
       article: {
         id: 0,
         author: {
@@ -149,6 +173,11 @@ export default {
       ]
     }
   },
+  computed: {
+    id () {
+      return this.$route.params.id
+    }
+  },
   created () {
     axios.get('/articles/' + this.id).then(res => {
       this.article = res.data.article
@@ -162,11 +191,44 @@ export default {
     }).catch(() => {
       this.$message.destroy()
       this.$router.replace({ name: 'NotFound' })
-    }).finally(() => { this.spinning = false })
+    }).finally(() => {
+      this.spinning = false
+    })
   },
   beforeRouteEnter (to, from, next) {
-    if (to.params.id % 1 === 0)next()
+    if (to.params.id % 1 === 0) next()
     else next({ name: 'NotFound' })
+  },
+  methods: {
+    like () {
+      this.btnLikeLoading = true
+      if (this.me.liked) {
+        axios.delete('/articles/' + this.id + '/like').finally(() => {
+          this.me.liked = false
+          setTimeout(() => {
+            this.btnLikeLoading = false
+          }, 500)
+        })
+      } else {
+        axios.post('/articles/' + this.id + '/like').finally(() => {
+          this.me.liked = true
+          // this.btnLikeLoading = false
+          setTimeout(() => {
+            this.btnLikeLoading = false
+          }, 500)
+        })
+      }
+    },
+    deleteArticle () {
+      this.btnDeleteLoading = true
+      // axios.delete('/articles/' + this.id).finally(() => {
+      axios.delete('http://127.0.0.1:4523/mock/404238/articles/' + this.id).finally(() => {
+        setTimeout(() => {
+          this.btnDeleteLoading = false
+          this.hasDeleted = true
+        }, 500)
+      })
+    }
   }
 }
 </script>

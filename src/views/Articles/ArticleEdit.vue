@@ -26,7 +26,7 @@
           :customRequest="customRequest"
           :show-upload-list="false"
         >
-          <a-button :onload="btnCoverLoading">
+          <a-button :loading="btnCoverLoading">
             <a-icon type="upload"/>
             更换封面图片
           </a-button>
@@ -79,10 +79,11 @@
         v-model="article.content"
         style="z-index: auto"
         @imgAdd="$imgAdd"
+        @imgDel="$imgDel"
       />
 
       <a-button
-        :onload="btnArticleLoading"
+        :loading="btnArticleLoading"
         type="primary"
         @click="id?updateArticle():createArticle()"
       >
@@ -219,24 +220,33 @@ export default {
       })
     },
 
-    // /**
-    //  * mavonEditor 绑定@imgDel event
-    //  * @param pos markdown编辑器中图片的位置
-    //  */
-    // $imgDel (pos) {
-    //   var formdata = new FormData()
-    //   formdata.append('url', pos[0])
-    //   axios({
-    //     url: '/user/image-delete/',
-    //     method: 'post',
-    //     data: formdata,
-    //     headers: { 'Content-Type': 'multipart/form-data' }
-    //   }).then((res) => {
-    //     this.$message.success('成功删除图片：' + pos[1].name)
-    //   }).catch(err => {
-    //     this.$message.error(err.toString())
-    //   })
-    // },
+    /**
+     * mavonEditor 绑定@imgDel event
+     * @param pos markdown编辑器中图片的位置
+     */
+    $imgDel (pos) {
+      axios.delete('/website/files', { data: { url: pos[0] } }).then(res => {
+        this.$message.success('成功删除图片' + pos[1].name)
+      }).catch(err => {
+        this.$message.destroy()
+        console.log(pos[0])
+        console.log(pos[1])
+        console.log(err.response)
+        switch (err.response.status) {
+          case 401: {
+            this.$message.error('无权限：请检查您的登录状态')
+            break
+          }
+          case 404: {
+            this.$message.warn('图片不存在！已忽略本次操作')
+            break
+          }
+          default: {
+            this.$message.error(err.toString())
+          }
+        }
+      })
+    },
 
     /**
      * 上传图片
@@ -299,7 +309,8 @@ export default {
   },
 
   created () {
-    this.getArticleDetails()
+    if (this.$route.name === 'ArticleCreate') this.isAuthor = true
+    else this.getArticleDetails()
   },
 
   watch: {
