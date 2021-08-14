@@ -14,6 +14,7 @@ export default new Vuex.Store({
   state: {
     tab: [],
     drawerVisibility: false,
+    drawerLoading: false,
     user: Object.create(defaultUser),
     publish_articles: [],
     like_articles: []
@@ -35,6 +36,9 @@ export default new Vuex.Store({
     drawerVisibility (state) {
       return state.drawerVisibility
     },
+    drawerLoading (state) {
+      return state.drawerLoading
+    },
     user (state) {
       return state.user
     },
@@ -51,6 +55,7 @@ export default new Vuex.Store({
     },
     drawerVisibility (state, value) {
       state.drawerVisibility = value
+      if (value === true) { this.commit('userUpdate') }
     },
     userLogin (state, id) {
       if (state.user.id.toString() === id) return
@@ -67,10 +72,12 @@ export default new Vuex.Store({
       state.drawerVisibility = false
     },
     userUpdate (state) {
+      state.drawerLoading = true
       axios.get('/users/' + state.user.id).then(res => {
         state.user = res.data.user
         state.publish_articles = res.data.publish_articles
         state.like_articles = res.data.like_articles
+        state.drawerLoading = false
       })
     }
   },
