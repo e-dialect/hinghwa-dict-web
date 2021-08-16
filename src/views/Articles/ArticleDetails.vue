@@ -1,6 +1,6 @@
 <template>
-  <a-spin :spinning="spinning" :delay="500" class="body" v-if="hasDeleted===false">
-    <a-row :gutter="20" type="flex" justify="center">
+  <a-spin v-if="hasDeleted===false" :delay="500" :spinning="spinning">
+    <a-row :gutter="20" justify="center" type="flex">
       <!--文章主体部分-->
       <a-col span="17">
 
@@ -12,23 +12,23 @@
 
           <template #extra>
             <a-button
-              type="primary"
               v-if="me.is_author"
-              @click="deleteArticle"
               :loading="btnDeleteLoading"
+              type="primary"
+              @click="deleteArticle"
             >
               删除
             </a-button>
             <router-link :to="{name:'ArticleEdit',params:{id: id}}">
-              <a-button type="primary" v-if="me.is_author"> 编辑</a-button>
+              <a-button v-if="me.is_author" type="primary"> 编辑</a-button>
             </router-link>
-            <a-button type="primary" @click="like" :loading="btnLikeLoading">
-              {{ me.liked?"取消":""}}收藏
+            <a-button :loading="btnLikeLoading" type="primary" @click="btnLikeClick">
+              {{ me.liked ? "取消" : "" }}收藏
             </a-button>
           </template>
 
           <template #cover>
-            <img :src="article.cover" :alt="'这里本是文章的封面，其地址为'+article.cover+',但是显示不出来了'">
+            <img :alt="'这里本是文章的封面，其地址为'+article.cover+',但是显示不出来了'" :src="article.cover">
           </template>
 
           <p> 文章简介： {{ article.description }} </p>
@@ -37,12 +37,12 @@
         <!---文章主体部分--->
         <a-card>
           <mavon-editor
-            class="md"
-            :value="article.content"
-            :subfield="false"
-            defaultOpen="preview"
-            :toolbarsFlag="false"
             :editable="false"
+            :subfield="false"
+            :toolbarsFlag="false"
+            :value="article.content"
+            class="md"
+            defaultOpen="preview"
             style="z-index: auto"
           >
           </mavon-editor>
@@ -69,12 +69,14 @@
             <h3> 评论区 </h3>
           </template>
           <div>
+
             <!--现有评论列表-->
             <a-list
+              :loading="{spinning: commentsLoading, delay: 500}"
               :data-source="comments"
               :header="`${comments.length} ${comments.length > 1 ? 'replies' : 'reply'}`"
-              item-layout="horizontal"
               :pagination="{pageSize: 8}"
+              item-layout="horizontal"
             >
               <template v-slot:renderItem="item">
                 <a-list-item>
@@ -83,17 +85,47 @@
                     :content="item.content"
                     :datetime="item.time">
                     <template v-slot:avatar>
-                      <!--                        <router-link :to="{name:'UserDetails',params:{uid:item.uid}}">-->
-                      <a-avatar :src="item.user.avatar"></a-avatar>
-                      <!--                        </router-link>-->
+                      <router-link :to="{name:'UserDetails',params:{id:item.user.id}}">
+                        <a-avatar :src="item.user.avatar"></a-avatar>
+                      </router-link>
                     </template>
                     <template slot="actions">
-                      <!--                        <span v-if="item.uid===loginuid" @click="commentDelete(item.pid)">删除评论</span>-->
+                      <span
+                        v-if="item.user.id===user.id"
+                        @click="commentDelete(item.id)"
+                      >
+                       删除评论
+                      </span>
                     </template>
                   </a-comment>
                 </a-list-item>
               </template>
             </a-list>
+
+            <!--新提交的评论-->
+            <a-comment>
+              <template v-slot:avatar>
+                <a-avatar
+                  :alt="user.nickname"
+                  :src="user.avatar"
+                />
+              </template>
+              <template v-slot:content>
+                <a-form-item>
+                  <a-textarea v-model="newCommentValue" :rows="4"/>
+                </a-form-item>
+                <a-form-item>
+                  <a-button
+                    :disabled="newCommentValue===''"
+                    :loading="btnCommentSubmitting"
+                    html-type="submit" type="primary"
+                    @click="commentSubmit(0)"
+                  >
+                    评论
+                  </a-button>
+                </a-form-item>
+              </template>
+            </a-comment>
           </div>
         </a-card>
       </a-col>
@@ -101,14 +133,14 @@
   </a-spin>
   <a-result
     v-else
+    class="body"
     status="success"
     title="成功删除文章！"
-    class="body"
   >
     <template #extra>
-    <router-link :to="{name:'Home'}">
-      <a-button>返回首页</a-button>
-    </router-link>
+      <router-link :to="{name:'Home'}">
+        <a-button>返回首页</a-button>
+      </router-link>
     </template>
   </a-result>
 </template>
@@ -122,12 +154,16 @@ import moment from 'moment'
 export default {
   name: 'ArticleDetails',
   components: { mavonEditor },
+  props: { id: String },
   data () {
     return {
       spinning: true,
       btnLikeLoading: false,
       btnDeleteLoading: false,
       hasDeleted: false,
+      btnCommentSubmitting: false,
+      commentsLoading: false,
+      newCommentValue: '',
       article: {
         id: 0,
         author: {
@@ -174,20 +210,15 @@ export default {
     }
   },
   computed: {
-    id () {
-      return this.$route.params.id
+    user () {
+      return this.$store.getters.user
     }
   },
   created () {
     axios.get('/articles/' + this.id).then(res => {
       this.article = res.data.article
       this.me = res.data.me
-      axios.get('/articles/' + this.id + '/comments').then(ress => {
-        this.comments = ress.data.comments
-        this.comments.forEach(item => {
-          item.time = moment(item.time).fromNow()
-        })
-      })
+      this.getComments()
     }).catch(() => {
       this.$message.destroy()
       this.$router.replace({ name: 'NotFound' })
@@ -200,7 +231,23 @@ export default {
     else next({ name: 'NotFound' })
   },
   methods: {
-    like () {
+    /**
+     * 获取评论区列表
+     */
+    getComments () {
+      this.commentsLoading = true
+      return axios.get('/articles/' + this.id + '/comments').then(res => {
+        this.comments = res.data.comments
+        this.comments.forEach(item => {
+          item.time = moment(item.time).fromNow()
+        })
+        this.commentsLoading = false
+      })
+    },
+    /**
+     * 点击按钮点赞/取消点赞触发事件
+     */
+    btnLikeClick () {
       this.btnLikeLoading = true
       if (this.me.liked) {
         axios.delete('/articles/' + this.id + '/like').finally(() => {
@@ -219,14 +266,49 @@ export default {
         })
       }
     },
+    /**
+     * 删除文章
+     */
     deleteArticle () {
       this.btnDeleteLoading = true
-      // axios.delete('/articles/' + this.id).finally(() => {
-      axios.delete('http://127.0.0.1:4523/mock/404238/articles/' + this.id).finally(() => {
+      axios.delete('/articles/' + this.id).finally(() => {
+        // axios.delete('http://127.0.0.1:4523/mock/404238/articles/' + this.id).finally(() => {
         setTimeout(() => {
           this.btnDeleteLoading = false
           this.hasDeleted = true
         }, 500)
+      })
+    },
+    /**
+     * 提交评论
+     * @param parent 回复的评论的id，若无则为0
+     */
+    commentSubmit (parent) {
+      this.btnCommentSubmitting = true
+      const data = { content: this.newCommentValue }
+      if (parent) data[parent] = parent
+      axios.post('/articles/' + this.id + '/comments', data).then(() => {
+        this.getComments()
+        this.newCommentValue = ''
+        this.$message.success('评论发布成功')
+      }).finally(() => {
+        setTimeout(() => {
+          this.btnCommentSubmitting = false
+        }, 500)
+      })
+    },
+    /**
+     * 删除评论
+     * @param id 删除的评论的id
+     */
+    commentDelete (id) {
+      axios.delete('/articles/' + this.id + '/comments', {
+        data: {
+          id: id
+        }
+      }).then(() => {
+        this.$message.success('成功删除评论')
+        this.getComments()
       })
     }
   }
