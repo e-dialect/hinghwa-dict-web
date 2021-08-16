@@ -52,7 +52,7 @@ export default {
           this.getCurrentPageData(page)
         },
         pageSize: this.pageSize,
-        total: (this.listDataLock && this.listDataLock.length) || 0
+        total: this.listDataLock ? this.listDataLock.length : 0
       }
     }
   },
@@ -61,11 +61,11 @@ export default {
     pageSize: Number
   },
   created () {
-    this.listDataLock = Object.assign({}, this.listData)
+    this.listDataLock = Object.assign([], this.listData)
   },
   watch: {
     listData () {
-      this.listDataLock = Object.assign({}, this.listData)
+      this.listDataLock = Object.assign([], this.listData)
     },
     listDataLock () {
       if (!this.listDataLock || this.listDataLock.length === 0) return
