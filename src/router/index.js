@@ -9,12 +9,12 @@ const routes = [
     redirect: '/Home'
   },
   {
-    path: '/home',
+    path: '/Home',
     name: 'Home',
     component: () => import('../views/Home')
   },
   {
-    path: '/about',
+    path: '/About',
     name: 'About',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
@@ -73,6 +73,12 @@ const routes = [
     name: 'UserSettings',
     component: () => import('../views/Users/UserSettings.vue')
 
+  },
+  // Tools区
+  {
+    path: '/tools',
+    name: 'Tools',
+    component: () => import('../views/Tools/Tools.vue')
   },
   {
     path: '*',
