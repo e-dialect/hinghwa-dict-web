@@ -17,8 +17,8 @@
             <router-link :to="{name:'Articles'}">文章</router-link>
           </a-menu-item>
 
-          <a-menu-item key="tools">
-            <router-link to="/tools">工具</router-link>
+          <a-menu-item key="Tools">
+            <router-link :to="{name:'Tools'}">工具</router-link>
           </a-menu-item>
           <a-menu-item key="music">
             <router-link to="/music">音乐</router-link>
@@ -52,7 +52,6 @@ export default {
   data () {
     return {
       search_content: ''
-      // TODO: 将tab转化为vuex中的状态，以保证页面首页的完整性
     }
   },
   computed: {

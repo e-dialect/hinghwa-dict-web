@@ -51,8 +51,10 @@ export default new Vuex.Store({
   },
   mutations: {
     tab (state, value) {
-      const list = ['Home', 'articles', 'tools']
-      if (value[0] in list) { state.tab = value }
+      const list = ['Home', 'Articles', 'Tools']
+      if (list.indexOf(value[0]) >= 0) {
+        state.tab = Object.assign([], value)
+      }
     },
     drawerVisibility (state, value) {
       state.drawerVisibility = value
