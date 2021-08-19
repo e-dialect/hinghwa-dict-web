@@ -1,30 +1,47 @@
 <template>
-  <div>
-    <div class="my_carousel">
-      <a-carousel ref="zmd" arrows :slideToScroll="current" :autoplay="true" :autoplaySpeed="6000" >
-        <div
-          slot="prevArrow"
-          class="custom-slick-arrow"
-          style="left: 10px;zIndex: 1"
-        >
-          <a-icon type="left-circle" />
-        </div>
-        <div slot="nextArrow"  class="custom-slick-arrow" style="right: 10px">
-          <a-icon type="right-circle" />
-          <!--          <a-icon type="fullscreen" style="right: 10px;bottom: 10px" @click="$message.success(current)"/>-->
-        </div>
-<!--        TODO：点击图片跳转到对应的文章-->
-        <div v-for="item in carousel" :key="item.id">
-          <img :alt="item.id" :src="item.url" style="height: 380px"/>
-        </div>
-      </a-carousel>
-    </div>
 
+  <div class="my_carousel">
+
+    <a-carousel
+      ref="zmd"
+      arrows
+      :slideToScroll="current"
+      :autoplay="true"
+      :autoplaySpeed="6000"
+      @click="console.log('carousel')"
+    >
+      <div
+        slot="prevArrow"
+        class="custom-slick-arrow"
+        style="left: 10px;"
+      >
+        <a-icon type="left-circle"/>
+      </div>
+
+      <div
+        slot="nextArrow"
+        class="custom-slick-arrow"
+        style="right: 10px">
+        <a-icon type="right-circle"/>
+      </div>
+      <!--BUG:触屏下click无反应-->
+      <router-link
+        style="touch-action: none"
+        v-for="item in carousel"
+        :key="item.id"
+        :to="{name:'ArticleDetails', params:{id:item.id.toString()}}"
+      >
+        <img :alt="item.id" :src="item.url" style="height: 380px"/>
+      </router-link>
+
+    </a-carousel>
   </div>
+
 </template>
 
 <script>
 import axios from 'axios'
+
 export default {
   name: 'Carousel',
   data () {
@@ -53,6 +70,7 @@ export default {
   margin: auto;
   max-width: 100%;
 }
+
 .ant-carousel >>> .custom-slick-arrow {
   width: 50px;
   height: 50px;
@@ -60,12 +78,15 @@ export default {
   color: #fff;
   opacity: 0.3;
 }
+
 .ant-carousel >>> .custom-slick-arrow:before {
   display: none;
 }
+
 .ant-carousel >>> .custom-slick-arrow:hover {
   opacity: 0.5;
 }
+
 .ant-carousel >>> .slick-dots {
   height: auto;
 }
