@@ -24,9 +24,6 @@
               </h2>
             </template>
           </a-list-item-meta>
-          <div style="word-break:break-all">
-            {{ item.article.content.slice(0, 100) }}
-          </div>
         </a-list-item>
       </template>
     </a-list>
@@ -42,17 +39,20 @@ export default {
     return {
       listSource: null,
       listDataLock: null,
-      loading: false
+      loading: false,
+      currentPage: 1
     }
   },
   computed: {
-    pagination: function () {
+    pagination () {
       return {
         onChange: page => {
+          this.currentPage = page
           this.getCurrentPageData(page)
         },
         pageSize: this.pageSize,
-        total: this.listDataLock ? this.listDataLock.length : 0
+        total: this.listDataLock ? this.listDataLock.length : 0,
+        current: this.currentPage
       }
     }
   },
@@ -66,9 +66,11 @@ export default {
   watch: {
     listData () {
       this.listDataLock = Object.assign([], this.listData)
+      this.currentPage = 1
     },
     listDataLock () {
-      if (!this.listDataLock || this.listDataLock.length === 0) return
+      if (!this.listDataLock) return
+      if (this.listDataLock.length === 0) return
       this.getCurrentPageData(1)
     }
   },
