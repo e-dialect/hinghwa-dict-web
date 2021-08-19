@@ -33,9 +33,9 @@ export default {
         {
           id: 0,
           cover: 'http://dummyimage.com/400x300',
-          name: '方言字典',
-          description: '提供方言单字查询',
-          routerName: 'charDict',
+          name: '条件查字',
+          description: '根据声母、韵母、声调筛选符合要求的单字',
+          routerName: 'Conditions',
           disabled: false
         },
         {

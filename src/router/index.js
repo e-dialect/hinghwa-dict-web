@@ -81,6 +81,11 @@ const routes = [
     component: () => import('../views/Tools/Tools.vue')
   },
   {
+    path: '/tools/conditions',
+    name: 'Conditions',
+    component: () => import('../views/Tools/Conditions.vue')
+  },
+  {
     path: '*',
     component: () => import('../views/NotFound.vue')
   },
