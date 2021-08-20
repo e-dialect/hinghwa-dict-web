@@ -3,12 +3,13 @@
     <a-card title="热门文章">
       <div v-for="item in hotArticles" :key="item.article.id">
         <a-card-grid style="width:50%;text-align:center">
-<!--          TODO: 点击卡片进入对应的文章-->
-          <a-card :bordered="false" hoverable>
-            <img slot="cover" :alt="item.article.title" :src="item.article.cover" style="width:100%;height:150px">
-            <a-card-meta :title="item.article.title">
-            </a-card-meta>
-          </a-card>
+          <router-link :to="{name:'ArticleDetails',params:{id:item.article.id.toString()}}">
+            <a-card :bordered="false">
+              <img slot="cover" :alt="item.article.title" :src="item.article.cover" style="width:100%;height:150px">
+              <a-card-meta :title="item.article.title">
+              </a-card-meta>
+            </a-card>
+          </router-link>
         </a-card-grid>
       </div>
     </a-card>
@@ -17,6 +18,7 @@
 
 <script>
 import axios from 'axios'
+
 export default {
   name: 'HotArticles',
   data () {
