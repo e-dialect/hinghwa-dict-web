@@ -54,7 +54,7 @@ export default new Vuex.Store({
       const list = ['Home', 'Articles', 'Tools']
       if (list.indexOf(value[0]) >= 0) {
         state.tab = Object.assign([], value)
-      }
+      } else state.tab = []
     },
     drawerVisibility (state, value) {
       state.drawerVisibility = value
