@@ -14,20 +14,22 @@
           v-model="searchContent"
         />
       </template>
-
-      <ArticleList :list-data="listData" :page-size="8"/>
+      <WordList :list-data="words" :page-size="8"/>
+      <ArticleList :list-data="articles" :page-size="8"/>
     </a-card>
   </a-spin>
 </template>
 
 <script>
+import WordList from '@/components/Tools/WordList'
 import ArticleList from '@/components/Articles/ArticleList'
 import axios from 'axios'
 
 export default {
   name: 'SearchResult',
   components: {
-    ArticleList
+    ArticleList,
+    WordList
   },
   props: [
     'keyWords'
@@ -43,9 +45,11 @@ export default {
   data () {
     return {
       loading: {
-        articles: true
+        articles: false,
+        words: false
       },
-      listData: [],
+      articles: [],
+      words: [],
       searchContent: ''
     }
   },
@@ -65,9 +69,15 @@ export default {
         this.loading[i] = true
       }
       axios.get('/articles', { params: { search: this.keyWords } }).then(res => {
-        this.listData = res.data.articles
+        this.articles = res.data.articles
       }).finally(() => {
         this.loading.articles = false
+      })
+      axios.get('/words', { params: { search: this.keyWords } }).then(res => {
+        this.words = res.data.words
+      }
+      ).finally(() => {
+        this.loading.words = false
       })
     }
   }
