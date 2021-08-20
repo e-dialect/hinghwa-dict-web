@@ -86,6 +86,12 @@ const routes = [
     component: () => import('../views/Tools/Conditions.vue')
   },
   {
+    path: '/search',
+    name: 'Search',
+    props: route => ({ keyWords: route.query.key }),
+    component: () => import('@/views/SearchResult.vue')
+  },
+  {
     path: '*',
     component: () => import('../views/NotFound.vue')
   },

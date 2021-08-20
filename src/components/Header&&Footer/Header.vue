@@ -28,10 +28,10 @@
 
       <a-col :span="6">
         <a-input-search
-          v-model="search_content"
-          placeholder="开始搜索"/>
-        <!--          @search="$router.push({ name: 'search', query: { key: search_content } })"  TODO: 页眉搜索-->
-
+          v-model="searchContent"
+          placeholder="开始搜索"
+          @search="$router.push({ name: 'Search', query: { key: searchContent } })"
+        />
       </a-col>
 
       <a-col :span="2">
@@ -51,7 +51,7 @@ export default {
   },
   data () {
     return {
-      search_content: ''
+      searchContent: ''
     }
   },
   computed: {
