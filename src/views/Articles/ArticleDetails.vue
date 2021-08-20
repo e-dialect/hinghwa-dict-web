@@ -57,10 +57,14 @@
       <a-col span="7">
         <!-- 文章的附加信息-->
         <a-card>
-          <h3>
-            作者:&nbsp;&nbsp;
-            {{ article.author.nickname }}
-          </h3>
+          <a-card-meta :title="article.author.nickname">
+            <router-link
+              slot="avatar"
+              :to="{name:'UserDetails',params:{id:article.author.id}}"
+            >
+              <a-avatar :src="article.author.avatar"/>
+            </router-link>
+          </a-card-meta>
         </a-card>
 
         <!--评论区-->
