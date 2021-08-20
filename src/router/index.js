@@ -86,6 +86,12 @@ const routes = [
     component: () => import('../views/Tools/Conditions.vue')
   },
   {
+    path: '/words/:id',
+    name: 'WordDetails',
+    props: true,
+    component: () => import('../views/WordDetails.vue')
+  },
+  {
     path: '/search',
     name: 'Search',
     props: route => ({ keyWords: route.query.key }),
