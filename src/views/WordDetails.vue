@@ -41,6 +41,7 @@
             </div>
           </a-card>
           <a-card v-else>
+            {{ analysedDefinition.length > 1 ? (index + 1) + ':' : '' }}
             {{ analysedDefinition[0].content }}
           </a-card>
         </div>
