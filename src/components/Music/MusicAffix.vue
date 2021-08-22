@@ -2,7 +2,7 @@
   <div style="z-index: 1000;padding:30px">
     <a-affix :offset-bottom="offset">
 
-      <a-popover ref="popover" style="z-index: 1100" trigger="click">
+      <a-popover style="z-index: 1100" trigger="click" placement="right">
         <template v-slot:content>
           <a-card
             title="经典曲目"
