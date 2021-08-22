@@ -1,6 +1,6 @@
 <template>
   <div style="z-index: 1000;padding:30px">
-    <a-affix :offset-top="500">
+    <a-affix :offset-bottom="offset">
 
       <a-popover ref="popover" style="z-index: 1100" trigger="click">
         <template v-slot:content>
@@ -69,6 +69,9 @@ export default {
     },
     musicTitle () {
       return this.music.artist + ' - ' + this.music.title
+    },
+    offset () {
+      return 400 * document.documentElement.clientHeight / document.documentElement.clientWidth
     }
   },
 

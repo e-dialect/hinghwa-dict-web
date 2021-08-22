@@ -5,10 +5,10 @@
       <myHeader/>
     </a-layout-header>
     <a-layout-content>
-      <MusicAffix/>
       <div class="body">
         <router-view/>
       </div>
+      <MusicAffix/>
     </a-layout-content>
     <a-layout-footer style="background: rgb(46, 46, 46)">
       <myFooter/>
