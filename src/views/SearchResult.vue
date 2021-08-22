@@ -58,7 +58,7 @@ export default {
   },
 
   watch: {
-    key () {
+    keyWords () {
       this.loadingData()
     }
   },
