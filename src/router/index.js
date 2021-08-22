@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '@/store'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -20,6 +21,17 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+  },
+  {
+    path: '/music',
+    name: 'Music',
+    component: () => import('../views/Music/MusicList.vue')
+  },
+  {
+    path: '/search',
+    name: 'Search',
+    props: route => ({ keyWords: route.query.key }),
+    component: () => import('@/views/SearchResult.vue')
   },
   // Login区
   {
@@ -90,12 +102,6 @@ const routes = [
     name: 'WordDetails',
     props: true,
     component: () => import('../views/WordDetails.vue')
-  },
-  {
-    path: '/search',
-    name: 'Search',
-    props: route => ({ keyWords: route.query.key }),
-    component: () => import('@/views/SearchResult.vue')
   },
   {
     path: '*',

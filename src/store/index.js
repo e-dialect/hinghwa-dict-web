@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+
 Vue.use(Vuex)
 const defaultUser = {
   id: 0,
@@ -17,7 +18,8 @@ export default new Vuex.Store({
     drawerLoading: false,
     user: Object.create(defaultUser),
     publish_articles: [],
-    like_articles: []
+    like_articles: [],
+    music: 6
   },
   getters: {
     /**
@@ -47,18 +49,23 @@ export default new Vuex.Store({
     },
     like_articles (state) {
       return state.like_articles
+    },
+    music (state) {
+      return state.music
     }
   },
   mutations: {
     tab (state, value) {
-      const list = ['Home', 'Articles', 'Tools']
+      const list = ['Home', 'Articles', 'Tools', 'Music']
       if (list.indexOf(value[0]) >= 0) {
         state.tab = Object.assign([], value)
       } else state.tab = []
     },
     drawerVisibility (state, value) {
       state.drawerVisibility = value
-      if (value === true) { this.commit('userUpdate') }
+      if (value === true) {
+        this.commit('userUpdate')
+      }
     },
     userLogin (state, id) {
       if (state.user.id.toString() === id) return
@@ -82,10 +89,11 @@ export default new Vuex.Store({
         state.like_articles = res.data.like_articles
         state.drawerLoading = false
       })
+    },
+    changeMusic (state, id) {
+      state.music = id
     }
   },
-  actions: {
-
-  },
+  actions: {},
   modules: {}
 })

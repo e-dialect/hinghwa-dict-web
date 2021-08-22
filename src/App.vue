@@ -5,7 +5,7 @@
       <myHeader/>
     </a-layout-header>
     <a-layout-content>
-      <!--<music style="padding: 65px; position: fixed; z-index:1500"/>-->
+      <MusicAffix/>
       <div class="body">
         <router-view/>
       </div>
@@ -21,11 +21,13 @@
 import myHeader from './components/Header&&Footer/Header.vue'
 import myFooter from './components/Header&&Footer/Footer.vue'
 import store from '@/store'
+import MusicAffix from '@/components/Music/MusicAffix'
 
 export default {
   components: {
     myHeader,
-    myFooter
+    myFooter,
+    MusicAffix
   },
   methods: {
     onResize () {
