@@ -50,10 +50,23 @@
         <a-card>
           <h3> 发布时间:&nbsp;&nbsp;{{ article.publish_time }} </h3>
           <h3> 最近更新:&nbsp;&nbsp;{{ article.update_time }} </h3>
+          <h3>
+            <a-icon type="eye"/>
+            阅读量：{{ article.views }}
+          </h3>
+        </a-card>
+        <!--评论区-->
+        <a-card>
+          <template #title>
+            <h3> 评论区 </h3>
+          </template>
+          <a-spin :spinning="commentsLoading" :delay="500">
+            <comment-list :parent="0" :pageSize="8" :id="id"/>
+          </a-spin>
         </a-card>
       </a-col>
 
-      <!--文章的附加信息（含未来的评论区功能等-->
+      <!--文章的附加信息-->
       <a-col span="7">
         <!-- 文章的附加信息-->
         <a-card>
@@ -67,71 +80,6 @@
           </a-card-meta>
         </a-card>
 
-        <!--评论区-->
-        <a-card>
-          <template #title>
-            <h3> 评论区 </h3>
-          </template>
-          <div>
-
-            <!--现有评论列表-->
-            <a-list
-              :loading="{spinning: commentsLoading, delay: 500}"
-              :data-source="comments"
-              :header="`${comments.length} ${comments.length > 1 ? 'replies' : 'reply'}`"
-              :pagination="{pageSize: 8}"
-              item-layout="horizontal"
-            >
-              <template v-slot:renderItem="item">
-                <a-list-item>
-                  <a-comment
-                    :author="item.user.username"
-                    :content="item.content"
-                    :datetime="item.time">
-                    <template v-slot:avatar>
-                      <router-link :to="{name:'UserDetails',params:{id:item.user.id}}">
-                        <a-avatar :src="item.user.avatar"></a-avatar>
-                      </router-link>
-                    </template>
-                    <template slot="actions">
-                      <span
-                        v-if="item.user.id===user.id"
-                        @click="commentDelete(item.id)"
-                      >
-                       删除评论
-                      </span>
-                    </template>
-                  </a-comment>
-                </a-list-item>
-              </template>
-            </a-list>
-
-            <!--新提交的评论-->
-            <a-comment>
-              <template v-slot:avatar>
-                <a-avatar
-                  :alt="user.nickname"
-                  :src="user.avatar"
-                />
-              </template>
-              <template v-slot:content>
-                <a-form-item>
-                  <a-textarea v-model="newCommentValue" :rows="4"/>
-                </a-form-item>
-                <a-form-item>
-                  <a-button
-                    :disabled="newCommentValue===''"
-                    :loading="btnCommentSubmitting"
-                    html-type="submit" type="primary"
-                    @click="commentSubmit(0)"
-                  >
-                    评论
-                  </a-button>
-                </a-form-item>
-              </template>
-            </a-comment>
-          </div>
-        </a-card>
       </a-col>
     </a-row>
   </a-spin>
@@ -153,21 +101,18 @@
 import axios from 'axios'
 import { mavonEditor } from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
-import moment from 'moment'
+import CommentList from '@/components/Articles/CommentList'
 
 export default {
   name: 'ArticleDetails',
-  components: { mavonEditor },
+  components: { mavonEditor, CommentList },
   props: { id: String },
   data () {
     return {
       spinning: true,
       btnLikeLoading: false,
       btnDeleteLoading: false,
-      hasDeleted: false,
-      btnCommentSubmitting: false,
-      commentsLoading: false,
-      newCommentValue: '',
+      hasDeleted: false, // 文章是否被删除
       article: {
         id: 0,
         author: {
@@ -197,32 +142,19 @@ export default {
       me: {
         liked: false,
         is_author: false
-      },
-      comments: [
-        {
-          id: 0,
-          user: {
-            id: 0,
-            nickname: 'nickname',
-            avatar: 'http://dummyimage.com/100x100'
-          },
-          content: 'content',
-          time: '2000-01-01 00:00:00',
-          parent: 0
-        }
-      ]
+      }
     }
   },
   computed: {
-    user () {
-      return this.$store.getters.user
+    commentsLoading () {
+      return this.$store.getters.commentsLoading
     }
   },
   created () {
-    axios.get('/articles/' + this.id).then(res => {
+    axios.get('/articles/' + this.id).then(async (res) => {
       this.article = res.data.article
       this.me = res.data.me
-      this.getComments()
+      this.$store.commit('updateComments', this.id)
     }).catch(() => {
       this.$message.destroy()
       this.$router.replace({ name: 'NotFound' })
@@ -235,19 +167,6 @@ export default {
     else next({ name: 'NotFound' })
   },
   methods: {
-    /**
-     * 获取评论区列表
-     */
-    getComments () {
-      this.commentsLoading = true
-      return axios.get('/articles/' + this.id + '/comments').then(res => {
-        this.comments = res.data.comments
-        this.comments.forEach(item => {
-          item.time = moment(item.time).fromNow()
-        })
-        this.commentsLoading = false
-      })
-    },
     /**
      * 点击按钮点赞/取消点赞触发事件
      */
@@ -281,38 +200,6 @@ export default {
           this.btnDeleteLoading = false
           this.hasDeleted = true
         }, 500)
-      })
-    },
-    /**
-     * 提交评论
-     * @param parent 回复的评论的id，若无则为0
-     */
-    commentSubmit (parent) {
-      this.btnCommentSubmitting = true
-      const data = { content: this.newCommentValue }
-      if (parent) data[parent] = parent
-      axios.post('/articles/' + this.id + '/comments', data).then(() => {
-        this.getComments()
-        this.newCommentValue = ''
-        this.$message.success('评论发布成功')
-      }).finally(() => {
-        setTimeout(() => {
-          this.btnCommentSubmitting = false
-        }, 500)
-      })
-    },
-    /**
-     * 删除评论
-     * @param id 删除的评论的id
-     */
-    commentDelete (id) {
-      axios.delete('/articles/' + this.id + '/comments', {
-        data: {
-          id: id
-        }
-      }).then(() => {
-        this.$message.success('成功删除评论')
-        this.getComments()
       })
     }
   }

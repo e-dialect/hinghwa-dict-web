@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import moment from 'moment'
+moment.locale('zh-cn')
 
 Vue.use(Vuex)
 const defaultUser = {
@@ -19,7 +21,22 @@ export default new Vuex.Store({
     user: Object.create(defaultUser),
     publish_articles: [],
     like_articles: [],
-    music: 6
+    music: 6,
+    replyTo: 0,
+    commentsLoading: false,
+    comments: [
+      {
+        id: 1234,
+        user: {
+          id: 0,
+          nickname: 'nickname',
+          avatar: 'http://dummyimage.com/100x100'
+        },
+        content: 'content',
+        time: '2000-01-01 00:00:00',
+        parent: 123
+      }
+    ]
   },
   getters: {
     /**
@@ -52,6 +69,15 @@ export default new Vuex.Store({
     },
     music (state) {
       return state.music
+    },
+    replyTo (state) {
+      return state.replyTo
+    },
+    comments (state) {
+      return state.comments
+    },
+    commentsLoading (state) {
+      return state.commentsLoading
     }
   },
   mutations: {
@@ -92,8 +118,24 @@ export default new Vuex.Store({
     },
     changeMusic (state, id) {
       state.music = id
+    },
+    changeReplyTo (state, value) {
+      state.replyTo = value
+    },
+    updateComments (state, id) {
+      state.commentsLoading = true
+      return axios.get('/articles/' + id + '/comments').then(res => {
+        state.comments = res.data.comments
+        state.comments.forEach(item => {
+          item.time = moment(item.time).fromNow()
+        })
+      }).finally(() => {
+        state.commentsLoading = false
+      })
     }
   },
-  actions: {},
+  actions: {
+
+  },
   modules: {}
 })
