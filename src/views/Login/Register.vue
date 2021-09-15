@@ -48,7 +48,7 @@
         <a-button
           shape="round"
           type="primary"
-          @click="sendCode"
+          @click="sendCode(email)"
           :disabled="!email"
           :loading="btnCodeLoading"
         >
@@ -105,14 +105,16 @@ export default {
   methods: {
     /**
      * 获取邮箱验证码
+     * @param email 要发送的邮箱地址
      */
-    sendCode () {
+    sendCode (email) {
       this.btnCodeLoading = true
-      axios.post('/website/email', { email: this.email }).then(
-        res => {
-          this.$message.success('验证码已成功发送至' + this.email)
-          this.btnCodeLoading = false
-        })
+      axios.post('/website/email', { email: email }).then(
+        () => {
+          this.$message.success('验证码已成功发送至' + email)
+        }).finally(() => {
+        this.btnCodeLoading = false
+      })
     },
     /**
      * 完成注册任务
