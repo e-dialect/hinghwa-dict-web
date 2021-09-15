@@ -73,7 +73,7 @@
           <a-card-meta :title="article.author.nickname">
             <router-link
               slot="avatar"
-              :to="{name:'UserDetails',params:{id:article.author.id}}"
+              :to="{name:'UserDetails',params:{id:article.author.id.toString()}}"
             >
               <a-avatar :src="article.author.avatar"/>
             </router-link>
