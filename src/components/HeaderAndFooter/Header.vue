@@ -12,7 +12,9 @@
           <a-menu-item key="Home">
             <router-link :to="{name:'Home'}">主页</router-link>
           </a-menu-item>
-
+          <a-menu-item key="Pinyin">
+            <router-link :to="{name:'Pinyin'}">拼音</router-link>
+          </a-menu-item>
           <a-menu-item key="Articles">
             <router-link :to="{name:'Articles'}">文章</router-link>
           </a-menu-item>
@@ -20,6 +22,7 @@
           <a-menu-item key="Tools">
             <router-link :to="{name:'Tools'}">工具</router-link>
           </a-menu-item>
+
           <a-menu-item key="music">
             <router-link to="/music">音乐</router-link>
           </a-menu-item>

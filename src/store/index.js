@@ -82,7 +82,7 @@ export default new Vuex.Store({
   },
   mutations: {
     tab (state, value) {
-      const list = ['Home', 'Articles', 'Tools', 'Music']
+      const list = ['Home', 'Articles', 'Tools', 'Music', 'Pinyin']
       if (list.indexOf(value[0]) >= 0) {
         state.tab = Object.assign([], value)
       } else state.tab = []

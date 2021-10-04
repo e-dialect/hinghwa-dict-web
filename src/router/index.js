@@ -88,6 +88,11 @@ const routes = [
   },
   // Tools区
   {
+    path: '/pinyin',
+    name: 'Pinyin',
+    component: () => import('../views/Pinyin.vue')
+  },
+  {
     path: '/tools',
     name: 'Tools',
     component: () => import('../views/Tools/Tools.vue')
