@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import UserPage from '@/components/Header&&Footer/UserPage'
+import UserPage from '@/components/HeaderAndFooter/UserPage'
 
 export default {
   name: 'HeaderUser',

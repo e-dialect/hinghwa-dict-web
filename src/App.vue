@@ -18,8 +18,8 @@
 </template>
 
 <script>
-import myHeader from './components/Header&&Footer/Header.vue'
-import myFooter from './components/Header&&Footer/Footer.vue'
+import myHeader from './components/HeaderAndFooter/Header.vue'
+import myFooter from './components/HeaderAndFooter/Footer.vue'
 import store from '@/store'
 import MusicAffix from '@/components/Music/MusicAffix'
 
