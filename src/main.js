@@ -34,7 +34,17 @@ axios.interceptors.response.use(function (response) {
   return response
 }, function (error) {
   // 对响应错误做点什么
-  message.error(error.toString())
+  switch (error.response.status) {
+    case 401: {
+      message.error('权限错误！你无权进行该操作！')
+      break
+    }
+    default: {
+      message.error(error.toString())
+      console.log(error.response)
+      break
+    }
+  }
   return Promise.reject(error)
 })
 
