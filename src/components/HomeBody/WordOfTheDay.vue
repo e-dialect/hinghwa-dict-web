@@ -24,7 +24,7 @@ export default {
       // 词语小卡片所需参数
       title: 'Card title', // 卡片标题
       description: 'This is the description这里需要插入单字/词语的描述等', // 内容描述
-      cover: 'https://api.mfstudio.cc/bing/', // 卡片图片地址
+      cover: 'https://angustar.tech/api/bing', // 卡片图片地址
       link: '/blog',
       id: 2
     }
