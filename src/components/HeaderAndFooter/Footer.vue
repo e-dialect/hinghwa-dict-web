@@ -23,6 +23,9 @@
           <a href="" style="color: white">Github</a>
         </h4>
         <h4>Copyrights © {{ new Date().getFullYear() }} Easy Dialect. All Rights Reserved.</h4>
+        <a href="http://beian.miit.gov.cn" target="_blank" style="color:#C7C7C7">
+          闽ICP备2021006892号
+        </a>
       </a-col>
     </a-row>
   </div>
