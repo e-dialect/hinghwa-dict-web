@@ -24,14 +24,14 @@
         style="right: 10px">
         <a-icon type="right-circle"/>
       </div>
+
       <!--BUG:触屏下click无反应-->
       <router-link
-        style="touch-action: none"
         v-for="item in carousel"
         :key="item.id"
         :to="{name:'ArticleDetails', params:{id:item.id.toString()}}"
       >
-        <img :alt="item.id" :src="item.url" style="height: 380px"/>
+        <img :alt="item.id" :src="item.url" style="height: 380px" @click="$message.success('ok')"/>
       </router-link>
 
     </a-carousel>
@@ -69,6 +69,8 @@ export default {
   display: block;
   margin: auto;
   max-width: 100%;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .ant-carousel >>> .custom-slick-arrow {
@@ -77,6 +79,7 @@ export default {
   font-size: 50px;
   color: #fff;
   opacity: 0.3;
+  z-index: 1000;
 }
 
 .ant-carousel >>> .custom-slick-arrow:before {
