@@ -2,7 +2,7 @@
   <div class="login">
     <a-row type="flex" justify="center">
       <a-col>
-        <img src="@/assets/logo.png" width="300px" alt="E方言 —— Easy Dialect"/>
+        <img src="@/assets/blue.svg" width="300px" alt="兴化语记——莆仙方言在线工具"/>
       </a-col>
     </a-row>
     <a-row type="flex" justify="center" style="padding-bottom:20px">

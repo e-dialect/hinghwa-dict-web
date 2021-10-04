@@ -19,7 +19,7 @@
     >
       <a-col span="15">
         <a-card hoverable style="height:300px;text-align: center">
-          <img src="../assets/logo.png" width="40%">
+          <img src="../assets/blue.svg" width="40%">
           <a-input-search
             placeholder="一键检索你想知道的"
             style="width:70%"

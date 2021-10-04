@@ -2,7 +2,7 @@
   <div class="login">
     <a-row align="middle" justify="center" type="flex">
       <a-col>
-        <img :width="300" src="@/assets/logo.png"/>
+        <img :width="300" src="@/assets/blue.svg"/>
       </a-col>
     </a-row>
     <a-row align="middle" justify="center" style="padding-bottom:20px" type="flex">

@@ -3,7 +3,7 @@
     <a-row align="middle" justify="space-around" type="flex">
       <a-col :span="3">
         <router-link to="/Home">
-          <img src="@/assets/logo.png" alt="E方言图标" width="120px">
+          <img src="@/assets/blue.svg" alt="E方言图标" width="120px">
         </router-link>
       </a-col>
 
