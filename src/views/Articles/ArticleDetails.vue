@@ -10,23 +10,6 @@
             <h1> {{ article.title }} </h1>
           </template>
 
-          <template #extra>
-            <a-button
-              v-if="me.is_author"
-              :loading="btnDeleteLoading"
-              type="primary"
-              @click="deleteArticle"
-            >
-              删除
-            </a-button>
-            <router-link :to="{name:'ArticleEdit',params:{id: id}}">
-              <a-button v-if="me.is_author" type="primary"> 编辑</a-button>
-            </router-link>
-            <a-button :loading="btnLikeLoading" type="primary" @click="btnLikeClick">
-              {{ me.liked ? "取消" : "" }}收藏
-            </a-button>
-          </template>
-
           <template #cover>
             <img :alt="'这里本是文章的封面，其地址为'+article.cover+',但是显示不出来了'" :src="article.cover">
           </template>
@@ -47,14 +30,6 @@
           >
           </mavon-editor>
         </a-card>
-        <a-card>
-          <h3> 发布时间:&nbsp;&nbsp;{{ article.publish_time }} </h3>
-          <h3> 最近更新:&nbsp;&nbsp;{{ article.update_time }} </h3>
-          <h3>
-            <a-icon type="eye"/>
-            阅读量：{{ article.views }}
-          </h3>
-        </a-card>
         <!--评论区-->
         <a-card>
           <template #title>
@@ -69,7 +44,9 @@
       <!--文章的附加信息-->
       <a-col span="7">
         <!-- 文章的附加信息-->
-        <a-card>
+
+        <a-card style="margin-top: 16px" title="文章信息">
+          <h3>文章作者：</h3>
           <a-card-meta :title="article.author.nickname">
             <router-link
               slot="avatar"
@@ -78,8 +55,57 @@
               <a-avatar :src="article.author.avatar"/>
             </router-link>
           </a-card-meta>
+          <br>
+          <h3> 发布时间:<br>&nbsp;&nbsp;&nbsp;&nbsp;{{ article.publish_time }} </h3>
+          <h3> 最近更新:<br>&nbsp;&nbsp;&nbsp;&nbsp;{{ article.update_time }} </h3>
+          <h3>
+            <a-icon type="eye"/>
+            阅读量：{{ article.views }}
+          </h3>
+          <h3>
+            <a-icon type="like"/>
+            点赞量：{{ article.likes }}
+          </h3>
         </a-card>
 
+        <a-card style="margin-top: 16px" title="文章操作">
+          <div style="text-align: center;line-height: 48px">
+            <a-button
+              style="margin-top:8px"
+              v-if="$store.getters.loginStatus"
+              :loading="btnLikeLoading"
+              type="primary"
+              @click="btnLikeClick"
+            >
+              {{ me.liked ? '取消' : '' }}点赞
+            </a-button>
+
+            <br>
+
+            <a-popconfirm
+              title="文章一旦删除变无法找回，你确定要继续操作？"
+              ok-text="删除"
+              cancel-text="取消"
+              @confirm="deleteArticle"
+            >
+
+              <a-button
+                v-if="me.is_author"
+                :loading="btnDeleteLoading"
+                type="primary"
+              >
+                删除
+              </a-button>
+            </a-popconfirm>
+
+            <br>
+
+            <router-link :to="{name:'ArticleEdit',params:{id: id}}">
+              <a-button v-if="me.is_author" type="primary"> 编辑</a-button>
+            </router-link>
+
+          </div>
+        </a-card>
       </a-col>
     </a-row>
   </a-spin>
@@ -105,7 +131,10 @@ import CommentList from '@/components/Articles/CommentList'
 
 export default {
   name: 'ArticleDetails',
-  components: { mavonEditor, CommentList },
+  components: {
+    mavonEditor,
+    CommentList
+  },
   props: { id: String },
   data () {
     return {
@@ -124,7 +153,7 @@ export default {
           registration_time: '2000-01-01 00:00:00',
           login_time: '2000-01-01 00:00:00',
           birthday: '2000-01-01 00:00:00',
-          avatar: 'http://dummyimage.com/100x100',
+          avatar: '',
           county: '',
           town: '',
           is_admin: false
@@ -137,7 +166,7 @@ export default {
         title: 'title',
         description: 'description',
         content: 'content',
-        cover: 'http://dummyimage.com/160x90'
+        cover: ''
       },
       me: {
         liked: false,
@@ -163,8 +192,11 @@ export default {
     })
   },
   beforeRouteEnter (to, from, next) {
-    if (to.params.id % 1 === 0) next()
-    else next({ name: 'NotFound' })
+    if (to.params.id % 1 === 0) {
+      next()
+    } else {
+      next({ name: 'NotFound' })
+    }
   },
   methods: {
     /**
@@ -176,6 +208,7 @@ export default {
         axios.delete('/articles/' + this.id + '/like').finally(() => {
           this.me.liked = false
           setTimeout(() => {
+            this.article.likes -= 1
             this.btnLikeLoading = false
           }, 500)
         })
@@ -184,6 +217,7 @@ export default {
           this.me.liked = true
           // this.btnLikeLoading = false
           setTimeout(() => {
+            this.article.likes += 1
             this.btnLikeLoading = false
           }, 500)
         })
