@@ -103,6 +103,11 @@ const routes = [
     component: () => import('../views/Tools/Conditions.vue')
   },
   {
+    path: '/tools/characters',
+    name: 'Characters',
+    component: () => import('../views/Tools/Characters.vue')
+  },
+  {
     path: '/words/:id',
     name: 'WordDetails',
     props: true,
