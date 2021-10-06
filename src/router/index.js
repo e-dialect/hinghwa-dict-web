@@ -108,6 +108,11 @@ const routes = [
     component: () => import('../views/Tools/Characters.vue')
   },
   {
+    path: '/tools/DailyExpressions',
+    name: 'DailyExpressions',
+    component: () => import('../views/Tools/DailyExpressions.vue')
+  },
+  {
     path: '/words/:id',
     name: 'WordDetails',
     props: true,
