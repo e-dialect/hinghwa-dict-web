@@ -41,7 +41,7 @@
             :content="item.content"
             :datetime="item.time">
             <template v-slot:avatar>
-              <router-link :to="{name:'UserDetails',params:{id:item.user.id}}">
+              <router-link :to="{name:'UserDetails',params:{id:item.user.id.toString()}}">
                 <a-avatar :src="item.user.avatar"></a-avatar>
               </router-link>
             </template>

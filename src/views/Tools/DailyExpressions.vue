@@ -324,7 +324,7 @@ export default {
         pinyin: 'ma2 huang2 dy3 gorng3 eh6 kua1 goeng3'
       }, {
         key: 28,
-        English: 'Please say that again',
+        English: 'Please say that again / Pardon?',
         Mandarin: '请再说一遍',
         character: '麻烦汝再讲一遍',
         pinyin: 'ma2 huang2 dy3 ai4 gorng3 soh7 beng4'
@@ -661,26 +661,26 @@ export default {
       }, {
         key: 84,
         English: 'Brother',
-        Mandarin: '弟弟 (younger) 哥哥 (older)',
-        character: '阿兄 (older) / 阿弟 (younger)',
+        Mandarin: '哥哥 弟弟',
+        character: '阿兄 / 阿弟',
         pinyin: 'a1 ia1 / a1 li5'
       }, {
         key: 85,
         English: 'Sister',
-        Mandarin: '妹妹 (younger) 姐姐 (older)',
-        character: '阿姊 (older) / 阿妹 (younger)',
+        Mandarin: '妹妹 姐姐',
+        character: '阿姊 / 阿妹',
         pinyin: 'ah6 zi3 / ah6 mue4'
       }, {
         key: 86,
         English: 'Mom',
         Mandarin: '妈妈/娘',
-        character: '妈妈 / 娘奶 (formal)',
+        character: '妈妈 / 娘奶 (背称）',
         pinyin: 'ma1 ma1 / nieu2 le3'
       }, {
         key: 87,
         English: 'Dad',
         Mandarin: '爸爸/爹',
-        character: '阿爸 / 老父 (formal)',
+        character: '阿爸 / 老父  (背称）',
         pinyin: 'ah6 ba1 / lor5 or5'
       }, {
         key: 88,

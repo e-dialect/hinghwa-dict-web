@@ -21,7 +21,7 @@ export default new Vuex.Store({
     user: Object.create(defaultUser),
     publish_articles: [],
     like_articles: [],
-    music: 6,
+    music: 8,
     replyTo: 0,
     commentsLoading: false,
     comments: [
@@ -82,7 +82,7 @@ export default new Vuex.Store({
   },
   mutations: {
     tab (state, value) {
-      const list = ['Home', 'Articles', 'Tools', 'Music', 'Pinyin']
+      const list = ['Home', 'Articles', 'Tools', 'Pinyin']
       if (list.indexOf(value[0]) >= 0) {
         state.tab = Object.assign([], value)
       } else state.tab = []

@@ -3,7 +3,7 @@
     <a-row
       align="middle"
       justify="center"
-      style="padding-top:10px;padding-bottom:10px;padding-right:0px;padding-left:0px;"
+      style="padding-top:10px;padding-bottom:10px;padding-right:0;padding-left:0;"
       type="flex"
     >
       <a-col span="23">
@@ -14,12 +14,12 @@
     <a-row
       align="middle"
       justify="center"
-      style="padding-top:10px;padding-bottom:20px;padding-right:0px;padding-left:0px;"
+      style="padding-top:10px;padding-bottom:20px;padding-right:0;padding-left:0;"
       type="flex"
     >
       <a-col span="15">
         <a-card hoverable style="height:300px;text-align: center">
-          <img src="../assets/blue.svg" width="40%">
+          <img src="../assets/blue.svg" width="40%" alt="兴化语记logo">
           <a-input-search
             placeholder="一键检索你想知道的"
             style="width:70%"
@@ -41,24 +41,28 @@
       </a-col>
     </a-row>
 
-    <a-row>
-      <div v-for="item in toolList" :key="item.id">
-        <a-card-grid style="width:33%;text-align:center">
-          <a-card @click="$router.push({name:item.routerName})">
-            <template v-slot:cover>
-              <img :src="item.img" :alt="item.name"/>
-            </template>
-            <a-card-meta :description="item.description">
-            </a-card-meta>
-          </a-card>
-        </a-card-grid>
-      </div>
+    <a-row
+      justify="space-around"
+      type="flex"
+      style="padding-top:10px;padding-bottom:20px;padding-right:0;padding-left:0;"
+    >
+      <a-col :span="21/toolList.length" v-for="item in toolList" :key="item.id">
+        <a-card hoverable>
+          <template v-slot:cover>
+            <img
+              :src="item.cover"
+              :alt="item.name"
+              style="width: 100%"
+              @click="$router.push({name:item.routerName})"/>
+          </template>
+        </a-card>
+      </a-col>
     </a-row>
 
     <a-row
       align="top"
       justify="center"
-      style="padding-top:0px;padding-bottom:60px;padding-right:0px;padding-left:0px;"
+      style="padding-top:10px;padding-bottom:20px;padding-right:0;padding-left:0;"
       type="flex"
     >
       <a-col span="24">
@@ -73,6 +77,8 @@ import Carousel from '@/components/HomeBody/Carousel'
 import WordOfTheDay from '@/components/HomeBody/WordOfTheDay'
 import HotArticles from '@/components/HomeBody/HotArticles'
 
+const cdn = 'https://hinghwadict-1259415432.cos.ap-shanghai.myqcloud.com/website/'
+
 export default {
   name: 'Home',
   data () {
@@ -80,28 +86,22 @@ export default {
       searchContent: '',
       toolList: [
         {
-          id: 0,
-          img: 'http://dummyimage.com/400x300',
-          name: '条件检字',
-          description: '声韵调检索汉字',
-          routerName: 'Conditions',
-          able: true
-        },
-        {
           id: 1,
-          img: 'http://dummyimage.com/400x300',
-          name: '方言词典',
-          description: '提供方言词语查询',
-          routerName: '/tools/wordDict',
-          able: true
+          cover: cdn + '拼音速查.png',
+          routerName: 'Characters',
+          disabled: false
         },
         {
           id: 2,
-          img: 'http://dummyimage.com/400x300',
-          name: '方言语音识别工具',
-          description: '努力研发中',
-          routerName: '/tools/Voice',
-          able: false
+          cover: cdn + '日常用语.png',
+          routerName: 'DailyExpressions',
+          disabled: false
+        },
+        {
+          id: 3,
+          cover: cdn + '方言曲库.png',
+          routerName: 'Music',
+          disabled: false
         }
       ]
     }

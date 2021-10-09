@@ -2,6 +2,7 @@
   <a-card>
     <div v-for="item in tools" :key="item.id">
       <a-card-grid hoverable style="width:50%;text-align:center">
+
         <a-card
           :bordered="false"
           @click="()=>{if(!item.disabled)$router.push({name:item.routerName})}"
@@ -9,50 +10,44 @@
           <template v-slot:cover>
             <img :src="item.cover"/>
           </template>
-
-          <template v-slot:title>
-            <a-button type="link" :disabled="item.disabled">
-               {{ item.name }}
-            </a-button>
-          </template>
-
-          <a-card-meta :description="item.description">
-          </a-card-meta>
         </a-card>
+
       </a-card-grid>
     </div>
   </a-card>
 </template>
 
 <script>
+const cdn = 'https://hinghwadict-1259415432.cos.ap-shanghai.myqcloud.com/website/'
 export default {
   name: 'Tools',
   data () {
     return {
+
       tools: [
         {
           id: 0,
-          cover: 'http://dummyimage.com/400x300',
-          name: '条件查字',
-          description: '根据声母、韵母、声调筛选符合要求的单字',
+          cover: cdn + '条件查字.png',
           routerName: 'Conditions',
           disabled: false
         },
         {
           id: 1,
-          cover: 'http://dummyimage.com/400x300',
-          name: '方言词典',
-          description: '提供方言词语查询',
-          routerName: 'wordDict',
+          cover: cdn + '拼音速查.png',
+          routerName: 'Characters',
           disabled: false
         },
         {
           id: 2,
-          cover: 'http://dummyimage.com/400x300',
-          name: '方言语音识别工具',
-          description: '努力研发中',
-          routerName: 'Voice',
-          disabled: true
+          cover: cdn + '日常用语.png',
+          routerName: 'DailyExpressions',
+          disabled: false
+        },
+        {
+          id: 3,
+          cover: cdn + '方言曲库.png',
+          routerName: 'Music',
+          disabled: false
         }
       ]
     }

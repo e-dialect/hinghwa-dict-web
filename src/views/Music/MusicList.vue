@@ -1,12 +1,12 @@
 <template>
   <div class="body">
-    <a-card title="方言歌曲库">
-      <p>说到福建的歌曲，或许大家只会想到《爱拼才会赢》。</p>
+    <a-card title="方言曲库">
+      <p>说到福建的歌曲，或许大家只会想到闽南语歌曲《爱拼才会赢》。</p>
       <p>但实际上，莆仙方言也有很多好听的歌曲，让我们一起去听听吧~</p>
     </a-card>
     <a-card>
       <div v-for="item in musicList" :key="item.music.id">
-        <a-card-grid style="width:50%;text-align:center">
+        <a-card-grid style="width:33%;text-align:center">
           <a-card>
             <template v-slot:cover>
               <img :alt="item.music.title" :src="item.music.cover" style="height:300px;object-fit: contain"/>

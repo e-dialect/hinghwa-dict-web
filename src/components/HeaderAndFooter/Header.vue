@@ -22,10 +22,6 @@
           <a-menu-item key="Tools">
             <router-link :to="{name:'Tools'}">工具</router-link>
           </a-menu-item>
-
-          <a-menu-item key="music">
-            <router-link to="/music">音乐</router-link>
-          </a-menu-item>
         </a-menu>
       </a-col>
 
