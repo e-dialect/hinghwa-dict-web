@@ -1,31 +1,39 @@
 <template>
-  <div style="z-index: 1000;padding:30px">
+  <div style="z-index: 1000;padding-left:30px">
     <a-affix :offset-bottom="offset">
 
-      <a-popover style="z-index: 1100" trigger="click" placement="right">
+      <a-popover
+        v-model="visible"
+        style="z-index: 1100"
+        trigger="click"
+        placement="right"
+      >
         <template v-slot:content>
           <a-card
-            title="经典曲目"
             :bordered="false"
-            style="justify-content: center; width:400px;text-align: center"
+            style="width:400px;"
           >
+            <template v-slot:title>
+              <h2>莆仙曲目</h2>
+            </template>
             <a-button
               slot="extra"
               type="link"
+              :disabled="$route.name==='Music'"
               @click="$router.push({name:'Music'})"
             >
-              进入方言歌曲库
+              进入方言曲库
             </a-button>
 
             <img :src="music.cover" alt="音乐封面" style="width: 95%;"/>
 
-            <div> {{ musicTitle }}</div>
+            <div style="text-align: center"> {{ musicTitle }}</div>
 
             <audio
               ref="myAudio"
               :src="music.source"
               style="width: 100%;"
-              controls loop preload autoplay
+              controls loop autoplay
             />
 
           </a-card>
@@ -34,7 +42,6 @@
         <a-button shape="circle" size="large">
           <a-icon type="customer-service"/>
         </a-button>
-
       </a-popover>
 
     </a-affix>
@@ -53,16 +60,20 @@ export default {
         source: '',
         title: '',
         artist: '',
-        cover: 'http://dummyimage.com/120x60',
+        cover: '',
         likes: 0
-      }
+      },
+      visible: true
     }
   },
+
   created () {
-    axios.get('/music/' + this.musicID.toString()).then(res => {
-      this.music = res.data.music
+    this.visible = true
+    setTimeout(() => {
+      this.visible = false
     })
   },
+
   computed: {
     musicID () {
       return this.$store.getters.music
@@ -80,6 +91,15 @@ export default {
       axios.get('/music/' + this.musicID.toString()).then(res => {
         this.music = res.data.music
       })
+    },
+    visible () {
+      if (this.visible === true) {
+        if (this.music.id !== this.musicID) {
+          axios.get('/music/' + this.musicID.toString()).then(res => {
+            this.music = res.data.music
+          })
+        }
+      }
     }
   }
 }

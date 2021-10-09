@@ -47,8 +47,8 @@ export default {
         {
           music: {
             id: 0,
-            source: 'https://hnzmfy.sy/jsmhg',
-            cover: 'http://dummyimage.com/400x300',
+            source: '',
+            cover: '',
             likes: 0,
             contributor: 0,
             visibility: false,
@@ -57,7 +57,7 @@ export default {
           },
           contributor: {
             nickname: '样例昵称',
-            avatar: 'http://dummyimage.com/100x100',
+            avatar: '',
             id: 0
           }
         }
