@@ -103,6 +103,11 @@ const routes = [
     component: () => import('../views/Tools/Conditions.vue')
   },
   {
+    path: '/tools/QuickRecording',
+    name: 'QuickRecording',
+    component: () => import('../views/Tools/QuickRecording.vue')
+  },
+  {
     path: '/tools/characters',
     name: 'Characters',
     component: () => import('../views/Tools/Characters.vue')
