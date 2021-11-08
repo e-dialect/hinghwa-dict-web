@@ -5,7 +5,7 @@
 
         <a-card
           :bordered="false"
-          @click="()=>{if(!item.disabled)$router.push({name:item.routerName})}"
+          @click="onCardClick(item)"
         >
           <template v-slot:cover>
             <img :src="item.cover"/>
@@ -48,8 +48,26 @@ export default {
           cover: cdn + '方言曲库.png',
           routerName: 'Music',
           disabled: false
+        },
+        {
+          id: 4,
+          cover: cdn + '录音审核.png',
+          routerName: 'Music',
+          disabled: true
+        },
+        {
+          id: 5,
+          cover: cdn + '快速录制.png',
+          routerName: 'QuickRecording',
+          disabled: false
         }
       ]
+    }
+  },
+  methods: {
+    onCardClick (item) {
+      if (!item.disabled) this.$router.push({ name: item.routerName })
+      else this.$message.warning('功能正在开发中，请耐心等候')
     }
   },
   computed: {
