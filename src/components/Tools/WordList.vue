@@ -1,25 +1,30 @@
 <template>
   <a-list
-    :pagination="pagination"
     :data-source="listSource || []"
     :loading="{spinning: loading, delay: 500}"
+    :pagination="pagination"
   >
     <template v-slot:renderItem="item">
-        <router-link :to="{name:'WordDetails',params:{id:item.word.id.toString()}}">
+      <router-link :to="{name:'WordDetails',params:{id:item.word.id.toString()}}">
         <a-card
           :hoverable="true"
           style="width: 100%;"
-          class="cccc"
         >
-        <a-card-meta :description="item.word.definition.slice(0,100)">
-          <template v-slot:title>
-            <h2>
+          <a-card-meta :description="item.word.definition.slice(0,100)">
+            <template v-slot:title>
+            <span style="font-size: 150%">
                 {{ item.word.word }}
-            </h2>
-          </template>
-        </a-card-meta>
+            </span>
+              <span style="font-size: 80%;padding-left: 10px">
+          {{ item.word.standard_pinyin }}
+        </span>
+              <span style="font-size: 80%;color: rgb(155,155,155);padding-left: 10px">
+          / {{ item.word.standard_ipa }}/
+        </span>
+            </template>
+          </a-card-meta>
         </a-card>
-        </router-link>
+      </router-link>
     </template>
   </a-list>
 </template>
@@ -45,7 +50,8 @@ export default {
         },
         pageSize: this.pageSize,
         total: this.listDataLock ? this.listDataLock.length : 0,
-        current: this.currentPage
+        current: this.currentPage,
+        showQuickJumper: true
       }
     }
   },
@@ -83,6 +89,3 @@ export default {
   }
 }
 </script>
-<style >
-
-</style>

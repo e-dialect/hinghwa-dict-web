@@ -3,10 +3,17 @@
     <a-card>
 
       <template v-slot:title>
-        <h1 style="padding-left:30px; color: rgb(26,26,73); font-size:250%"><strong> {{ word.word }} </strong></h1>
-        <!--   TODO:增加语音内容     -->
-        <!--      <span style="font-size: 100%"> {{ pinyin }} </span>-->
-        <!--      <span style="font-size: 100%;color: rgb(155,155,155) "> / {{ IPA }} / </span>-->
+        <h1 style="padding-left:30px; color: rgb(26,26,73); font-size:250%">
+          <strong>
+            {{ word.word }}
+          </strong>
+        </h1>
+        <span style="font-size: 100%;padding-left: 50px">
+          {{ word.standard_pinyin }}
+        </span>
+        <span style="font-size: 100%;color: rgb(155,155,155);padding-left: 10px">
+          / {{ word.standard_ipa }}/
+        </span>
       </template>
 
       <template v-slot:extra>
@@ -26,23 +33,17 @@
           :key="index+1"
           style="width: 100%;padding: 20px"
         >
-          <a-card
-            v-if="item.example.length"
-          >
+          <a-card>
             <template v-slot:title>
-              {{ analysedDefinition.length > 1 ? (index + 1) + ':' : '' }}{{ item.content }}
+              {{ analysedDefinition.length > 1 ? (index + 1) + '：' : '' }}{{ item.content }}
             </template>
             <div v-for="exp in item.example" :key="exp.content" style="padding: 5px">
               <a-tag color="rgb(64, 49, 131)"> {{ exp.type }}</a-tag>
               <span style="padding:5px">
-            <strong> {{ exp.content }} </strong>
-            <span style="font-size:x-small"> {{ exp.explain }} </span>
-          </span>
+                <strong> {{ exp.content }} </strong>
+                <span style="font-size:x-small"> {{ exp.explain }} </span>
+              </span>
             </div>
-          </a-card>
-          <a-card v-else>
-            {{ analysedDefinition.length > 1 ? (index + 1) + ':' : '' }}
-            {{ analysedDefinition[0].content }}
           </a-card>
         </div>
       </div>
@@ -93,7 +94,10 @@
         :list-data="word.related_articles"
         :page-size="3"
       />
-
+      <p style="margin-top: 40px">
+        <a-icon type="eye"></a-icon>
+        访问量:{{word.views}}
+      </p>
     </a-card>
   </a-spin>
 </template>
@@ -263,7 +267,12 @@ export default {
      */
     analyseDefinition (definition) {
       let index = definition.indexOf('：')
-      if (index === -1) index = definition.length
+      if (index === -1) {
+        index = definition.indexOf('△')
+        if (index === -1) {
+          index = definition.length
+        } else index = index - 1
+      }
       const result = {
         content: definition.substring(0, index),
         example: []
