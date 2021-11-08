@@ -19,7 +19,7 @@
         <h3> 重置密码</h3>
         <a-input-password v-model="password" placeholder="输入密码" size="default"/>
         <a-input-password v-model="repeatedPassword" placeholder="输入密码" size="default"/>
-        <div style="color: red" v-show="password!==repeatedPassword">
+        <div v-show="password!==repeatedPassword" style="color: red">
           两次密码不一致
         </div>
       </div>
@@ -27,8 +27,8 @@
       <div v-if="current ===2">
         <a-result
           status="success"
-          title="您已经成功重置密码！"
           sub-title="下一步可以选择去登录或返回首页"
+          title="您已经成功重置密码！"
         >
           <template #extra>
             <a-button type="primary" @click="$router.push({name:'Login'})">
@@ -44,7 +44,7 @@
 
     <!--下方进度条按钮-->
     <div class="steps-action">
-      <a-button v-if="current < steps.length " type="primary" v-on:click="next" :loading="btnNextStepLoading">
+      <a-button v-if="current < steps.length " :loading="btnNextStepLoading" type="primary" v-on:click="next">
         {{ steps[current].cont }}
       </a-button>
       <a-button v-if="current > 0" style="margin-left: 8px" v-on:click="prev">
@@ -99,12 +99,12 @@ export default {
             this.$message.error('请输入用户名')
             break
           }
-          this.current += this.sendCode()
+          this.sendCode()
           break
         }
         case 1: {
           if (this.password !== this.repeatedPassword) break
-          this.current += this.resetPassword()
+          this.resetPassword()
           break
         }
       }
@@ -121,36 +121,37 @@ export default {
      * 并向邮箱发送验证码
      */
     sendCode () {
-      let result = 0
-      axios.get('/users', {
-        username: this.username
+      axios.get('/login/forget', {
+        params: { username: this.username }
       }).then(
         res => {
-          if (res.data.users.length === 0) {
-            this.$message.error('用户不存在')
-          } else {
-            this.email = res.data.users[0].email
-            axios.post('/website/email', { email: this.email }).then()
-            result = 1
-          }
-        })
-      return result
+          this.email = res.data.email
+          axios.post('/website/email', { email: this.email }).then()
+          this.current += 1
+        }).catch(error => {
+        if (error.response.status === 404) {
+          this.$message.destroy()
+          this.$message.error('用户名不存在！')
+        }
+      })
     },
     /**
      * 完成重置功能
      */
     resetPassword () {
-      let result = 1
       axios.put('/login/forget', {
         username: this.username,
         email: this.email,
         code: this.code,
         password: this.password
-      }).then().catch(err => {
-        this.$message.error(err.toString())
-        result = 0
+      }).then(() => {
+        this.current += 1
+      }).catch(error => {
+        if (error.response.status === 401) {
+          this.$message.destroy()
+          this.$message.error('验证码错误')
+        }
       })
-      return result
     }
   }
 

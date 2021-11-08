@@ -1,16 +1,16 @@
 <template>
   <div class="login">
-    <a-row type="flex" justify="center">
+    <a-row justify="center" type="flex">
       <a-col>
-        <img src="@/assets/blue.svg" width="300px" alt="兴化语记——莆仙方言在线工具"/>
+        <img alt="兴化语记——莆仙方言在线工具" src="@/assets/blue.svg" width="300px"/>
       </a-col>
     </a-row>
-    <a-row type="flex" justify="center" style="padding-bottom:20px">
+    <a-row justify="center" style="padding-bottom:20px" type="flex">
       <a-col>
         <h2 style="color:rgb(23, 7, 66)"> 莆仙方言在线工具 </h2>
       </a-col>
     </a-row>
-    <a-row type="flex" justify="start" align="middle" :gutter="[0,20]">
+    <a-row :gutter="[0,20]" align="middle" justify="start" type="flex">
       <a-col span="8">
         <div style="text-align: right; padding-right: 10px"> 用户名</div>
       </a-col>
@@ -29,7 +29,7 @@
 
       <a-col span="8"/>
       <a-col span="4">
-        <a-button shape="round" type="primary" :disabled="username===''||password===''" @click="login"> 登录</a-button>
+        <a-button :disabled="username===''||password===''" shape="round" type="primary" @click="login"> 登录</a-button>
       </a-col>
       <a-col span="4">
         <router-link to="./forget"> 忘记密码</router-link>
@@ -37,7 +37,7 @@
     </a-row>
 
     <a-divider/>
-    <a-row type="flex" justify="center" style="padding-bottom:20px">
+    <a-row justify="center" style="padding-bottom:20px" type="flex">
       <a-col span="4">
         <p> 没有账号？</p>
       </a-col>
@@ -65,7 +65,7 @@ export default {
         username: this.username,
         password: this.password
       }).then(res => {
-        this.$store.commit('userLogin', res.data.id)
+        this.$store.dispatch('userLogin', res.data.id)
         localStorage.setItem('token', res.data.token)
         this.$message.success('登录成功')
         this.$router.push({ name: 'Home' })
