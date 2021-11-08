@@ -20,7 +20,6 @@
 <script>
 import myHeader from './components/HeaderAndFooter/Header.vue'
 import myFooter from './components/HeaderAndFooter/Footer.vue'
-import store from '@/store'
 import MusicAffix from '@/components/Music/MusicAffix'
 
 export default {
@@ -43,9 +42,9 @@ export default {
       document.body.style.zoom = Number(width / 12).toString() + '%'
     })
   },
-  created () {
+  async created () {
     if (window.localStorage.getItem('id')) {
-      store.commit('userLogin', window.localStorage.getItem('id'))
+      await this.$store.dispatch('userLogin', window.localStorage.getItem('id'))
     }
   },
   mounted () {

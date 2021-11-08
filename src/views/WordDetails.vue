@@ -1,5 +1,5 @@
 <template>
-  <a-spin :spinning="spinning" :delay="500">
+  <a-spin :delay="500" :spinning="spinning">
     <a-card>
 
       <template v-slot:title>
@@ -22,9 +22,9 @@
           <a-tag color="rgb(179, 7, 30,0.7)"> 释义</a-tag>
         </div>
         <div
-          style="width: 100%;padding: 20px"
           v-for="(item,index) in analysedDefinition"
           :key="index+1"
+          style="width: 100%;padding: 20px"
         >
           <a-card
             v-if="item.example.length"
@@ -47,12 +47,53 @@
         </div>
       </div>
 
+      <!--发音列表-->
+      <div style="padding:15px">
+        <a-tag color="rgb(179, 7, 30,0.7)"> 发音</a-tag>
+        <a-button
+          size="small"
+          type="dashed"
+          @click="openRecordingModal"
+        >
+          我要贡献
+        </a-button>
+        <recording
+          :form="form"
+          :onCancel="()=>{this.visible=false}"
+          :visible="visible"
+        />
+      </div>
+      <a-row justify="center" type="flex">
+        <a-col :span="22">
+          <a-table
+            :columns="columns"
+            :data-source="pronunciation"
+            :pagination="{ simple: true}"
+          >
+            <span slot="contributor" slot-scope="text, record">
+              <router-link :to="{name:'UserDetails',params:{id:record.contributor.id.toString()}}">
+              <a-avatar :src="record.contributor.avatar"/>
+              {{ record.contributor.nickname }}
+                </router-link>
+            </span>
+            <span slot="customTitle"> Name</span>
+            <span slot="action" slot-scope="text, record">
+      <audio
+        :src="record.pronunciation.source"
+        controls
+      />
+    </span>
+          </a-table>
+        </a-col>
+      </a-row>
+
       <!--相关文章-->
       <ArticleList
         v-if="word.related_articles.length"
         :list-data="word.related_articles"
         :page-size="3"
       />
+
     </a-card>
   </a-spin>
 </template>
@@ -61,14 +102,24 @@
 
 import axios from 'axios'
 import ArticleList from '@/components/Articles/ArticleList'
+import Recording from '@/components/Recording'
 
 export default {
   name: 'WordDetails',
   props: ['id'],
-  components: { ArticleList },
+  components: { Recording, ArticleList },
   data () {
     return {
       spinning: false,
+      visible: false,
+      form: {
+        item: '',
+        definition: '',
+        pinyin: '',
+        ipa: '',
+        county: '',
+        town: ''
+      },
       analysedDefinition: [{
         content: 'content',
         example: [
@@ -94,7 +145,67 @@ export default {
         related_words: [],
         related_articles: [],
         views: 100
-      }
+      },
+      columns: [
+        {
+          title: '贡献者',
+          key: 'contributor',
+          scopedSlots: { customRender: 'contributor' },
+          align: 'center'
+        },
+        {
+          title: '拼音',
+          dataIndex: 'pronunciation.pinyin',
+          key: 'pinyin',
+          align: 'center'
+        },
+        {
+          title: '国际音标',
+          dataIndex: 'pronunciation.ipa',
+          key: 'ipa',
+          align: 'center'
+        },
+        {
+          title: '县区',
+          dataIndex: 'pronunciation.county',
+          key: 'county',
+          align: 'center'
+        },
+        {
+          title: '乡镇',
+          dataIndex: 'pronunciation.town',
+          key: 'town',
+          align: 'center'
+        },
+        {
+          title: '录音',
+          key: 'action',
+          scopedSlots: { customRender: 'action' },
+          align: 'center'
+        }
+      ],
+      pronunciation: [
+        // {
+        //   key: 1,
+        //   pronunciation: {
+        //     id: 19,
+        //     word_id: 16,
+        //     word_word: '阿尾哥',
+        //     source: '',
+        //     ipa: 'ap1 puai13 ko533',
+        //     pinyin: 'a1 bue3 go1',
+        //     contributor: 5,
+        //     county: '涵江',
+        //     town: '国欢',
+        //     visibility: true
+        //   },
+        //   contributor: {
+        //     id: 5,
+        //     nickname: '这只是一个测试账号呢',
+        //     avatar: ''
+        //   }
+        // }
+      ]
     }
   },
   created () {
@@ -109,17 +220,42 @@ export default {
     /**
      * 获取当前这个词条的具体信息
      */
-    getWordDetails () {
+    async getWordDetails () {
       this.spinning = true
-      axios.get('words/' + this.id).then(res => {
+      await axios.get('words/' + this.id).then(res => {
         this.word = res.data.word
         this.analysedDefinition = this.splitDefinition(this.word.definition)
+        this.form = {
+          word: this.word.id,
+          item: this.word.word,
+          definition: this.word.definition,
+          pinyin: this.word.standard_pinyin,
+          ipa: this.word.standard_ipa
+        }
       }).catch(() => {
         this.$message.destroy()
         this.$router.replace({ name: 'NotFound' })
       }).finally(() => {
         this.spinning = false
       })
+      await axios.get('/pronunciation', { params: { word: this.id } }).then(res => {
+        this.pronunciation = res.data.pronunciation
+        this.pronunciation.forEach((item, index) => {
+          item.key = index
+        })
+      })
+    },
+    /**
+     * 打开录音弹框
+     */
+    openRecordingModal () {
+      if (!this.$store.getters.loginStatus) {
+        this.$message.error('请先登录后再贡献录音哦~')
+        return
+      }
+      this.form.county = this.$store.getters.user.county
+      this.form.town = this.$store.getters.user.town
+      this.visible = true
     },
     /**
      * 具体解析一个待解析的字符串

@@ -4,79 +4,31 @@
     <template slot="title">
       <h2>快速录音</h2>
       <h5>
-        为批量录音加速再加速<br>
+        <p>
+          为批量录音加速再加速（此功能需要先行登录）
+        </p>
+        <p>
+          已经从用户资料中获取默认的县区和乡镇信息，实际情况请修改在文本框中~
+        </p>
         发音人县区
-        <a-input v-model="form.county" style="width: 200px"/>
+        <a-input v-model="form.county" style="width: 200px;margin:5px"/>
         <br>
         发音人乡镇
-        <a-input v-model="form.town" style="width: 200px"/>
+        <a-input v-model="form.town" style="width: 200px;margin:5px"/>
       </h5>
     </template>
-    <a-modal
-      :closable="false"
-      :visible="toRecord!==-1"
-      cancelText="取消"
-      okText="提交"
-      title="快速录制"
-      @cancel="handleCancel()"
-      @ok="handleOk()"
-    >
-      <a-form-model :model="form">
-        <a-form-model-item label="词条">
-          <h3>{{ form.item }} </h3>
-        </a-form-model-item>
-        <a-form-model-item label="释义">
-          {{ form.definition }}
-        </a-form-model-item>
-        <a-form-model-item label="拼音">
-          <a-input v-model="form.pinyin"/>
-        </a-form-model-item>
-        <a-form-model-item label="国际音标">
-          <a-input v-model="form.ipa"/>
-        </a-form-model-item>
-        <a-form-model-item label="录音">
-          <a-row align="middle" justify="center" type="flex">
-            <a-col :span="4">
-              <a-button
-                v-if="!recording"
-                icon="audio"
-                shape="circle"
-                size="large"
-                style="width: 50px;height: 50px "
-                @click="startRecording"
-              />
-              <a-button
-                v-else
-                icon="pause"
-                shape="circle"
-                style="width: 50px;height: 50px "
-                @click="stopRecording"
-              />
-            </a-col>
-            <a-col :span="4">
-              {{ recording ? '停止录音' : '开始录音' }}
-            </a-col>
-          </a-row>
-        </a-form-model-item>
-        <a-form-model-item v-show="recordSourceURL" label="效果试听">
-          <div
-            style="text-align: center">
-            <audio
-              :src="recordSourceURL"
-              controls
-            />
-          </div>
-        </a-form-model-item>
-      </a-form-model>
-
-    </a-modal>
-
+    <recording
+      :form="form"
+      :onCancel="()=>{this.toRecord=-1}"
+      :visible="toRecord!==-1">
+    </recording>
     <a-row justify="center" type="flex">
       <a-col :span="22">
         <a-table
           :columns="columns"
           :data-source="recordList"
           :loading="tableLoading"
+          :pagination="pagination"
         >
           <span slot="customTitle"> Name</span>
           <span slot="action" slot-scope="record">
@@ -95,9 +47,11 @@
 <script>
 
 import axios from 'axios'
+import Recording from '@/components/Recording'
 
 export default {
   name: 'QuickRecording',
+  components: { Recording },
   data () {
     return {
       recordList: [
@@ -111,13 +65,12 @@ export default {
         //   key: 0
         // }
       ],
-      recorderReady: false,
-      mediaRecorder: null,
+      pagination: {
+        defaultPageSize: 15,
+        simple: true
+      },
       toRecord: -1,
-      recording: false,
       tableLoading: true,
-      recordSourceURL: '',
-      recordSource: null,
       form: {
         word: 0,
         item: '',
@@ -174,7 +127,7 @@ export default {
       ]
     }
   },
-  created () {
+  async mounted () {
     axios.get('/record').then(res => {
       this.recordList = res.data.records
       this.recordList.forEach((record, index) => {
@@ -183,89 +136,11 @@ export default {
       this.tableLoading = false
     })
     if (this.$store.getters.loginStatus) {
+      await this.$store.dispatch('userUpdate')
       this.form.county = this.$store.getters.user.county
       this.form.town = this.$store.getters.user.town
-    }
-  },
-  methods: {
-
-    handleOk () {
-      if (!this.recordSourceURL) {
-        this.$message.error('请先完成录音')
-        return
-      }
-      // 上传音频文件
-      const formdata = new FormData()
-      formdata.append('file', this.recordSource, Date.now().toString() + '.mp3')
-      axios({
-        url: '/website/files',
-        method: 'post',
-        data: formdata,
-        headers: { 'Content-Type': 'multipart/form-data' }
-      }).then((ress) => {
-        this.form.source = ress.data.url
-        // 提交发音记录
-        axios.post('/pronunciation', { pronunciation: this.form }).then(res => {
-          this.$message.success('提交成功！请等待审核通过~')
-          this.handleCancel()
-        })
-      })
-    },
-    handleCancel () {
-      if (this.recorderReady && this.mediaRecorder.state !== 'inactive') {
-        this.mediaRecorder.stop()
-      }
-      this.recording = false
-      this.toRecord = -1
-      this.recordSourceURL = ''
-    },
-    startRecording () {
-      // 如果还没有准备好录音器
-      if (this.recorderReady === false) {
-        if (navigator.mediaDevices.getUserMedia) {
-          const constraints = { audio: true }
-          navigator.mediaDevices.getUserMedia(constraints).then(
-            stream => {
-              this.mediaRecorder = new MediaRecorder(stream)
-              let chunks = []
-
-              // 录音开始
-              this.mediaRecorder.onstart = e => {
-                chunks = []
-              }
-              // 录音过程中
-              this.mediaRecorder.ondataavailable = function (e) {
-                chunks.push(e.data)
-              }
-
-              // 录音停止
-              this.mediaRecorder.onstop = e => {
-                const blob = new Blob(chunks, { type: 'audio/mpeg; codecs=mp3' })
-                this.recordSourceURL = window.URL.createObjectURL(blob)
-                this.recordSource = blob
-              }
-
-              // 录音器已经完全准备好
-              this.recorderReady = true
-
-              this.mediaRecorder.start()
-              this.recording = true
-            },
-            () => {
-              this.$message.error('授权失败！请允许网站使用麦克风！')
-            }
-          )
-        } else {
-          this.$message.error('暂不支持本浏览器')
-        }
-      } else {
-        this.mediaRecorder.start()
-        this.recording = true
-      }
-    },
-    stopRecording () {
-      this.mediaRecorder.stop()
-      this.recording = false
+    } else {
+      this.$message.warning('没有登录将无法录音！')
     }
   },
   watch: {

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import moment from 'moment'
+
 moment.locale('zh-cn')
 
 Vue.use(Vuex)
@@ -93,12 +94,7 @@ export default new Vuex.Store({
         this.commit('userUpdate')
       }
     },
-    userLogin (state, id) {
-      if (state.user.id.toString() === id) return
-      state.user.id = Number(id)
-      localStorage.setItem('id', id)
-      this.commit('userUpdate')
-    },
+
     userLogout (state) {
       localStorage.removeItem('id')
       localStorage.removeItem('token')
@@ -107,15 +103,7 @@ export default new Vuex.Store({
       state.like_articles = []
       state.drawerVisibility = false
     },
-    userUpdate (state) {
-      state.drawerLoading = true
-      axios.get('/users/' + state.user.id).then(res => {
-        state.user = res.data.user
-        state.publish_articles = res.data.publish_articles
-        state.like_articles = res.data.like_articles
-        state.drawerLoading = false
-      })
-    },
+
     changeMusic (state, id) {
       state.music = id
     },
@@ -135,7 +123,21 @@ export default new Vuex.Store({
     }
   },
   actions: {
-
+    async userLogin ({ state, dispatch }, id) {
+      if (state.user.id.toString() === id) return
+      state.user.id = Number(id)
+      localStorage.setItem('id', id)
+      await dispatch('userUpdate')
+    },
+    async userUpdate ({ state }) {
+      state.drawerLoading = true
+      return axios.get('/users/' + state.user.id).then(res => {
+        state.user = res.data.user
+        state.publish_articles = res.data.publish_articles
+        state.like_articles = res.data.like_articles
+        state.drawerLoading = false
+      })
+    }
   },
   modules: {}
 })
