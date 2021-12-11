@@ -14,6 +14,13 @@
         <span style="font-size: 100%;color: rgb(155,155,155);padding-left: 10px">
           / {{ word.standard_ipa }}/
         </span>
+
+        <a-button
+          type="link"
+          icon="play-circle"
+          :disabled="!standard_pronunciation"
+          @click="playSound(standard_pronunciation)"
+        />
       </template>
 
       <template v-slot:extra>
@@ -73,7 +80,7 @@
           >
             <span slot="contributor" slot-scope="text, record">
               <router-link :to="{name:'UserDetails',params:{id:record.contributor.id.toString()}}">
-              <a-avatar :src="record.contributor.avatar"/>
+              <a-avatar :src="record.contributor.avatar" />
               {{ record.contributor.nickname }}
                 </router-link>
             </span>
@@ -96,7 +103,7 @@
       />
       <p style="margin-top: 40px">
         <a-icon type="eye"></a-icon>
-        访问量:{{word.views}}
+        访问量:{{ word.views }}
       </p>
     </a-card>
   </a-spin>
@@ -111,7 +118,10 @@ import Recording from '@/components/Recording'
 export default {
   name: 'WordDetails',
   props: ['id'],
-  components: { Recording, ArticleList },
+  components: {
+    Recording,
+    ArticleList
+  },
   data () {
     return {
       spinning: false,
@@ -188,6 +198,7 @@ export default {
           align: 'center'
         }
       ],
+      standard_pronunciation: null,
       pronunciation: [
         // {
         //   key: 1,
@@ -242,12 +253,35 @@ export default {
       }).finally(() => {
         this.spinning = false
       })
+      this.standard_pronunciation = await this.getIPAPronunciation(this.word.standard_ipa)
       await axios.get('/pronunciation', { params: { word: this.id } }).then(res => {
         this.pronunciation = res.data.pronunciation
         this.pronunciation.forEach((item, index) => {
           item.key = index
         })
       })
+    },
+    /**
+     * 根据ipa获取读音
+     * @param ipa
+     * @returns {Promise<string>} 音频url
+     */
+    async getIPAPronunciation (ipa) {
+      let url = ''
+      await axios.get(`/pronunciation/${ipa}`).then(res => {
+        if (res.data.url !== 'null') {
+          url = res.data.url
+        } else if (res.data.tts !== 'null') url = res.data.tts
+      })
+      return url
+    },
+    /**
+     * 播放音频
+     * @param url 音频地址
+     */
+    playSound (url) {
+      const player = new Audio(url)
+      player.play()
     },
     /**
      * 打开录音弹框
@@ -271,7 +305,9 @@ export default {
         index = definition.indexOf('△')
         if (index === -1) {
           index = definition.length
-        } else index = index - 1
+        } else {
+          index = index - 1
+        }
       }
       const result = {
         content: definition.substring(0, index),
