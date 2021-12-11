@@ -47,7 +47,10 @@
             />
           </a-col>
           <a-col :span="4">
-            {{ recording ? '停止录音' : '开始录音' }}
+            {{
+              recording ? '停止录音' :
+                (recordSourceURL ? '重新录音' : '开始录音')
+            }}
           </a-col>
         </a-row>
       </a-form-model-item>
@@ -79,11 +82,26 @@ export default {
       recordSource: null,
       recording: false,
       rules: {
-        item: [{ required: true, message: '词条走丢了，刷新再试试？' }],
-        pinyin: [{ required: true, message: '请输入你正在录音的拼音~' }],
-        ipa: [{ required: true, message: '请输入你正在录音的国际音标~' }],
-        county: [{ required: true, message: '请输入发音人所在的县区哦~' }],
-        town: [{ required: true, message: '请输入发音人所在的乡镇哦~' }]
+        item: [{
+          required: true,
+          message: '词条走丢了，刷新再试试？'
+        }],
+        pinyin: [{
+          required: true,
+          message: '请输入你正在录音的拼音~'
+        }],
+        ipa: [{
+          required: true,
+          message: '请输入你正在录音的国际音标~'
+        }],
+        county: [{
+          required: true,
+          message: '请输入发音人所在的县区哦~'
+        }],
+        town: [{
+          required: true,
+          message: '请输入发音人所在的乡镇哦~'
+        }]
       }
     }
   },
@@ -110,7 +128,7 @@ export default {
         }).then((ress) => {
           this.form.source = ress.data.url
           // 提交发音记录
-          axios.post('/pronunciation', { pronunciation: this.form }).then(res => {
+          axios.post('/pronunciation', { pronunciation: this.form }).then(() => {
             this.$message.success('提交成功！请等待审核通过~')
             this.handleCancel()
           })
