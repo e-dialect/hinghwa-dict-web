@@ -4,46 +4,23 @@
       <h2>日常用语</h2>
       <h5>英语、普通话、莆仙正字、莆仙拼音共同对照</h5>
     </template>
+
+    <template slot="extra">
+      <a-input-search
+        placeholder="在全字段中搜索"
+        v-model="searchInput"
+        style="width:200px; margin-bottom: 8px;"
+        @search="searchText=searchInput;getCurrentPage(1)"
+      />
+    </template>
     <a-table
       :columns="columns"
       :data-source="expressions"
       :loading="{spinning: loading, delay: 500}"
       :pagination="pagination"
     >
-      <div
-        slot="filterDropdown"
-        slot-scope="{ setSelectedKeys, selectedKeys, confirm, clearFilters, column }"
-        style="padding: 8px"
-      >
-        <a-input
-          ref="searchInputBox"
-          :placeholder="`在${column.title}中搜索`"
-          :value="selectedKeys[0]"
-          style="width: 188px; margin-bottom: 8px; display: block;"
-          @change="e => setSelectedKeys(e.target.value ? [e.target.value] : [])"
-          @pressEnter="() => handleSearch(selectedKeys, confirm, column.dataIndex)"
-        />
-        <a-button
-          type="primary"
-          icon="search"
-          size="small"
-          style="width: 90px; margin-right: 8px"
-          @click="() => handleSearch(selectedKeys, confirm, column.dataIndex)"
-        >
-          检索
-        </a-button>
-        <a-button size="small" style="width: 90px" @click="() => handleReset(clearFilters)">
-          重置
-        </a-button>
-      </div>
-      <a-icon
-        slot="filterIcon"
-        slot-scope="filtered"
-        type="search"
-        :style="{ color: filtered ? '#108ee9' : undefined }"
-      />
-      <template slot="customRender" slot-scope="text, record, index, column">
-      <span v-if="searchText && searchedColumn === column.dataIndex">
+      <template slot="customRender" slot-scope="text">
+      <span v-if="searchText">
         <template
           v-for="(fragment, i) in text
             .toString()
@@ -75,7 +52,6 @@ export default {
     return {
       searchText: '',
       searchInput: null,
-      searchedColumn: '',
       columns: [
         {
           title: '普通话',
@@ -86,15 +62,6 @@ export default {
             filterDropdown: 'filterDropdown',
             filterIcon: 'filterIcon',
             customRender: 'customRender'
-          },
-          onFilter: (value, record) =>
-            record.mandarin.includes(value.toLowerCase()),
-          onFilterDropdownVisibleChange: visible => {
-            if (visible) {
-              setTimeout(() => {
-                this.$refs.searchInputBox.focus()
-              }, 0)
-            }
           }
         },
         {
@@ -106,18 +73,6 @@ export default {
             filterDropdown: 'filterDropdown',
             filterIcon: 'filterIcon',
             customRender: 'customRender'
-          },
-          onFilter: (value, record) =>
-            record.english
-              .toString()
-              .toLowerCase()
-              .includes(value.toLowerCase()),
-          onFilterDropdownVisibleChange: visible => {
-            if (visible) {
-              setTimeout(() => {
-                this.$refs.searchInputBox.focus()
-              }, 0)
-            }
           }
         },
         {
@@ -129,15 +84,6 @@ export default {
             filterDropdown: 'filterDropdown',
             filterIcon: 'filterIcon',
             customRender: 'customRender'
-          },
-          onFilter: (value, record) =>
-            record.character.includes(value.toLowerCase()),
-          onFilterDropdownVisibleChange: visible => {
-            if (visible) {
-              setTimeout(() => {
-                this.$refs.searchInputBox.focus()
-              }, 0)
-            }
           }
         },
         {
@@ -149,18 +95,8 @@ export default {
             filterDropdown: 'filterDropdown',
             filterIcon: 'filterIcon',
             customRender: 'customRender'
-          },
-          onFilter: (value, record) =>
-            record.pinyin.includes(value.toLowerCase()),
-          onFilterDropdownVisibleChange: visible => {
-            if (visible) {
-              setTimeout(() => {
-                this.$refs.searchInputBox.focus()
-              }, 0)
-            }
           }
         }
-
       ],
       expressions: [],
       loading: false,
@@ -180,7 +116,8 @@ export default {
       axios.get('/website/daily-expression', {
         params: {
           pageSize: this.pagination.pageSize,
-          page: page
+          page: page,
+          keyword: this.searchText
         }
       }).then(res => {
         this.expressions = res.data.results
@@ -188,16 +125,6 @@ export default {
       }).finally(() => {
         this.loading = false
       })
-    },
-    handleSearch (selectedKeys, confirm, dataIndex) {
-      confirm()
-      this.searchText = selectedKeys[0]
-      this.searchedColumn = dataIndex
-    },
-
-    handleReset (clearFilters) {
-      clearFilters()
-      this.searchText = ''
     }
   },
   computed: {
