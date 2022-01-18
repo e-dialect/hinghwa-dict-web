@@ -72,7 +72,6 @@
           <div style="text-align: center;line-height: 48px">
             <a-button
               style="margin-top:8px"
-              v-if="$store.getters.loginStatus"
               :loading="btnLikeLoading"
               type="primary"
               @click="btnLikeClick"
@@ -203,6 +202,10 @@ export default {
      * 点击按钮点赞/取消点赞触发事件
      */
     btnLikeClick () {
+      if (!this.$store.getters.loginStatus) {
+        this.$message.error('请先登录后再操作哦~')
+        return
+      }
       this.btnLikeLoading = true
       if (this.me.liked) {
         axios.delete('/articles/' + this.id + '/like').finally(() => {
