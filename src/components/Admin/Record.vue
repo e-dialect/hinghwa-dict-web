@@ -1,5 +1,19 @@
 <template>
   <a-card>
+    <template slot="title">
+      <h2>录音审核</h2>
+      <div>
+        使用帮助：<br>
+        <ul>
+          <li>点击编号进入后台管理页面修改对应编号的内容</li>
+          <li>点击发音人查看发音人详细信息</li>
+          <li>点击词条查看对应词条的具体内容</li>
+          <li>点击发音可以播放对应的音频信息</li>
+          <li>点击审核情况可以修改对应录音的审核情况</li>
+          <li>如果只能查看到已审核的信息说明登录已经失效，请重新登录！</li>
+        </ul>
+      </div>
+    </template>
     <a-row justify="center" type="flex">
       <a-col :span="22">
         <a-table
@@ -10,20 +24,24 @@
         >
           <span slot="customTitle"> Name</span>
 
-          <div slot="word" slot-scope="text">
+          <div slot="id" slot-scope="text">
+            <a :href="`https://api.pxm.edialect.top/adminword/pronunciation/${text.id}/change/`">
+              {{text.id}}
+            </a>
+          </div>
 
-          <router-link   v-if="text"  :to="{name:'WordDetails',params:{id:text.pronunciation.word_id}}">
-            {{text.pronunciation.word_word}}
-          </router-link>
-        </div>
+          <div slot="word" slot-scope="text">
+            <router-link   v-if="text"  :to="{name:'WordDetails',params:{id:text.pronunciation.word_id}}">
+              {{text.pronunciation.word_word}}
+            </router-link>
+          </div>
 
           <div slot="contributor" slot-scope="text" >
-
- <router-link v-if="text" :to="{name:'UserDetails',params:{id:text.contributor.id}}">
-          <a-avatar :src="text.contributor.avatar"></a-avatar>
-          {{ text.contributor.nickname }}
- </router-link>
-        </div>
+           <router-link v-if="text" :to="{name:'UserDetails',params:{id:text.contributor.id}}">
+            <a-avatar :src="text.contributor.avatar"></a-avatar>
+            {{ text.contributor.nickname }}
+           </router-link>
+          </div>
 
           <div slot="source" slot-scope="record">
           <audio :src="record.source"  controls></audio>
@@ -54,7 +72,7 @@ export default {
       columns: [
         {
           title: '编号',
-          dataIndex: 'id',
+          scopedSlots: { customRender: 'id' },
           key: 'id',
           align: 'center',
           width: 50
