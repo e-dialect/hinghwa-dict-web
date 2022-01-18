@@ -67,6 +67,7 @@ export default {
       }).then(res => {
         this.$store.dispatch('userLogin', res.data.id)
         localStorage.setItem('token', res.data.token)
+        localStorage.setItem('login_time', Date.now().toString())
         this.$message.success('登录成功')
         this.$router.push({ name: 'Home' })
       }).catch(err => {
