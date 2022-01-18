@@ -2,13 +2,12 @@
   <a-card>
     <div v-for="item in tools" :key="item.id">
       <a-card-grid hoverable style="width:50%;text-align:center">
-
         <a-card
           :bordered="false"
           @click="onCardClick(item)"
         >
           <template v-slot:cover>
-            <img :src="item.cover"/>
+            <img :src="item.cover" :alt="item.routerName"/>
           </template>
         </a-card>
 
@@ -52,8 +51,8 @@ export default {
         {
           id: 4,
           cover: cdn + '录音审核.png',
-          routerName: 'Music',
-          disabled: true
+          routerName: 'RecordConfirming',
+          disabled: false
         },
         {
           id: 5,
