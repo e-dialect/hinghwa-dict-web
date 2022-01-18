@@ -4,12 +4,10 @@
     <template slot="title">
       <h2>快速录音</h2>
       <h5>
-        <p>
           为批量录音加速再加速（此功能需要先行登录）
-        </p>
-        <p>
+          <br>
           已经从用户资料中获取默认的县区和乡镇信息，实际情况请修改在文本框中~
-        </p>
+          <br>
         发音人县区
         <a-input v-model="form.county" style="width: 200px;margin:5px"/>
         <br>
@@ -27,7 +25,7 @@
         <a-table
           :columns="columns"
           :data-source="recordList"
-          :loading="tableLoading"
+          :loading="{spinning: tableLoading, delay: 500}"
           :pagination="pagination"
         >
           <span slot="customTitle"> Name</span>
@@ -47,7 +45,7 @@
 <script>
 
 import axios from 'axios'
-import Recording from '@/components/Recording'
+import Recording from '../../components/Recording.vue'
 
 export default {
   name: 'QuickRecording',
@@ -65,11 +63,8 @@ export default {
         //   key: 0
         // }
       ],
-      pagination: {
-        defaultPageSize: 15,
-        simple: true
-      },
       toRecord: -1,
+      total: 100,
       tableLoading: true,
       form: {
         word: 0,
@@ -127,20 +122,61 @@ export default {
       ]
     }
   },
-  async mounted () {
-    axios.get('/record').then(res => {
-      this.recordList = res.data.records
-      this.recordList.forEach((record, index) => {
-        record.key = index
-      })
-      this.tableLoading = false
-    })
+  computed: {
+    pagination () {
+      return {
+        onChange: async page => {
+          await this.getCurrentPage(page)
+          axios.get('/record', {
+            params: {
+              pageSize: this.pagination.pageSize,
+              page: page + 1
+            },
+            cache: true
+          })
+        },
+        pageSize: 20,
+        simple: true,
+        total: this.total
+      }
+    }
+  },
+  async created () {
     if (this.$store.getters.loginStatus) {
       await this.$store.dispatch('userUpdate')
       this.form.county = this.$store.getters.user.county
       this.form.town = this.$store.getters.user.town
     } else {
       this.$message.warning('没有登录将无法录音！')
+    }
+    await this.getCurrentPage(1)
+    axios.get('/record', {
+      params: {
+        pageSize: this.pagination.pageSize,
+        page: 2
+      },
+      cache: true
+    })
+  },
+  methods: {
+    async getCurrentPage (page) {
+      this.tableLoading = true
+      await axios.get('/record', {
+        params: {
+          pageSize: this.pagination.pageSize,
+          page: page
+          // TODO: keyword: this.searchText
+        },
+        cache: true
+      }).then(res => {
+        this.recordList = res.data.records
+        this.recordList.forEach((record, index) => {
+          record.key = index
+        })
+        this.total = res.data.total.item
+      }).finally(() => {
+        this.tableLoading = false
+      })
     }
   },
   watch: {
