@@ -91,7 +91,7 @@ export default new Vuex.Store({
     drawerVisibility (state, value) {
       state.drawerVisibility = value
       if (value === true) {
-        this.commit('userUpdate')
+        this.dispatch('userUpdate')
       }
     },
 
