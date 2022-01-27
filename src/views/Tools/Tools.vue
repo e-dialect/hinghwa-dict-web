@@ -37,6 +37,18 @@ export default {
           disabled: false
         },
         {
+          id: 5,
+          cover: cdn + '快速录制.png',
+          routerName: 'QuickRecording',
+          disabled: false
+        },
+        {
+          id: 4,
+          cover: cdn + '录音审核.png',
+          routerName: 'RecordConfirming',
+          disabled: false
+        },
+        {
           id: 2,
           cover: cdn + '日常用语.png',
           routerName: 'DailyExpressions',
@@ -47,19 +59,8 @@ export default {
           cover: cdn + '方言曲库.png',
           routerName: 'Music',
           disabled: false
-        },
-        {
-          id: 4,
-          cover: cdn + '录音审核.png',
-          routerName: 'RecordConfirming',
-          disabled: false
-        },
-        {
-          id: 5,
-          cover: cdn + '快速录制.png',
-          routerName: 'QuickRecording',
-          disabled: false
         }
+
       ]
     }
   },

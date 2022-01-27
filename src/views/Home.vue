@@ -1,44 +1,27 @@
 <template>
   <div class="body">
-    <a-row
-      align="middle"
-      justify="center"
-      style="padding-top:10px;padding-bottom:10px;padding-right:0;padding-left:0;"
-      type="flex"
-    >
-      <a-col span="23">
-        <carousel/>
-      </a-col>
-    </a-row>
 
     <a-row
       align="middle"
       justify="center"
-      style="padding-top:10px;padding-bottom:20px;padding-right:0;padding-left:0;"
+      style="padding-top:32px;padding-bottom:32px;padding-right:0;padding-left:0;"
       type="flex"
     >
-      <a-col span="15">
-        <a-card hoverable style="height:300px;text-align: center">
-          <img src="../assets/blue.svg" width="40%" alt="兴化语记logo">
+        <a-card hoverable style="height:350px;text-align: center">
+          <img src="../assets/blue.svg" width="40%" alt="兴化语记logo" style="padding-top: 32px">
           <a-input-search
             placeholder="一键检索你想知道的"
-            style="width:70%"
+            style="width:70%;"
             v-model="searchContent"
             @search="$router.push({ name: 'Search', query: { key: searchContent } })"
           />
-          <div style="text-align: left;font-size: 8px;margin:20px 20px;line-height: 8px">
-            <p>目前支持搜拼音、搜单字、搜词语、搜文章功能。</p>
-            <p>搜拼音：将输入视为拼音，搜索可能对应的汉字</p>
+          <div style="padding-top: 32px;text-align: left;font-size: 8px;margin:24px 24px;line-height: 8px">
+            <p>目前支持搜单字、搜词语、搜文章功能。</p>
             <p>搜单字：获取输入中每一个汉字的读音</p>
             <p>搜词语：检索与输入相关的词语</p>
             <p>搜文章：检索与输入相关的文章</p>
           </div>
         </a-card>
-
-      </a-col>
-      <a-col span="8">
-        <WordOfTheDay/>
-      </a-col>
     </a-row>
 
     <a-row
@@ -58,27 +41,11 @@
         </a-card>
       </a-col>
     </a-row>
-
-    <a-row
-      align="top"
-      justify="center"
-      style="padding-top:10px;padding-bottom:20px;padding-right:0;padding-left:0;"
-      type="flex"
-    >
-      <a-col span="24">
-        <HotArticles/>
-      </a-col>
-    </a-row>
   </div>
 </template>
 
 <script>
-import Carousel from '@/components/HomeBody/Carousel'
-import WordOfTheDay from '@/components/HomeBody/WordOfTheDay'
-import HotArticles from '@/components/HomeBody/HotArticles'
-
 const cdn = 'https://hinghwadict-1259415432.cos.ap-shanghai.myqcloud.com/website/'
-
 export default {
   name: 'Home',
   data () {
@@ -93,23 +60,19 @@ export default {
         },
         {
           id: 2,
-          cover: cdn + '日常用语.png',
-          routerName: 'DailyExpressions',
+          cover: cdn + '条件查字.png',
+          routerName: 'Conditions',
           disabled: false
         },
         {
           id: 3,
-          cover: cdn + '方言曲库.png',
-          routerName: 'Music',
+          cover: cdn + '快速录制.png',
+          routerName: 'QuickRecording',
           disabled: false
         }
       ]
     }
-  },
-  components: {
-    Carousel,
-    WordOfTheDay,
-    HotArticles
   }
+
 }
 </script>

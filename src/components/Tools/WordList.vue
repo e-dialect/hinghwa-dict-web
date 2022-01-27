@@ -12,7 +12,12 @@
         <a-card-meta :description="item.word.definition.slice(0,100)">
           <template v-slot:title>
             <span style="font-size: 150%">
-                {{ item.word.word }}
+               <router-link
+                 :to="{name:'WordDetails',params:{id:item.word.id.toString()}}"
+                 style="color:black"
+               >
+                 {{ item.word.word }}
+               </router-link>
             </span>
             <span style="font-size: 80%;padding-left: 10px">
                 {{ item.word.standard_pinyin }}
