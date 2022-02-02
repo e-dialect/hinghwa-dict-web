@@ -8,11 +8,12 @@
           <br>
           已经从用户资料中获取默认的县区和乡镇信息，实际情况请修改在文本框中~
           <br>
-        发音人县区
-        <a-input v-model="form.county" style="width: 200px;margin:5px"/>
-        <br>
         发音人乡镇
-        <a-input v-model="form.town" style="width: 200px;margin:5px"/>
+        <AreaCascader
+          :county.sync="form.county"
+          :town.sync="form.town"
+          style="width: 200px;margin:5px"
+        />
       </h5>
     </template>
     <recording
@@ -28,6 +29,11 @@
           :loading="{spinning: tableLoading, delay: 500}"
           :pagination="pagination"
         >
+          <span slot="index" slot-scope="record">
+            <router-link :to="{name:'WordDetails',params:{id:record.word}}">
+              {{record.word}}
+            </router-link>
+          </span>
           <span slot="customTitle"> Name</span>
           <span slot="action" slot-scope="record">
          <a-button
@@ -46,10 +52,11 @@
 
 import axios from 'axios'
 import Recording from '../../components/Recording.vue'
+import AreaCascader from '../../components/AreaCascader'
 
 export default {
   name: 'QuickRecording',
-  components: { Recording },
+  components: { AreaCascader, Recording },
   data () {
     return {
       recordList: [
@@ -78,8 +85,8 @@ export default {
       },
       columns: [
         {
-          title: '词条号',
-          dataIndex: 'word',
+          title: '词条序号',
+          scopedSlots: { customRender: 'index' },
           key: 'word',
           align: 'center'
         },

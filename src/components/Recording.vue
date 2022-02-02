@@ -21,11 +21,11 @@
       <a-form-model-item label="国际音标" prop="ipa">
         <a-input v-model="form.ipa"/>
       </a-form-model-item>
-      <a-form-model-item label="发音人县区" prop="county">
-        <a-input v-model="form.county"/>
-      </a-form-model-item>
       <a-form-model-item label="发音人乡镇" prop="town">
-        <a-input v-model="form.town"/>
+        <AreaCascader
+          :county.sync="form.county"
+          :town.sync="form.town"
+        />
       </a-form-model-item>
       <a-form-model-item label="录音">
         <a-row align="middle" justify="center" type="flex">
@@ -70,10 +70,11 @@
 
 <script>
 import axios from 'axios'
-
+import AreaCascader from './AreaCascader'
 export default {
   name: 'Recording',
   props: ['visible', 'form', 'onCancel'],
+  components: { AreaCascader },
   data () {
     return {
       recorderReady: false,
@@ -109,6 +110,10 @@ export default {
 
     handleOk () {
       this.$refs.ruleForm.validate(valid => {
+        if (!this.form.town || this.form.town.length === 0) {
+          this.$message.error('请先选择发音人的乡镇哦~')
+          return
+        }
         if (!valid) {
           this.$message.error('请先完善输入信息哦~')
           return false
@@ -154,7 +159,7 @@ export default {
               let chunks = []
 
               // 录音开始
-              this.mediaRecorder.onstart = e => {
+              this.mediaRecorder.onstart = () => {
                 chunks = []
               }
               // 录音过程中
@@ -163,7 +168,7 @@ export default {
               }
 
               // 录音停止
-              this.mediaRecorder.onstop = e => {
+              this.mediaRecorder.onstop = () => {
                 const blob = new Blob(chunks, { type: 'audio/mpeg; codecs=mp3' })
                 this.recordSourceURL = window.URL.createObjectURL(blob)
                 this.recordSource = blob

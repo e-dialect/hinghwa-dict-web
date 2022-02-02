@@ -31,7 +31,7 @@ const routes = [
     path: '/search',
     name: 'Search',
     props: route => ({ keyWords: route.query.key }),
-    component: () => import('@/views/SearchResult.vue')
+    component: () => import('../views/SearchResult.vue')
   },
   // Login区
   {
