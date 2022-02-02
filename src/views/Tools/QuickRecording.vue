@@ -64,7 +64,8 @@ export default {
         // }
       ],
       toRecord: -1,
-      total: 100,
+      total: 6000,
+      defaultCurrent: Math.ceil(Math.random() * 300),
       tableLoading: true,
       form: {
         word: 0,
@@ -137,7 +138,8 @@ export default {
         },
         pageSize: 20,
         simple: true,
-        total: this.total
+        total: this.total,
+        defaultCurrent: this.defaultCurrent
       }
     }
   },
@@ -149,11 +151,11 @@ export default {
     } else {
       this.$message.warning('没有登录将无法录音！')
     }
-    await this.getCurrentPage(1)
+    await this.getCurrentPage(this.defaultCurrent)
     axios.get('/record', {
       params: {
         pageSize: this.pagination.pageSize,
-        page: 2
+        page: this.defaultCurrent + 1
       },
       cache: true
     })

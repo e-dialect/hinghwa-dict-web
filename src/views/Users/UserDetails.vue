@@ -18,6 +18,10 @@
         <a-descriptions-item label="昵称">
           {{ user.nickname }}
         </a-descriptions-item>
+        <a-descriptions-item label="身份">
+          <a-tag v-if="user.is_admin" color="purple">管理员</a-tag>
+          <a-tag v-else color="cyan">普通用户</a-tag>
+        </a-descriptions-item>
         <a-descriptions-item label="头像">
           <a-avatar :size="64" :src="user.avatar" shape="circle"/>
         </a-descriptions-item>
@@ -35,6 +39,12 @@
         </a-descriptions-item>
         <a-descriptions-item label="电话">
           {{ user.telephone }}
+        </a-descriptions-item>
+        <a-descriptions-item label="县区">
+          {{user.county}}
+        </a-descriptions-item>
+        <a-descriptions-item label="乡镇">
+          {{user.town}}
         </a-descriptions-item>
       </a-descriptions>
 

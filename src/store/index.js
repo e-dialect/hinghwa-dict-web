@@ -11,8 +11,7 @@ const defaultUser = {
   username: 'username',
   nickname: 'nickname',
   email: 'pxm@edialect.top',
-  avatar: 'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png',
-  is_admin: false
+  avatar: 'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png'
 }
 export default new Vuex.Store({
   state: {

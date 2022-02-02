@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '../store'
-import { message } from 'ant-design-vue'
 
 Vue.use(VueRouter)
 
@@ -153,12 +152,8 @@ const router = new VueRouter({
 
 export default router
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   store.commit('tab', [to.name])
   store.commit('drawerVisibility', false)
-  if (to.name === 'RecordConfirming' && !store.getters.user.is_admin) {
-    message.error('仅管理员有权访问该模块！或请重新登录！')
-    next({ name: 'Tools' })
-  }
   next()
 })

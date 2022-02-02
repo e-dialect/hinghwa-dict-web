@@ -1,9 +1,9 @@
 <template>
   <div class="footer">
     <a-row align="middle" justify="space-around" type="flex">
-      <a-col span="3">
-        <img src="@/assets/white.svg" alt="兴化语记" width="240">
-      </a-col>
+<!--      <a-col span="3">-->
+<!--        <img src="@/assets/white.svg" alt="兴化语记" width="240">-->
+<!--      </a-col>-->
       <!--            <a-col span="3">-->
       <!--                <a-popover>-->
       <!--                <template v-slot:content>  <img width="400" src="@/assets/二维码2.jpg">  </template>-->
@@ -22,7 +22,10 @@
         <!--          <router-link style="color: white" to="/contact">联系我们</router-link>&#8194;|-->
         <!--          <a href="" style="color: white">Github</a>-->
         <!--        </h4>-->
-        <h4>Copyrights © {{ new Date().getFullYear() }} Easy Dialect. All Rights Reserved.</h4>
+        <h4>Copyrights © {{ new Date().getFullYear() }}
+          <a href="https://edialect.top" target="_blank" >Easy Dialect</a>
+            . All Rights Reserved.
+        </h4>
         <a href="http://beian.miit.gov.cn" target="_blank" style="color:#C7C7C7">
           闽ICP备2021006892号
         </a>

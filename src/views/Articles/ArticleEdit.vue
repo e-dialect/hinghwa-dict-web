@@ -109,7 +109,7 @@ export default {
         title: '',
         description: '',
         content: '',
-        cover: 'http://dummyimage.com/400x300'
+        cover: 'https://hinghwadict-1259415432.cos.ap-shanghai.myqcloud.com/website/默认封面.png'
       },
       buttonContent: '创建文章',
       btnArticleLoading: false,

@@ -37,13 +37,11 @@ export default {
       })
     }
   },
-  beforeCreate () {
+  async beforeCreate () {
     document.addEventListener('DOMContentLoaded', () => {
       const width = document.documentElement.clientWidth
       document.body.style.zoom = Number(width / 12).toString() + '%'
     })
-  },
-  async created () {
     if (window.localStorage.getItem('login_time')) {
       if (Date.now() - new Date(window.localStorage.getItem('login_time')) > 6000) {
         message.error('登录已过期！请重新登录！')
@@ -53,6 +51,9 @@ export default {
     if (window.localStorage.getItem('id')) {
       await this.$store.dispatch('userLogin', window.localStorage.getItem('id'))
     }
+  },
+  async created () {
+
   },
   mounted () {
     window.addEventListener('resize', this.onResize)

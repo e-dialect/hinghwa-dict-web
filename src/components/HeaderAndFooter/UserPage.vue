@@ -17,6 +17,15 @@
       <a-descriptions-item label="上次登陆时间">
         {{ user.login_time }}
       </a-descriptions-item>
+      <a-descriptions-item label="县区">
+        {{ user.county }}
+      </a-descriptions-item>
+      <a-descriptions-item label="乡镇">
+        {{ user.town }}
+      </a-descriptions-item>
+      <a-descriptions-item label="手机">
+        {{ user.telephone }}
+      </a-descriptions-item>
     </a-descriptions>
 
     <a-tabs>
@@ -41,7 +50,7 @@
 </template>
 
 <script>
-import ArticleList from '@/components/Articles/ArticleList'
+import ArticleList from '../../components/Articles/ArticleList'
 import { mapGetters } from 'vuex'
 
 export default {

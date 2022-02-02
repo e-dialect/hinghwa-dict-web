@@ -19,7 +19,7 @@
 
     <a-popover trigger="hover" placement="bottom">
       <template v-slot:content>
-        <p>你好，亲爱的{{ username }}！</p>
+        <p>你好，{{ username }}！</p>
       </template>
       <a-avatar :src="avatar" v-on:click="$store.commit('drawerVisibility',true)"/>
     </a-popover>
@@ -33,7 +33,7 @@
       @close="$store.commit('drawerVisibility',false)"
     >
       <template v-slot:title>
-        <img :src="avatar" alt="个人中心" width="40"/>
+        <a-avatar :src="avatar" alt="个人中心" width="40"/>
       </template>
 
       <UserPage/>
