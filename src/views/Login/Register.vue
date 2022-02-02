@@ -2,7 +2,7 @@
   <div class="login">
     <a-row align="middle" justify="center" type="flex">
       <a-col>
-        <img :width="300" src="@/assets/blue.svg"/>
+        <img :width="300" src="../../assets/blue.svg" alt="logo"/>
       </a-col>
     </a-row>
     <a-row align="middle" justify="center" style="padding-bottom:20px" type="flex">
@@ -10,9 +10,9 @@
         <h2 style="color:rgb(23, 7, 66)"> 莆仙方言在线工具 </h2>
       </a-col>
     </a-row>
-    <a-row justify="start" type="flex">
-      <a-col>
-        <h3 style="padding-left:350px"> 用户名 </h3>
+    <a-row justify="center" style="padding-top:10px" type="flex">
+      <a-col span="4" style="text-align: center">
+        <h3> 用户名 </h3>
       </a-col>
     </a-row>
     <a-row justify="center" style="padding-bottom:10px" type="flex">
@@ -20,9 +20,9 @@
         <a-input v-model="username" :maxLength="50" placeholder="输入用户名"/>
       </a-col>
     </a-row>
-    <a-row justify="start" type="flex">
-      <a-col>
-        <h3 style="padding-left:350px"> 密码 </h3>
+    <a-row justify="center" style="padding-top:10px" type="flex">
+      <a-col span="4" style="text-align: center">
+        <h3> 密码 </h3>
       </a-col>
     </a-row>
     <a-row justify="center" style="padding-bottom:10px" type="flex">
@@ -35,14 +35,19 @@
         <a-input-password v-model="repeatedPassword" placeholder="请再次输入" size="default"/>
       </a-col>
     </a-row>
-    <a-row justify="start" type="flex">
-      <a-col>
-        <h3 style="padding-left:350px"> 邮箱验证 </h3>
+    <a-row justify="center" style="padding-top:10px" type="flex">
+      <a-col span="4" style="text-align: center">
+        <h3> 邮箱验证 </h3>
+      </a-col>
+    </a-row>
+    <a-row justify="center" style="padding-bottom:10px" type="flex">
+      <a-col span="6">
+        <a-input v-model="email" placeholder="输入邮箱"/>
       </a-col>
     </a-row>
     <a-row justify="center" style="padding-bottom:10px" type="flex">
       <a-col span="4">
-        <a-input v-model="email" :maxLength="50" placeholder="输入邮箱"/>
+        <a-input v-model="code" placeholder="输入验证码"/>
       </a-col>
       <a-col span="2">
         <a-button
@@ -54,11 +59,6 @@
         >
           发送验证码
         </a-button>
-      </a-col>
-    </a-row>
-    <a-row justify="center" style="padding-bottom:10px" type="flex">
-      <a-col span="6">
-        <a-input v-model="code" placeholder="输入验证码" size="default"/>
       </a-col>
     </a-row>
     <a-row align="middle" justify="center" type="flex">
@@ -129,9 +129,18 @@ export default {
           password: this.password,
           email: this.email,
           code: this.code
-        }).then(res => {
+        }).then(async () => {
           this.$message.success('注册成功！')
-          this.$router.push({ name: 'Login' })
+          await axios.post('/login', {
+            username: this.username,
+            password: this.password
+          }).then(async (res) => {
+            await this.$store.dispatch('userLogin', res.data.id)
+            localStorage.setItem('token', res.data.token)
+            localStorage.setItem('login_time', Date.now().toString())
+            this.$router.push({ name: 'UserSettings' })
+            this.$message.info('请尽快完善个人信息哦~')
+          })
         }).catch(err => {
           switch (err.response.status) {
             case 401: {
