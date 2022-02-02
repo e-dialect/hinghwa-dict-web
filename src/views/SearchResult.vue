@@ -14,15 +14,16 @@
           @search="$router.push({name:'Search',query:{key:searchContent}})"
         />
       </template>
+      <div v-if="Chinese.length">
       <h1>查单字</h1>
       <a-row justify="space-around" type="flex">
         <PinyinList
-          v-if="keyWords.length"
-          :key-words="keyWords"
+          :key-words="Chinese"
           style="width: 80%"
         />
       </a-row>
       <a-divider></a-divider>
+      </div>
       <h1>查词语</h1>
       <a-row justify="space-around" type="flex">
         <WordList
@@ -65,6 +66,9 @@ export default {
         if (this.loading[key] === true) return true
       }
       return false
+    },
+    Chinese () {
+      return this.keyWords.toString().replaceAll(/[^\u4e00-\u9fa5]/ig, '')
     }
   },
   data () {
