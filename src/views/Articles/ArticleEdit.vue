@@ -114,7 +114,8 @@ export default {
       buttonContent: '创建文章',
       btnArticleLoading: false,
       btnCoverLoading: false,
-      isAuthor: false
+      isAuthor: false,
+      compareArticle: { ...this.article }
     }
   },
   components: {
@@ -173,7 +174,7 @@ export default {
           content: this.article.content,
           cover: this.article.cover
         }
-      }).then(res => {
+      }).then(() => {
         this.$message.success('文章更新成功！')
         this.$router.push({ name: 'ArticleDetails', params: { id: this.id.toString() } })
       }).catch(err => {
@@ -205,6 +206,7 @@ export default {
             this.$router.push({ name: 'Forbidden' })
           }
           this.article = res.data.article
+          this.compareArticle = { ...this.article }
         })
       }
     },
@@ -225,7 +227,7 @@ export default {
      * @param pos markdown编辑器中图片的位置
      */
     $imgDel (pos) {
-      axios.delete('/website/files', { data: { url: pos[0] } }).then(res => {
+      axios.delete('/website/files', { data: { url: pos[0] } }).then(() => {
         this.$message.success('成功删除图片' + pos[1].name)
       }).catch(err => {
         this.$message.destroy()
@@ -304,18 +306,32 @@ export default {
         this.$message.error('上传的图片大小不超过2MB!')
       }
       return isJpgOrPng && isLt2M
+    },
+    /**
+     * 初始化页面内容
+     */
+    initPageContent () {
+      if (this.$route.name === 'ArticleCreate') {
+        this.article = {
+          title: '',
+          description: '',
+          content: '',
+          cover: 'https://hinghwadict-1259415432.cos.ap-shanghai.myqcloud.com/website/默认封面.png'
+        }
+        this.compareArticle = { ...this.article }
+        this.isAuthor = true
+      } else this.getArticleDetails()
     }
 
   },
 
   created () {
-    if (this.$route.name === 'ArticleCreate') this.isAuthor = true
-    else this.getArticleDetails()
+    this.initPageContent()
   },
 
   watch: {
-    $router () {
-      this.getArticleDetails()
+    $route () {
+      this.initPageContent()
     }
   },
 
@@ -323,6 +339,46 @@ export default {
     if (to.name === 'ArticleCreate') next()
     else if (to.params.id % 1 === 0) next()
     else next({ name: 'NotFound' })
+  },
+
+  beforeRouteLeave (to, from, next) {
+    let deng = true
+    for (const i in this.article) { if (this.article[i] !== this.compareArticle[i])deng = false }
+    const key = 'page'
+    if (!deng) {
+      this.$notification.warning({
+        key,
+        message: '确认离开？',
+        description:
+          '您对当前文章进行过修改，确认放弃修改直接离开？',
+        btn: h => {
+          return h(
+            'a-button',
+            {
+              props: {
+                type: 'primary',
+                size: 'small'
+              },
+              on: {
+                click: () => {
+                  next()
+                  this.$notification.close(key)
+                }
+              }
+            },
+            '确定'
+          )
+        },
+        duration: 0,
+        style: {
+          zIndex: 'auto',
+          color: 'red'
+        },
+        placement: 'bottomLeft'
+      })
+    } else {
+      next()
+    }
   }
 }
 </script>
