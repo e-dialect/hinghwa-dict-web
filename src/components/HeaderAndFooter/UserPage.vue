@@ -11,21 +11,22 @@
       <a-descriptions-item label="用户名">
         {{ user.username }}
       </a-descriptions-item>
+      <a-descriptions-item label="昵称">
+        {{user.nickname}}
+      </a-descriptions-item>
+      <a-descriptions-item label="身份">
+      <user-tag :type="user.is_admin"></user-tag>
+    </a-descriptions-item>
       <a-descriptions-item label="邮箱">
         {{ user.email }}
       </a-descriptions-item>
       <a-descriptions-item label="上次登陆时间">
         {{ user.login_time }}
       </a-descriptions-item>
-      <a-descriptions-item label="县区">
-        {{ user.county }}
-      </a-descriptions-item>
       <a-descriptions-item label="乡镇">
-        {{ user.town }}
+        {{ user.county }}-{{ user.town }}
       </a-descriptions-item>
-      <a-descriptions-item label="手机">
-        {{ user.telephone }}
-      </a-descriptions-item>
+
     </a-descriptions>
 
     <a-tabs>
@@ -52,10 +53,12 @@
 <script>
 import ArticleList from '../../components/Articles/ArticleList'
 import { mapGetters } from 'vuex'
+import UserTag from '../User/UserTag'
 
 export default {
   name: 'UserPage',
   components: {
+    UserTag,
     ArticleList
   },
   computed: {

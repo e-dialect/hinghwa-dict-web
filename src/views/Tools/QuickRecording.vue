@@ -52,7 +52,7 @@
 
 import axios from 'axios'
 import Recording from '../../components/Recording.vue'
-import AreaCascader from '../../components/AreaCascader'
+import AreaCascader from '../../components/User/AreaCascader'
 
 export default {
   name: 'QuickRecording',

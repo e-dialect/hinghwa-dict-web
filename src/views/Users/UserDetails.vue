@@ -19,8 +19,7 @@
           {{ user.nickname }}
         </a-descriptions-item>
         <a-descriptions-item label="身份">
-          <a-tag v-if="user.is_admin" color="purple">管理员</a-tag>
-          <a-tag v-else color="cyan">普通用户</a-tag>
+          <UserTag :type="user.is_admin"></UserTag>
         </a-descriptions-item>
         <a-descriptions-item label="头像">
           <a-avatar :size="64" :src="user.avatar" shape="circle"/>
@@ -61,8 +60,9 @@
 </template>
 
 <script>
-import ArticleList from '@/components/Articles/ArticleList'
+import ArticleList from '../../components/Articles/ArticleList'
 import axios from 'axios'
+import UserTag from '../../components/User/UserTag'
 
 export default {
   name: 'UserDetails',
@@ -70,6 +70,7 @@ export default {
     id: String
   },
   components: {
+    UserTag,
     ArticleList
   },
   data () {

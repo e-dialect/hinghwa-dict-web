@@ -180,7 +180,7 @@
 import moment from 'moment'
 import 'moment/locale/zh-cn'
 import axios from 'axios'
-import AreaCascader from '../../components/AreaCascader'
+import AreaCascader from '../../components/User/AreaCascader'
 
 export default {
   name: 'userSettings',
