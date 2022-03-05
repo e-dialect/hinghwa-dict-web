@@ -7,20 +7,30 @@
       style="padding-top:32px;padding-bottom:32px;padding-right:0;padding-left:0;"
       type="flex"
     >
-        <a-card hoverable style="height:350px;text-align: center">
-          <img src="../assets/blue.svg" width="40%" alt="兴化语记logo" style="padding-top: 32px">
-          <a-input-search
-            placeholder="一键检索你想知道的"
-            style="width:70%;"
-            v-model="searchContent"
-            @search="$router.push({ name: 'Search', query: { key: searchContent } })"
-          />
-          <div style="padding-top: 32px;text-align: left;font-size: 8px;margin:24px 24px;line-height: 8px">
-            <p>目前支持搜单字、搜词语、搜文章功能。</p>
-            <p>搜单字：获取输入中每一个汉字的读音</p>
-            <p>搜词语：检索与输入相关的词语</p>
-            <p>搜文章：检索与输入相关的文章</p>
-          </div>
+      <a-card hoverable style="height:376px;text-align: center">
+        <div style="text-align: right">
+          <a-button
+            type="dashed"
+            icon="more"
+            @click="$router.push({name:'WordDetails',params:{id:Math.ceil(Math.random()*3500)}})"
+          >
+            随机跳词
+          </a-button>
+        </div>
+
+        <img src="../assets/blue.svg" width="40%" alt="兴化语记logo" style="padding-top: 32px">
+        <a-input-search
+          placeholder="一键检索你想知道的"
+          style="width:70%;"
+          v-model="searchContent"
+          @search="$router.push({ name: 'Search', query: { key: searchContent } })"
+        />
+        <div style="padding-top: 24px;text-align: left;font-size: 8px;margin:24px 24px;line-height: 8px">
+          <p>目前支持搜单字、搜词语、搜文章功能。</p>
+          <p>搜单字：获取输入中每一个汉字的读音</p>
+          <p>搜词语：检索与输入相关的词语</p>
+          <p>搜文章：检索与输入相关的文章</p>
+        </div>
         </a-card>
     </a-row>
 
