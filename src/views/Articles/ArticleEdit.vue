@@ -114,6 +114,7 @@ export default {
       buttonContent: '创建文章',
       btnArticleLoading: false,
       btnCoverLoading: false,
+      submit: false,
       isAuthor: false,
       compareArticle: { ...this.article }
     }
@@ -138,6 +139,7 @@ export default {
     createArticle () {
       this.btnArticleLoading = true
       axios.post('/articles', Object.assign({}, this.article)).then(res => {
+        this.submit = true
         this.$message.success('恭喜你，创建成功！')
         this.$router.push({ name: 'ArticleDetails', params: { id: res.data.id.toString() } })
       }).catch(err => {
@@ -175,6 +177,7 @@ export default {
           cover: this.article.cover
         }
       }).then(() => {
+        this.submit = true
         this.$message.success('文章更新成功！')
         this.$router.push({ name: 'ArticleDetails', params: { id: this.id.toString() } })
       }).catch(err => {
@@ -345,6 +348,7 @@ export default {
     let deng = true
     for (const i in this.article) { if (this.article[i] !== this.compareArticle[i])deng = false }
     const key = 'page'
+    if (this.submit === true) deng = true
     if (!deng) {
       this.$notification.warning({
         key,
