@@ -84,7 +84,11 @@ const routes = [
     path: '/settings',
     name: 'UserSettings',
     component: () => import('../views/Users/UserSettings.vue')
-
+  },
+  {
+    path: '/notification',
+    name: 'Notification',
+    component: () => import('../views/Users/Notification.vue')
   },
   // Tools区
   {

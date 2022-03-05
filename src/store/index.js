@@ -21,6 +21,23 @@ export default new Vuex.Store({
     user: Object.create(defaultUser),
     publish_articles: [],
     like_articles: [],
+    notification: {
+      statistics: {
+        total: 0,
+        sent: 0,
+        received: 0,
+        unread: 0
+      },
+      sent: [],
+      received: []
+    },
+    contribution: {
+      pronunciation: 0,
+      pronunciation_uploaded: 0,
+      word: 0,
+      word_uploaded: 0,
+      listened: 0
+    },
     music: 8,
     replyTo: 0,
     commentsLoading: false,
@@ -78,6 +95,12 @@ export default new Vuex.Store({
     },
     commentsLoading (state) {
       return state.commentsLoading
+    },
+    contribution (state) {
+      return state.contribution
+    },
+    notification (state) {
+      return state.notification
     }
   },
   mutations: {
@@ -134,6 +157,8 @@ export default new Vuex.Store({
         state.user = res.data.user
         state.publish_articles = res.data.publish_articles
         state.like_articles = res.data.like_articles
+        state.contribution = res.data.contribution
+        state.notification = res.data.notification
         state.drawerLoading = false
       })
     }

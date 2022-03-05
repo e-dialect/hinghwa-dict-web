@@ -1,13 +1,17 @@
 <template>
   <a-spin :spinning="drawerLoading">
+
     <a-descriptions layout="vertical">
       <template v-slot:title>
-        <router-link :to="{name:'UserDetails',params:{id:user.id.toString()}}">用户信息</router-link>
+        <h3>
+        <router-link :to="{name:'UserDetails',params:{id:user.id.toString()}}">
+          个人信息
+        </router-link>
+        </h3>
         <a-button type="dashed" style="float: right;">
           <router-link :to="{ name: 'UserSettings'}">修改</router-link>
         </a-button>
       </template>
-
       <a-descriptions-item label="用户名">
         {{ user.username }}
       </a-descriptions-item>
@@ -15,8 +19,8 @@
         {{user.nickname}}
       </a-descriptions-item>
       <a-descriptions-item label="身份">
-      <user-tag :type="user.is_admin"></user-tag>
-    </a-descriptions-item>
+        <user-tag :type="user.is_admin"></user-tag>
+      </a-descriptions-item>
       <a-descriptions-item label="邮箱">
         {{ user.email }}
       </a-descriptions-item>
@@ -26,20 +30,51 @@
       <a-descriptions-item label="乡镇">
         {{ user.county }}-{{ user.town }}
       </a-descriptions-item>
-
     </a-descriptions>
 
-    <a-tabs>
-      <a-tab-pane key="1" tab="我创作的文章">
-        <ArticleList :listData="publish_articles" :page-size="3"/>
-      </a-tab-pane>
-      <a-tab-pane key="2" tab="收藏列表">
-        <ArticleList :listData="like_articles" :page-size="3"/>
-      </a-tab-pane>
-      <template v-slot:tabBarExtraContent>
-        <router-link :to="{name:'ArticleCreate'}"> 进入创作中心</router-link>
+    <a-divider></a-divider>
+
+    <a-descriptions >
+      <template v-slot:title>
+        <h3>
+          贡献信息
+        </h3>
       </template>
-    </a-tabs>
+      <a-descriptions-item label="语音">
+        <router-link :to="{name:'UserDetails',params:{id:user.id.toString()}}">
+          {{ contribution.pronunciation }}
+        </router-link>
+      </a-descriptions-item>
+      <a-descriptions-item label="词条">
+        {{ contribution.word}}
+      </a-descriptions-item>
+      <a-descriptions-item label="文章">
+        <router-link :to="{name:'UserDetails',params:{id:user.id.toString()}}">
+          {{ publish_articles.length }}
+        </router-link>
+      </a-descriptions-item>
+    </a-descriptions>
+
+    <a-row type="flex" align="middle">
+      <a-col :span="8">
+        <router-link :to="{name:'QuickRecording'}">
+          <a-button type="dashed">发布新语音</a-button>
+        </router-link>
+      </a-col>
+      <a-col :span="8">
+        <router-link :to="{name:'UserDetails',params:{id:user.id.toString()}}">
+          <a-button type="dashed" :disabled="true">提交新词语</a-button>
+        </router-link>
+      </a-col>
+      <a-col :span="8">
+        <a-button type="dashed" >
+          <router-link :to="{name:'ArticleCreate'}">创建新文章</router-link>
+        </a-button>
+      </a-col>
+
+    </a-row>
+
+    <a-divider/>
 
     <a-button
       type="danger"
@@ -51,22 +86,21 @@
 </template>
 
 <script>
-import ArticleList from '../../components/Articles/ArticleList'
 import { mapGetters } from 'vuex'
 import UserTag from '../User/UserTag'
 
 export default {
   name: 'UserPage',
   components: {
-    UserTag,
-    ArticleList
+    UserTag
   },
   computed: {
     ...mapGetters({
       user: 'user',
       publish_articles: 'publish_articles',
       like_articles: 'like_articles',
-      drawerLoading: 'drawerLoading'
+      drawerLoading: 'drawerLoading',
+      contribution: 'contribution'
     })
   }
 }
