@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import PinyinTable from '@/components/PinyinTable'
+import PinyinTable from '../components/Pronunciation/PinyinTable'
 
 export default {
   name: 'Pinyin',

@@ -112,8 +112,8 @@
 <script>
 
 import axios from 'axios'
-import ArticleList from '@/components/Articles/ArticleList'
-import Recording from '@/components/Recording'
+import ArticleList from '../components/Articles/ArticleList'
+import Recording from '../components/Pronunciation/Recording'
 
 export default {
   name: 'WordDetails',

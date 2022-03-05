@@ -54,6 +54,9 @@
         <a-tab-pane key="2" tab="ta收藏的文章">
           <ArticleList :listData="like_articles" :page-size="6"/>
         </a-tab-pane>
+        <a-tab-pane key="3" tab="ta发布的语音">
+          <UserPinyin :id="id"/>
+        </a-tab-pane>
       </a-tabs>
     </a-card>
   </a-spin>
@@ -63,6 +66,7 @@
 import ArticleList from '../../components/Articles/ArticleList'
 import axios from 'axios'
 import UserTag from '../../components/User/UserTag'
+import UserPinyin from '../../components/Pronunciation/UserPinyin'
 
 export default {
   name: 'UserDetails',
@@ -70,6 +74,7 @@ export default {
     id: String
   },
   components: {
+    UserPinyin,
     UserTag,
     ArticleList
   },
@@ -97,8 +102,8 @@ export default {
   created () {
     axios.get('/users/' + this.id).then(res => {
       this.user = res.data.user
-      this.publish_articles = res.data.publish_articles
-      this.like_articles = res.data.like_articles
+      this.publish_articles = res.data.publish_articles.reverse()
+      this.like_articles = res.data.like_articles.reverse()
       this.spinning = false
     })
   }

@@ -51,7 +51,7 @@
 <script>
 
 import axios from 'axios'
-import Recording from '../../components/Recording.vue'
+import Recording from '../../components/Pronunciation/Recording.vue'
 import AreaCascader from '../../components/User/AreaCascader'
 
 export default {
