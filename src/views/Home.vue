@@ -23,7 +23,7 @@
           placeholder="一键检索你想知道的"
           style="width:70%;"
           v-model="searchContent"
-          @search="$router.push({ name: 'Search', query: { key: searchContent } })"
+          @search="search(searchContent)"
         />
         <div style="padding-top: 24px;text-align: left;font-size: 8px;margin:24px 24px;line-height: 8px">
           <p>目前支持搜单字、搜词语、搜文章功能。</p>
@@ -81,6 +81,18 @@ export default {
           disabled: false
         }
       ]
+    }
+  },
+  methods: {
+    search (content) {
+      if (content) {
+        this.$router.push({
+          name: 'Search',
+          query: { key: content }
+        })
+      } else {
+        this.$message.warning('请先输入搜索内容哦~')
+      }
     }
   }
 

@@ -3,7 +3,7 @@
     <a-row align="middle" justify="space-around" type="flex">
       <a-col :span="3">
         <router-link to="/Home">
-          <img src="@/assets/blue.svg" alt="E方言图标" width="120px">
+          <img src="../../assets/blue.svg" alt="E方言图标" width="120px">
         </router-link>
       </a-col>
 
@@ -29,7 +29,7 @@
         <a-input-search
           v-model="searchContent"
           placeholder="开始搜索"
-          @search="$router.push({ name: 'Search', query: { key: searchContent } })"
+          @search="search(searchContent)"
         />
       </a-col>
 
@@ -60,6 +60,20 @@ export default {
       },
       set (value) {
         this.$store.commit('tab', value)
+      }
+    }
+  },
+  methods: {
+    search (content) {
+      if (content) {
+        if (!(this.$route.name === 'Search' && content === this.$route.query.key)) {
+          this.$router.push({
+            name: 'Search',
+            query: { key: content }
+          })
+        }
+      } else {
+        this.$message.warning('请先输入搜索内容哦~')
       }
     }
   }
