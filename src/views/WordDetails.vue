@@ -31,29 +31,34 @@
       </template>
 
       <!--释义-->
-      <div>
-        <div style="padding:15px">
-          <a-tag color="rgb(179, 7, 30,0.7)"> 释义</a-tag>
-        </div>
-        <div
-          v-for="(item,index) in analysedDefinition"
-          :key="index+1"
-          style="width: 100%;padding: 20px"
-        >
-          <a-card>
-            <template v-slot:title>
-              {{ analysedDefinition.length > 1 ? (index + 1) + '：' : '' }}{{ item.content }}
-            </template>
-            <div v-for="exp in item.example" :key="exp.content" style="padding: 5px">
-              <a-tag color="rgb(64, 49, 131)"> {{ exp.type }}</a-tag>
-              <span style="padding:5px">
-                <strong> {{ exp.content }} </strong>
-                <span style="font-size:x-small"> {{ exp.explain }} </span>
-              </span>
-            </div>
-          </a-card>
-        </div>
+
+      <div style="padding:15px">
+        <a-tag color="rgb(179, 7, 30,0.7)"> 释义</a-tag>
       </div>
+      <a-row type="flex" justify="center">
+        <a-col :span="22">
+          <a-list
+            item-layout="horizontal"
+            :data-source="analysedDefinition"
+            style="margin: 16px"
+          >
+            <a-list-item slot="renderItem" slot-scope="item">
+              <a-list-item-meta>
+                <div slot="title" style="font-size: 18px;color: black;padding-bottom: 8px">
+                  {{ item.content }}
+                </div>
+                <div v-for="exp in item.example" :key="exp.content" style="padding: 5px" slot="description">
+                  <a-tag color="rgb(64, 49, 131)"> {{ exp.type }}</a-tag>
+                  <span style="padding:5px">
+                  <ExampleSpan :content="exp.content"/>
+                  <span style="font-size:x-small"> {{ exp.explain }} </span>
+                </span>
+                </div>
+              </a-list-item-meta>
+            </a-list-item>
+          </a-list>
+        </a-col>
+      </a-row>
 
       <!--发音列表-->
       <div style="padding:15px">
@@ -114,11 +119,13 @@
 import axios from 'axios'
 import ArticleList from '../components/Articles/ArticleList'
 import Recording from '../components/Pronunciation/Recording'
+import ExampleSpan from '../components/Word/ExampleSpan'
 
 export default {
   name: 'WordDetails',
   props: ['id'],
   components: {
+    ExampleSpan,
     Recording,
     ArticleList
   },
