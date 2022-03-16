@@ -130,7 +130,7 @@ const routes = [
     path: '/words/:id',
     name: 'WordDetails',
     props: true,
-    component: () => import('../views/WordDetails.vue')
+    component: () => import('../views/Words/WordDetails.vue')
   },
   {
     path: '*',
