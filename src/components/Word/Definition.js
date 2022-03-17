@@ -52,12 +52,25 @@ function analyseDefinition (definition) {
   return result
 }
 
+export const order = ['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨', '⑩']
+
+// [{
+//   content: 'content',
+//   example: [
+//     {
+//       type: '例',
+//       content: '',
+//       explain: ''
+//     }
+//   ]
+// }
+// ]
+
 /**
  * 将数据库中的释义字符串进行拆分
  * @param definition 释义字符串
  */
 export function splitDefinition (definition) {
-  const order = ['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨', '⑩']
   let lastIndex = -1
   const result = []
   for (let i = 0; i < order.length; i++) {
@@ -71,8 +84,29 @@ export function splitDefinition (definition) {
   result.push(analyseDefinition(definition.substring(lastIndex)))
   if (result.length > 1) {
     result.forEach((item, index) => {
-      item.content = order[index] + ' ' + item.content
+      item.content = order[index] + item.content
     })
   }
   return result
+}
+
+export function combineDefinitions (definitions) {
+  let s = ''
+  definitions.forEach(item => {
+    s += item.content
+    if (item.example.length > 0) {
+      s += '：'
+      item.example.forEach((jtem, index) => {
+        if (jtem.type === '俗') s += '△'
+        s += jtem.content
+        if (jtem.explain) s += `（${jtem.explain}）`
+        if (index !== item.example.length - 1) {
+          s += '|'
+        } else {
+          s += '。'
+        }
+      })
+    }
+  })
+  return s
 }

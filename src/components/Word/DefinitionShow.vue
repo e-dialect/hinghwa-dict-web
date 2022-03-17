@@ -23,7 +23,7 @@
 
 <script>
 import ExampleSpan from './ExampleSpan'
-import { splitDefinition } from './DefinitionSplit'
+import { splitDefinition } from './Definition'
 
 export default {
   name: 'Definition',

@@ -14,7 +14,6 @@
         <span style="font-size: 100%;color: rgb(155,155,155);padding-left: 10px">
           / {{ word.standard_ipa }}/
         </span>
-
         <a-button
           type="link"
           icon="play-circle"
@@ -24,10 +23,18 @@
       </template>
 
       <template v-slot:extra>
-        创建者:
-        <router-link :to="{name:'UserDetails',params:{id:word.contributor.id.toString()}}">
-          {{ word.contributor.nickname }}
-        </router-link>
+        <a-row>
+          <router-link :to="{name:'WordEdit',params:{id:word.id}}">
+            <a-button icon="edit" size="small"> 编辑词条</a-button>
+          </router-link>
+        </a-row>
+        <a-row style="padding-top: 16px">
+          创建者:
+          <router-link :to="{name:'UserDetails',params:{id:word.contributor.id.toString()}}">
+            {{ word.contributor.nickname }}
+          </router-link>
+        </a-row>
+
       </template>
 
       <!--释义-->
@@ -100,13 +107,13 @@
 import axios from 'axios'
 import ArticleList from '../../components/Articles/ArticleList'
 import Recording from '../../components/Pronunciation/Recording'
-import Definition from '../../components/Word/Definition'
+import DefinitionShow from '../../components/Word/DefinitionShow'
 
 export default {
   name: 'WordDetails',
   props: ['id'],
   components: {
-    Definition,
+    Definition: DefinitionShow,
     Recording,
     ArticleList
   },

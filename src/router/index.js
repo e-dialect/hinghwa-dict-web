@@ -133,6 +133,12 @@ const routes = [
     component: () => import('../views/Words/WordDetails.vue')
   },
   {
+    path: '/words/:id/edit',
+    name: 'WordEdit',
+    props: true,
+    component: () => import('../views/Words/WordEdit.vue')
+  },
+  {
     path: '*',
     component: () => import('../views/NotFound.vue')
   },
