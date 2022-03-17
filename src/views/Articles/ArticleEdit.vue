@@ -74,14 +74,7 @@
       justify="center"
       type="flex"
     >
-      <mavon-editor
-        ref="md"
-        v-model="article.content"
-        style="z-index: auto"
-        @imgAdd="$imgAdd"
-        @imgDel="$imgDel"
-      />
-
+      <MarkdownEditor v-model="article.content"/>
       <a-button
         :loading="btnArticleLoading"
         type="primary"
@@ -96,8 +89,8 @@
 
 <script>
 import axios from 'axios'
-import { mavonEditor } from 'mavon-editor'
-import 'mavon-editor/dist/css/index.css'
+import MarkdownEditor from '../../components/Articles/MarkdownEditor'
+import { beforeUpload, imageUpload } from '../../components/Articles/ImageUpload'
 
 export default {
   name: 'ArticleEdit',
@@ -109,18 +102,19 @@ export default {
         title: '',
         description: '',
         content: '',
-        cover: 'https://hinghwadict-1259415432.cos.ap-shanghai.myqcloud.com/website/默认封面.png'
+        cover: 'https://cos.edialect.top/website/默认封面.png'
       },
       buttonContent: '创建文章',
       btnArticleLoading: false,
       btnCoverLoading: false,
       submit: false,
       isAuthor: false,
-      compareArticle: { ...this.article }
+      compareArticle: { ...this.article },
+      beforeUpload: beforeUpload
     }
   },
   components: {
-    mavonEditor
+    MarkdownEditor
   },
   computed: {
     /**
@@ -213,102 +207,16 @@ export default {
         })
       }
     },
-
-    /**
-     * mavonEditor 绑定@imgAdd event
-     * @param pos markdown编辑器中图片的位置
-     * @param $file 用户上传的图片文件
-     */
-    $imgAdd (pos, $file) {
-      this.imageUpload($file).then(url => {
-        this.$refs.md.$img2Url(pos, url)
-      })
-    },
-
-    /**
-     * mavonEditor 绑定@imgDel event
-     * @param pos markdown编辑器中图片的位置
-     */
-    $imgDel (pos) {
-      axios.delete('/website/files', { data: { url: pos[0] } }).then(() => {
-        this.$message.success('成功删除图片' + pos[1].name)
-      }).catch(err => {
-        this.$message.destroy()
-        console.log(pos[0])
-        console.log(pos[1])
-        console.log(err.response)
-        switch (err.response.status) {
-          case 401: {
-            this.$message.error('无权限：请检查您的登录状态')
-            break
-          }
-          case 404: {
-            this.$message.warn('图片不存在！已忽略本次操作')
-            break
-          }
-          default: {
-            this.$message.error(err.toString())
-          }
-        }
-      })
-    },
-
-    /**
-     * 上传图片
-     * @param file 即将上传的图片文件
-     */
-    async imageUpload (file) {
-      return new Promise(resolve => {
-        var formdata = new FormData()
-        formdata.append('file', file)
-        axios({
-          url: '/website/files',
-          method: 'post',
-          data: formdata,
-          headers: { 'Content-Type': 'multipart/form-data' }
-        }).then((res) => {
-          resolve(res.data.url)
-          this.$message.success('成功上传啦~')
-        }).catch(err => {
-          this.$message.destroy()
-          switch (err.response.status) {
-            case 401: {
-              this.$message.error('无权限：请检查您的登录状态')
-              break
-            }
-            default: {
-              this.$message.error(err.toString())
-            }
-          }
-        })
-      })
-    },
-
     /**
      * 自定义上传文件请求
      * @param data 需要上传文件
      */
     customRequest (data) {
       this.btnCoverLoading = true
-      this.imageUpload(data.file).then(url => {
+      imageUpload(data.file).then(url => {
         this.article.cover = url
         this.btnCoverLoading = false
       })
-    },
-    /**
-     * 在上传之前检查即将上传的文件
-     * @param file 即将上传的文件
-     */
-    beforeUpload (file) {
-      const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
-      if (!isJpgOrPng) {
-        this.$message.error('仅支持上传jpg或png文件!')
-      }
-      const isLt2M = file.size / 1024 / 1024 < 2
-      if (!isLt2M) {
-        this.$message.error('上传的图片大小不超过2MB!')
-      }
-      return isJpgOrPng && isLt2M
     },
     /**
      * 初始化页面内容
@@ -319,7 +227,7 @@ export default {
           title: '',
           description: '',
           content: '',
-          cover: 'https://hinghwadict-1259415432.cos.ap-shanghai.myqcloud.com/website/默认封面.png'
+          cover: 'https://cos.edialect.top/website/默认封面.png'
         }
         this.compareArticle = { ...this.article }
         this.isAuthor = true
