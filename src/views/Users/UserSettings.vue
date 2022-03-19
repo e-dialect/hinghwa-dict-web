@@ -214,7 +214,7 @@ export default {
       // ui需要用到的变量
       labelCol: {
         xs: { span: 24 },
-        sm: { span: 5 }
+        sm: { span: 7 }
       },
       wrapperCol: {
         xs: { span: 24 },
@@ -234,8 +234,8 @@ export default {
     changePassword () {
       if (this.newPassword === this.confirmPassword) {
         this.btnPasswordLoading = true
-        axios.put('/users' / +this.user.id + '/password', {
-          oldpassword: this.oldpassword,
+        axios.put(`/users/${this.user.id}/password`, {
+          oldpassword: this.oldPassword,
           newpassword: this.newPassword
         }).then(() => {
           this.$message.success('更改密码成功')
