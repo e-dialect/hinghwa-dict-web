@@ -106,14 +106,14 @@ export default {
   computed: {
     text: {
       get () {
-        if (this.definition) {
+        if (this.definitions.length) {
           return combineDefinitions(this.definitions.map((item, index) => {
             const value = { ...item }
             value.content = order[index] + value.content
             return value
           }))
         } else {
-          return []
+          return ''
         }
       },
       set (value) {
@@ -123,7 +123,6 @@ export default {
             item.content = item.content.substring(1)
           }
         })
-        this.$emit('input', value)
       }
     },
     index () {
@@ -144,10 +143,10 @@ export default {
         this.definitions = []
         return
       }
-      this.definitions = splitDefinition(value)
-      this.definitions.forEach(item => {
-        item.content = item.content.substring(1)
-      })
+      this.text = value
+    },
+    text (value) {
+      this.$emit('input', value)
     }
   },
   methods: {

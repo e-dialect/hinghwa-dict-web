@@ -1,7 +1,7 @@
 <template>
   <div>
     <template v-for="(tag,index) in tags">
-      <a-tag :key="tag" :closable="true" @close="tags.splice(index,1)">
+      <a-tag :key="index" :closable="true" @close="tags.splice(index,1)">
         {{ tag }}
       </a-tag>
     </template>
@@ -17,7 +17,7 @@
     />
     <a-tag v-else style="background: #fff; borderStyle: dashed;" @click="showInput">
       <a-icon type="plus"/>
-      新词汇
+      {{ tips }}
     </a-tag>
   </div>
 </template>
@@ -27,6 +27,9 @@
 export default {
   name: 'LineTags',
   props: ['value', 'tips'],
+  model: {
+    prop: 'value'
+  },
   data () {
     return {
       inputVisible: false,
@@ -59,9 +62,8 @@ export default {
      */
     handleInputConfirm () {
       const inputValue = this.inputValue
-      const tags = this.value
-      if (inputValue && tags.indexOf(inputValue) === -1) {
-        this.value = [...tags, inputValue]
+      if (inputValue && this.tags.indexOf(inputValue) === -1) {
+        this.tags = [...this.tags, inputValue]
       }
       this.inputVisible = false
       this.inputValue = ''
