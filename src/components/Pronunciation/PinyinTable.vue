@@ -5,7 +5,7 @@
         <span slot="customTitle"> Name</span>
         <span slot="action" slot-scope="text, record">
       <audio
-        :src="'https://hinghwadict-1259415432.cos.ap-shanghai.myqcloud.com/pinyin/example/'+(record.pinyin || record.type)+'.mp3'"
+        :src="'https://cos.edialect.top/pinyin/example/'+(record.pinyin || record.type)+'.mp3'"
         controls
       />
     </span>

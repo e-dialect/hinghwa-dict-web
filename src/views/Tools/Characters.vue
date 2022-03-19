@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import PinyinList from '@/components/Tools/PinyinList'
+import PinyinList from '../../components/Tools/PinyinList'
 
 export default {
   name: 'Characters',

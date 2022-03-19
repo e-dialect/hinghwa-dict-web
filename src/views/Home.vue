@@ -55,7 +55,7 @@
 </template>
 
 <script>
-const cdn = 'https://hinghwadict-1259415432.cos.ap-shanghai.myqcloud.com/website/'
+const cdn = 'https://cos.edialect.top/website/'
 export default {
   name: 'Home',
   data () {
