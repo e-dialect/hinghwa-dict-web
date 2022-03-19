@@ -47,7 +47,11 @@ export default {
       //   ]
       // }
       // ]
-      return splitDefinition(this.definition)
+      if (this.definition) {
+        return splitDefinition(this.definition)
+      } else {
+        return []
+      }
     }
   }
 }

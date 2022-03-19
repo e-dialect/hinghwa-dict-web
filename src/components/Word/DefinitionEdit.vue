@@ -101,21 +101,25 @@ export default {
     }
   },
   created () {
-    this.definitions = splitDefinition(this.definition)
+    this.definitions = this.definition ? splitDefinition(this.definition) : []
   },
   computed: {
     text: {
       get () {
-        return combineDefinitions(this.definitions.map((item, index) => {
-          const value = { ...item }
-          value.content = order[index] + value.content
-          return value
-        }))
+        if (this.definition) {
+          return combineDefinitions(this.definitions.map((item, index) => {
+            const value = { ...item }
+            value.content = order[index] + value.content
+            return value
+          }))
+        } else {
+          return []
+        }
       },
       set (value) {
         this.definitions = splitDefinition(value)
         this.definitions.forEach(item => {
-          while (order.indexOf(item.content[0]) !== -1) {
+          while (item.content && order.indexOf(item.content[0]) !== -1) {
             item.content = item.content.substring(1)
           }
         })
@@ -136,6 +140,10 @@ export default {
   },
   watch: {
     definition (value) {
+      if (!value) {
+        this.definitions = []
+        return
+      }
       this.definitions = splitDefinition(value)
       this.definitions.forEach(item => {
         item.content = item.content.substring(1)
