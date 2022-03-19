@@ -127,6 +127,11 @@ const routes = [
     component: () => import('../views/Tools/RecordConfirming.vue')
   },
   {
+    path: '/tools/WordConfirming',
+    name: 'WordConfirming',
+    component: () => import('../views/Tools/WordConfirming.vue')
+  },
+  {
     path: '/words/:id',
     name: 'WordDetails',
     props: true,
@@ -137,6 +142,12 @@ const routes = [
     name: 'WordEdit',
     props: true,
     component: () => import('../views/Words/WordEdit.vue')
+  },
+  {
+    path: '/application/:id',
+    name: 'Application',
+    props: true,
+    component: () => import('../views/Words/Application.vue')
   },
   {
     path: '*',

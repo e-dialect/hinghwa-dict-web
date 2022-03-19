@@ -1,6 +1,6 @@
 <template>
   <a-card>
-    <div v-for="item in tools" :key="item.id">
+    <div v-for="(item,index) in tools" :key="index">
       <a-card-grid hoverable style="width:50%;text-align:center">
         <a-card
           :bordered="false"
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-const cdn = 'https://hinghwadict-1259415432.cos.ap-shanghai.myqcloud.com/website/'
+const cdn = 'https://cos.edialect.top/website/'
 export default {
   name: 'Tools',
   data () {
@@ -25,42 +25,45 @@ export default {
 
       tools: [
         {
-          id: 0,
           cover: cdn + '条件查字.png',
           routerName: 'Conditions',
           disabled: false
         },
         {
-          id: 1,
           cover: cdn + '拼音速查.png',
           routerName: 'Characters',
           disabled: false
         },
         {
-          id: 5,
           cover: cdn + '快速录制.png',
           routerName: 'QuickRecording',
           disabled: false
         },
         {
-          id: 4,
           cover: cdn + '录音审核.png',
           routerName: 'RecordConfirming',
           disabled: false
         },
         {
-          id: 2,
+          cover: cdn + '聪明花开.png',
+          routerName: 'PuxianExam',
+          disabled: true
+        },
+        {
+          cover: cdn + '词条审核.png',
+          routerName: 'WordConfirming',
+          disabled: false
+        },
+        {
           cover: cdn + '日常用语.png',
           routerName: 'DailyExpressions',
           disabled: false
         },
         {
-          id: 3,
           cover: cdn + '方言曲库.png',
           routerName: 'Music',
           disabled: false
         }
-
       ]
     }
   },
