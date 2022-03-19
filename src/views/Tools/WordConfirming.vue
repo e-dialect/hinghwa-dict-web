@@ -4,7 +4,7 @@
       :columns="columns"
       :data-source="list"
       :loading="{spinning: spinning, delay: 500}"
-      :pagination="pagination"
+      rowKey="application"
     >
       <span slot="customTitle"> Name</span>
 
