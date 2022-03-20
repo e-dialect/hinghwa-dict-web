@@ -1,9 +1,9 @@
 <template>
   <a-spin :delay="500" :spinning="spinning">
-    <a-card>
+    <a-card style="padding:32px">
 
       <template v-slot:title>
-        <h1 style="padding-left:30px; color: rgb(26,26,73); font-size:250%">
+        <h1 style="padding-left:32px; color: rgb(26,26,73); font-size:250%">
           <strong>
             {{ word.word }}
           </strong>
@@ -11,15 +11,10 @@
         <span style="font-size: 100%;padding-left: 50px">
           {{ word.standard_pinyin }}
         </span>
-        <span style="font-size: 100%;color: rgb(155,155,155);padding-left: 10px">
+        <span style="font-size: 100%;color: rgb(155,155,155);padding-left: 18px">
           / {{ word.standard_ipa }}/
         </span>
-        <a-button
-          type="link"
-          icon="play-circle"
-          :disabled="!standard_pronunciation"
-          @click="playSound(standard_pronunciation)"
-        />
+        <PlaySoundButton :url="word.source"/>
       </template>
 
       <template v-slot:extra>
@@ -38,8 +33,7 @@
       </template>
 
       <!--释义-->
-
-      <div style="padding:15px">
+      <div>
         <a-tag color="rgb(179, 7, 30,0.7)"> 释义</a-tag>
       </div>
       <a-row type="flex" justify="center">
@@ -48,8 +42,38 @@
         </a-col>
       </a-row>
 
+      <div v-if="word.mandarin.length" style="padding-top:32px">
+        <a-tag color="rgb(179, 7, 30,0.7)"> 普通话词汇</a-tag>
+        <template v-for="(tag,index) in word.mandarin">
+          <a-tag color="blue" :key="index">
+            <a :href="`https://www.baidu.com/s?wd=${tag}`" target="_blank">{{ tag }}</a>
+          </a-tag>
+        </template>
+      </div>
+
+      <div v-if="word.related_words.length" style="padding-top:32px">
+        <a-tag color="rgb(179, 7, 30,0.7)">相关词汇</a-tag>
+        <router-link
+          v-for="(tag,index) in word.related_words"
+          :key="index"
+          :to="{name:'WordDetails',params:{id:tag.id}}"
+        >
+          <a-tag color="blue">{{ tag.word }}</a-tag>
+        </router-link>
+      </div>
+
+      <!--百科-->
+      <div v-if="word.annotation" style="padding-top:32px">
+        <a-tag color="rgb(179, 7, 30,0.7)"> 百科</a-tag>
+        <a-row type="flex" justify="center">
+          <a-col :span="22">
+            <MarkdownViewer :text="word.annotation"/>
+          </a-col>
+        </a-row>
+      </div>
+
       <!--发音列表-->
-      <div style="padding:15px">
+      <div style="padding-top:32px">
         <a-tag color="rgb(179, 7, 30,0.7)"> 发音</a-tag>
         <a-button
           size="small"
@@ -79,21 +103,24 @@
             </span>
             <span slot="customTitle"> Name</span>
             <span slot="action" slot-scope="text, record">
-      <audio
-        :src="record.pronunciation.source"
-        controls
-      />
-    </span>
+              <audio :src="record.pronunciation.source" controls/>
+            </span>
           </a-table>
         </a-col>
       </a-row>
 
       <!--相关文章-->
-      <ArticleList
-        v-if="word.related_articles.length"
-        :list-data="word.related_articles"
-        :page-size="3"
-      />
+      <div v-if="word.related_articles.length" style="padding-top:32px">
+        <a-tag color="rgb(179, 7, 30,0.7)"> 相关文章</a-tag>
+        <a-row type="flex" justify="center">
+          <a-col :span="22">
+            <ArticleList
+              :list-data="word.related_articles.map(item=>{return item.id})"
+              :page-size="3"
+            />
+          </a-col>
+        </a-row>
+      </div>
       <p style="margin-top: 40px">
         <a-icon type="eye"></a-icon>
         访问量:{{ word.views }}
@@ -108,11 +135,15 @@ import axios from 'axios'
 import ArticleList from '../../components/Articles/ArticleList'
 import Recording from '../../components/Pronunciation/Recording'
 import DefinitionShow from '../../components/Word/DefinitionShow'
+import PlaySoundButton from '../../components/Tools/PlaySoundButton'
+import MarkdownViewer from '../../components/Articles/MarkdownViewer'
 
 export default {
   name: 'WordDetails',
   props: ['id'],
   components: {
+    MarkdownViewer,
+    PlaySoundButton,
     Definition: DefinitionShow,
     Recording,
     ArticleList
@@ -243,28 +274,6 @@ export default {
           item.key = index
         })
       })
-    },
-    /**
-     * 根据ipa获取读音
-     * @param ipa
-     * @returns {Promise<string>} 音频url
-     */
-    async getIPAPronunciation (ipa) {
-      let url = ''
-      await axios.get(`/pronunciation/${ipa}`).then(res => {
-        if (res.data.url !== 'null') {
-          url = res.data.url
-        } else if (res.data.tts !== 'null') url = res.data.tts
-      })
-      return url
-    },
-    /**
-     * 播放音频
-     * @param url 音频地址
-     */
-    playSound (url) {
-      const player = new Audio(url)
-      player.play()
     },
     /**
      * 打开录音弹框
