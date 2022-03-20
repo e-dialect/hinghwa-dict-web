@@ -10,10 +10,20 @@
       >
         <a-collapse-panel
           v-for="(item,index) in characters "
-          :header="item.label"
+          :header="item.label===item.traditional?`${item.label}`:`${item.label}(${item.traditional})`"
           :key="index.toString()"
         >
-          {{ item.characters.map(jtem => jtem.pinyin).join('&nbsp;&nbsp;&nbsp;&nbsp;') }}
+          <div v-for="(jtem,index2) in item.characters" :key="index2.toString()">
+            <a-breadcrumb>
+              <a-breadcrumb-item>{{ jtem.county }}</a-breadcrumb-item>
+              <a-breadcrumb-item>{{ jtem.town }}</a-breadcrumb-item>
+            </a-breadcrumb>
+            <span v-for="(ktem,index3) in jtem.characters" :key="index3.toString()" style="padding-right: 16px">
+              <span v-if="ktem.word===null">{{ ktem.pinyin }}</span>
+              <router-link v-else :to="{name:'WordDetails',params:{id:ktem.word}}">{{ ktem.pinyin }}</router-link>
+              <a-button icon="sound" size="small" type="link" v-if="ktem.source" @click="playSound(ktem.source)"/>
+            </span>
+          </div>
         </a-collapse-panel>
       </a-collapse>
     </a-spin>
@@ -31,18 +41,91 @@ export default {
       loading: true,
       characters: [
         {
-          label: '',
+          label: '行',
           characters: [
             {
-              id: 0,
-              shengmu: '',
-              ipa: '',
-              pinyin: '',
-              yunmu: '',
-              shengdiao: '',
-              character: '',
-              county: '',
-              town: ''
+              county: '莆田',
+              town: '城里',
+              characters: [
+                {
+                  id: 135,
+                  shengmu: 'g',
+                  ipa: 'ka13',
+                  pinyin: 'ga2',
+                  yunmu: 'a',
+                  shengdiao: '2',
+                  character: '行',
+                  county: '莆田',
+                  town: '城里',
+                  word: null,
+                  source: 'null'
+                },
+                {
+                  id: 895,
+                  shengmu: 'h',
+                  ipa: 'haŋ13',
+                  pinyin: 'hang2',
+                  yunmu: 'ang',
+                  shengdiao: '2',
+                  character: '行',
+                  county: '莆田',
+                  town: '城里',
+                  word: 'null',
+                  source: 'null'
+                },
+                {
+                  id: 1504,
+                  shengmu: 'h',
+                  ipa: 'hɛŋ13',
+                  pinyin: 'heng2',
+                  yunmu: 'eng',
+                  shengdiao: '2',
+                  character: '行',
+                  county: '莆田',
+                  town: '城里',
+                  word: 'null',
+                  source: 'null'
+                },
+                {
+                  id: 3850,
+                  shengmu: 'h',
+                  ipa: 'hiŋ13',
+                  pinyin: 'hing2',
+                  yunmu: 'ing',
+                  shengdiao: '2',
+                  character: '行',
+                  county: '莆田',
+                  town: '城里',
+                  word: 'null',
+                  source: 'null'
+                },
+                {
+                  id: 4137,
+                  shengmu: 'g',
+                  ipa: 'kia13',
+                  pinyin: 'gia2',
+                  yunmu: 'ia',
+                  shengdiao: '2',
+                  character: '行',
+                  county: '莆田',
+                  town: '城里',
+                  word: 2237,
+                  source: 'null'
+                },
+                {
+                  id: 5759,
+                  shengmu: 'Ǿ',
+                  ipa: 'ŋ13',
+                  pinyin: 'ng2',
+                  yunmu: 'ng',
+                  shengdiao: '2',
+                  character: '行',
+                  county: '莆田',
+                  town: '城里',
+                  word: 4000,
+                  source: 'null'
+                }
+              ]
             }
           ]
         }
@@ -69,11 +152,14 @@ export default {
         return
       }
       this.loading = true
-      axios.get('/characters/words', { params: { search: key } }).then(res => {
+      axios.get('/characters/words/v2', { params: { search: key } }).then(res => {
         this.characters = res.data.characters
       }).finally(() => {
         this.loading = false
       })
+    },
+    playSound (url) {
+      new Audio(url).play()
     }
   }
 }
