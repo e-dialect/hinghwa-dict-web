@@ -87,12 +87,26 @@
               <PlaySoundButton :url="pinyin.source"/>
             </a-col>
             <a-col :span="2" v-for="(character,index2) in pinyin.characters" :key="index2">
-              <span v-if="!character.word">{{ text(character) }}</span>
+              <span v-if="!character.word">
+                <span>{{ character.character }}</span>
+                <span
+                  style="color: #8b8b8b;font-size: small"
+                  v-if="character.character!==character.traditional"
+                >
+                  {{ character.traditional }}
+                </span>
+              </span>
               <router-link
                 v-else
                 :to="{name:'WordDetails',params:{id:character.word}}"
               >
-                {{ text(character) }}
+                <span>{{ character.character }}</span>
+                <span
+                  style="color: #8b8b8b;font-size: small"
+                  v-if="character.character!==character.traditional"
+                >
+                  {{ character.traditional }}
+                </span>
               </router-link>
             </a-col>
           </a-row>
@@ -350,17 +364,6 @@ export default {
         shengdiao: 'all'
       },
       activeKeys: []
-    }
-  },
-  computed: {
-    text () {
-      return (character) => {
-        if (character.character === character.traditional) {
-          return character.character
-        } else {
-          return `${character.character}(${character.traditional})`
-        }
-      }
     }
   },
   methods: {
