@@ -7,8 +7,8 @@
       :visible="visible"
       ok-text="继续"
       cancel-text="取消"
-      @confirm="characters=result;visible=false"
-      @cancel="visible=false"
+      @confirm="confirmShowing"
+      @cancel="visible=false;loading = false"
       :title="'这样搜索共有'+result.length+'个结果，若要显示可能需要一定的时间，请确认是否继续？'"
     >
       <a-button
@@ -69,26 +69,53 @@
     <!--   分割线  -->
     <a-divider style="margin:30px 0 30px 0"/>
 
+    <a-empty v-if="!result.length" description="无数据"/>
     <!--   搜索结果  -->
-    <CharacterList :list-data="characters" style="min-height: 300px"/>
+    <a-skeleton v-else active :loading="loading">
+      <a-collapse
+        :bordered="false"
+        style="font-size: 22px;padding: 10px;background-color: white"
+        :activeKey="activeKeys"
+      >
+        <a-collapse-panel
+          v-for="(pinyin,index) in characters"
+          :key="index.toString()"
+          :header="pinyin.pinyin"
+        >
+          <a-row type="flex">
+            <a-col :span="2">
+              <PlaySoundButton :url="pinyin.source"/>
+            </a-col>
+            <a-col :span="2" v-for="(character,index2) in pinyin.characters" :key="index2">
+              <span v-if="!character.word">{{ character.character }}</span>
+              <router-link
+                v-else
+                :to="{name:'WordDetails',params:{id:character.word}}"
+              >
+                {{ character.character }}
+              </router-link>
+            </a-col>
+          </a-row>
+        </a-collapse-panel>
+      </a-collapse>
+    </a-skeleton>
   </a-card>
 </template>
 
 <script>
 import axios from 'axios'
-import CharacterList from '@/components/Tools/CharacterList'
+import PlaySoundButton from '../../components/Tools/PlaySoundButton'
 
 export default {
   name: 'Conditions',
-  components: {
-    CharacterList
-  },
+  components: { PlaySoundButton },
   data () {
     return {
       visible: false,
       btnLoading: false,
       characters: [],
       result: [],
+      loading: false,
       shengmu: {
         all: 'all：全部声母',
         b: 'b：（买放笔）',
@@ -321,7 +348,8 @@ export default {
         shengmu: 'all',
         yunmu: ['all'],
         shengdiao: 'all'
-      }
+      },
+      activeKeys: []
 
     }
   },
@@ -346,15 +374,34 @@ export default {
       Object(['shengmu', 'yunmu', 'shengdiao']).forEach(item => {
         if (data[item] === 'all') delete data[item]
       })
-
-      axios.get('/characters', { params: data }).then(res => {
-        this.result = res.data.characters
-        if (this.result.length < 1000) {
+      this.loading = true
+      axios.get('/characters/pinyin', { params: data }).then(res => {
+        this.result = res.data.result
+        this.activeKeys = [...[...Array(this.result.length)].map((value, index) => {
+          return index.toString()
+        })]
+        if (this.result.length > 500) {
+          this.$message.error('有超过500个可能拼音，过于宽泛！请再详细一些~')
+          this.result = []
+        }
+        if (this.result.length < 250) {
           this.characters = this.result
-        } else this.visible = true
+          setTimeout(() => {
+            this.loading = false
+          }, 200)
+        } else {
+          this.visible = true
+        }
       }).finally(() => {
         this.btnLoading = false
       })
+    },
+    confirmShowing () {
+      this.visible = false
+      this.characters = this.result
+      setTimeout(() => {
+        this.loading = false
+      }, 1000)
     }
   }
 }
