@@ -19,16 +19,7 @@
 
         <!---文章主体部分--->
         <a-card>
-          <mavon-editor
-            :editable="false"
-            :subfield="false"
-            :toolbarsFlag="false"
-            :value="article.content"
-            class="md"
-            defaultOpen="preview"
-            style="z-index: auto"
-          >
-          </mavon-editor>
+          <MarkdownViewer :text="article.content"/>
         </a-card>
         <!--评论区-->
         <a-card>
@@ -124,14 +115,13 @@
 
 <script>
 import axios from 'axios'
-import { mavonEditor } from 'mavon-editor'
-import 'mavon-editor/dist/css/index.css'
-import CommentList from '@/components/Articles/CommentList'
+import CommentList from '../../components/Articles/CommentList'
+import MarkdownViewer from '../../components/Articles/MarkdownViewer'
 
 export default {
   name: 'ArticleDetails',
   components: {
-    mavonEditor,
+    MarkdownViewer,
     CommentList
   },
   props: { id: String },
