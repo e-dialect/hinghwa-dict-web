@@ -18,14 +18,14 @@
         <a-form-model-item label="拼音">
           <span @click="editing.pinyin=!editing.pinyin">{{ content.standard_pinyin }}</span>
           <a-input
-            v-if="content.pinyin!==application.content.pinyin || editing.pinyin"
+            v-if="content.standard_pinyin!==application.content.standard_pinyin || editing.pinyin"
             v-model="application.content.standard_pinyin"
           />
         </a-form-model-item>
         <a-form-model-item label="IPA">
           <span @click="editing.ipa=!editing.ipa">{{ content.standard_ipa }}</span>
           <a-input
-            v-if="content.ipa!==application.content.ipa || editing.ipa"
+            v-if="content.standard_ipa!==application.content.standard_ipa || editing.ipa"
             v-model="application.content.standard_ipa"
           />
         </a-form-model-item>
