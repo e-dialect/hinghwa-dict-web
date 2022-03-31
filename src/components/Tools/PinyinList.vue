@@ -4,6 +4,7 @@
       :spinning="loading"
       :delay="500">
       <a-collapse
+        v-if="characters.length"
         :bordered="false"
         style="font-size: 22px;padding: 10px;background-color: white"
         :activeKey="Array.from(characters.keys())"
@@ -26,6 +27,7 @@
           </div>
         </a-collapse-panel>
       </a-collapse>
+      <a-empty v-else description="暂无数据"/>
     </a-spin>
   </div>
 </template>
