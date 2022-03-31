@@ -169,7 +169,7 @@ export default {
 
               // 录音停止
               this.mediaRecorder.onstop = () => {
-                const blob = new Blob(chunks, { type: 'audio/mpeg; codecs=mp3' })
+                const blob = new Blob(chunks, { type: this.mediaRecorder.mimeType })
                 this.recordSourceURL = window.URL.createObjectURL(blob)
                 this.recordSource = blob
               }
