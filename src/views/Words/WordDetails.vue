@@ -64,7 +64,7 @@
 
       <!--百科-->
       <div v-if="word.annotation" style="padding-top:32px">
-        <a-tag color="rgb(179, 7, 30,0.7)"> 百科</a-tag>
+        <a-tag color="rgb(179, 7, 30,0.7)"> 附注</a-tag>
         <a-row type="flex" justify="center">
           <a-col :span="22">
             <MarkdownViewer :text="word.annotation"/>
@@ -97,9 +97,9 @@
           >
             <span slot="contributor" slot-scope="text, record">
               <router-link :to="{name:'UserDetails',params:{id:record.contributor.id.toString()}}">
-              <a-avatar :src="record.contributor.avatar" />
-              {{ record.contributor.nickname }}
-                </router-link>
+                <a-avatar :src="record.contributor.avatar"/>
+                {{ record.contributor.nickname }}
+              </router-link>
             </span>
             <span slot="customTitle"> Name</span>
             <span slot="action" slot-scope="text, record">
@@ -267,7 +267,6 @@ export default {
       }).finally(() => {
         this.spinning = false
       })
-      this.standard_pronunciation = await this.getIPAPronunciation(this.word.standard_ipa)
       await axios.get('/pronunciation', { params: { word: this.id } }).then(res => {
         this.pronunciation = res.data.pronunciation
         this.pronunciation.forEach((item, index) => {

@@ -27,7 +27,7 @@
         <a-form-model-item label="相关文章">
           <SelectArticle v-model="word.related_articles"/>
         </a-form-model-item>
-        <a-form-model-item label="百科">
+        <a-form-model-item label="附注">
           <MarkdownEditor v-model="word.annotation"></MarkdownEditor>
         </a-form-model-item>
         <a-form-model-item label="理由说明">
