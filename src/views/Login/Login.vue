@@ -2,7 +2,7 @@
   <div class="login">
     <a-row justify="center" type="flex">
       <a-col>
-        <img alt="兴化语记——莆仙方言在线工具" src="@/assets/blue.svg" width="300px"/>
+        <img alt="兴化语记——莆仙方言在线工具" src="../../assets/blue.svg" width="300px"/>
       </a-col>
     </a-row>
     <a-row justify="center" style="padding-bottom:20px" type="flex">
@@ -64,11 +64,14 @@ export default {
       axios.post('/login', {
         username: this.username,
         password: this.password
-      }).then(res => {
-        this.$store.dispatch('userLogin', res.data.id)
+      }).then(async (res) => {
+        await this.$store.dispatch('userLogin', res.data.id)
         localStorage.setItem('token', res.data.token)
         localStorage.setItem('login_time', Date.now().toString())
         this.$message.success('登录成功')
+        if (!this.$store.getters.user.county) {
+          this.$message.warning('为了便于后续使用，请设置自己的所在乡镇~')
+        }
         this.$router.push({ name: 'Home' })
       }).catch(err => {
         if (err.response.status === 401) {
