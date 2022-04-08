@@ -66,7 +66,7 @@
 
 <script>
 import UserPage from '../../components/HeaderAndFooter/UserPage'
-
+import store from '../../store'
 export default {
   name: 'HeaderUser',
   components: {
@@ -74,23 +74,23 @@ export default {
   },
   computed: {
     hasLogin () {
-      return this.$store.getters.loginStatus
+      return store.getters.loginStatus
     },
     username () {
-      return this.$store.getters.user.username
+      return store.getters.user.username
     },
     avatar () {
-      return this.$store.getters.user.avatar
+      return store.getters.user.avatar
     },
     unread () {
-      return this.$store.getters.notification.statistics.unread
+      return store.getters.notification.statistics.unread
     },
     drawerVisibility: {
       get () {
-        return this.$store.getters.drawerVisibility
+        return store.getters.drawerVisibility
       },
       set (value) {
-        this.$store.commit('drawerVisibility', value)
+        store.commit('drawerVisibility', value)
       }
     }
   }

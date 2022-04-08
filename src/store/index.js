@@ -108,7 +108,9 @@ export default new Vuex.Store({
       const list = ['Home', 'Articles', 'Tools', 'Pinyin']
       if (list.indexOf(value[0]) >= 0) {
         state.tab = Object.assign([], value)
-      } else state.tab = []
+      } else {
+        state.tab = []
+      }
     },
     drawerVisibility (state, value) {
       state.drawerVisibility = value
@@ -145,11 +147,14 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    async userLogin ({ state, dispatch }, id) {
+    async userLogin ({
+      state,
+      dispatch
+    }, id) {
       if (state.user.id.toString() === id) return
       state.user.id = Number(id)
       localStorage.setItem('id', id)
-      await dispatch('userUpdate')
+      return dispatch('userUpdate')
     },
     async userUpdate ({ state }) {
       state.drawerLoading = true
@@ -160,6 +165,8 @@ export default new Vuex.Store({
         state.contribution = res.data.contribution
         state.notification = res.data.notification
         state.drawerLoading = false
+      }).catch(() => {
+        this.commit('userLogout')
       })
     }
   },

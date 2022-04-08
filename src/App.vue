@@ -22,6 +22,7 @@ import myHeader from './components/HeaderAndFooter/Header.vue'
 import myFooter from './components/HeaderAndFooter/Footer.vue'
 import MusicAffix from './components/Music/MusicAffix.vue'
 import { message } from 'ant-design-vue'
+import store from './store'
 
 export default {
   components: {
@@ -49,7 +50,7 @@ export default {
       }
     }
     if (window.localStorage.getItem('id')) {
-      await this.$store.dispatch('userLogin', window.localStorage.getItem('id'))
+      await store.dispatch('userLogin', window.localStorage.getItem('id'))
     }
   },
   async created () {
