@@ -29,7 +29,7 @@ export default {
   components: { Record },
   async created () {
     await this.$store.dispatch('userUpdate')
-    if (this.$store.getters.user.is_admin === false) {
+    if (!this.$store.getters.user.is_admin) {
       this.$message.error('仅管理员有权访问该模块！或请重新登录！')
       this.$router.push({ name: 'Tools' })
     }
