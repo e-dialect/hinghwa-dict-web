@@ -1,43 +1,143 @@
 <template>
-        <a-table
-          :columns="columns"
-          :data-source="recordList"
-          :loading="{spinning: tableLoading, delay: 500}"
-          :pagination="pagination"
+  <div>
+    <a-modal
+      :confirm-loading="confirmLoading"
+      :visible="toConfirm !== -1"
+      cancelText="返回"
+      okText="提交"
+      title="审核意见"
+      @cancel="toConfirm=-1"
+    >
+      <a-textarea v-model="reason" placeholder="审核结果说明"/>
+      <div slot="footer">
+        <a-button icon="check" type="primary" @click="handleSubmit(toConfirm,true)"> 审核通过</a-button>
+        <a-button icon="close" type="danger" @click="handleSubmit(toConfirm,false)"> 拒绝通过</a-button>
+      </div>
+    </a-modal>
+    <a-table
+      :columns="columns"
+      :data-source="recordList"
+      :loading="{ spinning: tableLoading, delay: 500 }"
+      :pagination="pagination"
+    >
+
+      <div slot="id" slot-scope="text">
+        <a
+          :href="`https://api.pxm.edialect.top/adminword/pronunciation/${text.id}/change/`"
         >
-          <span slot="customTitle"> Name</span>
+          {{ text.id }}
+        </a>
+      </div>
 
-          <div slot="id" slot-scope="text">
-            <a :href="`https://api.pxm.edialect.top/adminword/pronunciation/${text.id}/change/`">
-              {{text.id}}
-            </a>
-          </div>
+      <div slot="word" slot-scope="text">
+        <router-link
+          v-if="text"
+          :to="{ name: 'WordDetails', params: { id: text.pronunciation.word_id } }"
+        >
+          {{ text.pronunciation.word_word }}
+        </router-link>
+      </div>
 
-          <div slot="word" slot-scope="text">
-            <router-link   v-if="text"  :to="{name:'WordDetails',params:{id:text.pronunciation.word_id}}">
-              {{text.pronunciation.word_word}}
-            </router-link>
-          </div>
+      <div slot="contributor" slot-scope="text">
+        <router-link
+          v-if="text"
+          :to="{ name: 'UserDetails', params: { id: text.contributor.id } }"
+        >
+          <a-avatar :src="text.contributor.avatar"></a-avatar>
+          {{ text.contributor.nickname }}
+        </router-link>
+      </div>
 
-          <div slot="contributor" slot-scope="text" >
-           <router-link v-if="text" :to="{name:'UserDetails',params:{id:text.contributor.id}}">
-            <a-avatar :src="text.contributor.avatar"></a-avatar>
-            {{ text.contributor.nickname }}
-           </router-link>
-          </div>
+      <div slot="pinyin" slot-scope="text,record,index">
+        <span
+          v-if="!record.editable"
+        >
+          {{ text }}
+        </span>
+        <a-textarea
+          v-else
+          v-model="recordList[index].pronunciation.pinyin"
+          :autosize="true"
+        />
+      </div>
 
-          <div slot="source" slot-scope="record">
-          <audio :src="record.source"  controls></audio>
+      <div slot="ipa" slot-scope="text,record,index">
+        <div
+          v-if="!record.editable"
+        >
+          {{ text }}
         </div>
+        <a-textarea
+          v-else
+          v-model="recordList[index].pronunciation.ipa"
+          :autosize="true"
+        />
+      </div>
 
-          <div slot="action" slot-scope="text,record,index">
-         <a-switch :checked="record.visibility" @change="onChange(index)">
-           <a-icon slot="checkedChildren" type="check" />
-           <a-icon slot="unCheckedChildren" type="close" />
-         </a-switch>
-    </div>
-        </a-table>
+      <div slot="source" slot-scope="record">
+        <audio :src="record.source" controls preload="none" style="max-width: 128px"></audio>
+      </div>
 
+      <div slot="exam" slot-scope="text,record">
+        <a-button v-if="!text.granted" @click="toConfirm=text.id;reason=''">
+          审核
+        </a-button>
+        <a-popover v-else>
+          <template slot="content">
+            审核人
+            <router-link
+              v-if="text"
+              :to="{ name: 'UserDetails', params: { id: text.verifier.id } }"
+            >
+              <a-avatar :src="text.verifier.avatar"></a-avatar>
+              {{ text.verifier.nickname }}
+            </router-link>
+          </template>
+          <a-tag :color="text.visibility ? 'green' : 'red'">
+            {{ text.visibility ? '通过' : '不通过' }}
+          </a-tag>
+          <a-button v-if="record.editable" @click="toConfirm=text.id;reason=''">
+            重新审核
+          </a-button>
+        </a-popover>
+      </div>
+
+      <div slot="action" slot-scope="text,record,index">
+        <a-button
+          v-if="!record.editable"
+          type="link"
+          @click="edit(index,true)"
+        >
+          编辑
+        </a-button>
+        <div v-else>
+          <a-popconfirm
+            cancel-text="取消"
+            ok-text="确定"
+            title="此次修改将保存至数据库，是否继续保存？"
+            @confirm="updatePronunciation(index)"
+          >
+            <a-button type="link"> 保存修改</a-button>
+          </a-popconfirm>
+          <a-button
+            type="link"
+            @click="edit(index,false)"
+          >
+            取消修改
+          </a-button>
+          <a-popconfirm
+            cancel-text="取消"
+            ok-text="确定"
+            title="删除语音后不可恢复，你确定要删除？"
+            @confirm="deletePronunciation(record.id)"
+          >
+            <a-button style="color: red" type="link"> 删除语音</a-button>
+          </a-popconfirm>
+
+        </div>
+      </div>
+    </a-table>
+  </div>
 </template>
 
 <script>
@@ -76,6 +176,7 @@ export default {
           title: '拼音',
           dataIndex: 'pinyin',
           key: 'pinyin',
+          scopedSlots: { customRender: 'pinyin' },
           align: 'center',
           width: 100
         },
@@ -83,6 +184,7 @@ export default {
           title: '国际音标',
           dataIndex: 'ipa',
           key: 'ipa',
+          scopedSlots: { customRender: 'ipa' },
           align: 'center',
           width: 100
         },
@@ -94,29 +196,41 @@ export default {
           align: 'center',
           width: 50
         },
-
         {
           title: '审核情况',
+          key: 'exam',
+          scopedSlots: { customRender: 'exam' },
+          align: 'center',
+          width: 50
+        },
+        {
+          title: '操作',
           key: 'action',
           scopedSlots: { customRender: 'action' },
           align: 'center',
-          width: 75
+          width: 50
         }
-      ]
+      ],
+
+      toConfirm: -1,
+      confirmLoading: false,
+      result: false,
+      reason: '',
+      current: 1
     }
   },
   computed: {
     pagination () {
       return {
-        onChange: async page => {
+        onChange: async (page) => {
+          this.current = page
           await this.getCurrentPage(page)
-          axios.get('/pronunciation', {
+          return axios.get('/pronunciation', {
             params: {
               pageSize: this.pagination.pageSize,
               page: page + 1,
               order: 1
-            },
-            cache: true
+            }
           })
         },
         pageSize: 20,
@@ -124,55 +238,83 @@ export default {
         total: this.total
       }
     }
+
   },
   async created () {
     await this.getCurrentPage(1)
-    axios.get('/pronunciation', {
-      params: {
-        pageSize: this.pagination.pageSize,
-        page: 2,
-        order: 1
-      },
-      cache: true
-    })
   },
   methods: {
     async getCurrentPage (page) {
       this.tableLoading = true
-      await axios.get('/pronunciation', {
-        params: {
-          pageSize: this.pagination.pageSize,
-          page: page,
-          order: 1
-        },
-        cache: true
-      }).then(res => {
-        this.recordList = res.data.pronunciation
-        this.recordList.forEach((record, index) => {
-          record.key = index
-          for (const item in record.pronunciation) {
-            if (item !== 'contributor') {
-              record[item] = record.pronunciation[item]
-            }
+      await axios
+        .get('/pronunciation', {
+          params: {
+            pageSize: this.pagination.pageSize,
+            page: page,
+            order: 1
           }
         })
-        this.total = res.data.total
-      }).finally(() => {
-        this.tableLoading = false
+        .then((res) => {
+          this.recordList = res.data.pronunciation
+          this.recordList.forEach((record, index) => {
+            record.key = index
+            record.editable = false
+            for (const item in record.pronunciation) {
+              if (item !== 'contributor') {
+                record[item] = record.pronunciation[item]
+              }
+            }
+          })
+          this.total = res.data.total
+        })
+        .finally(() => {
+          this.tableLoading = false
+        })
+    },
+    handleSubmit (id, result) {
+      const obj = { result: result }
+      if (!result && !this.reason) {
+        this.$message.warning('审核不通过必须填写情况说明')
+        return
+      }
+      if (this.reason) obj.reason = this.reason
+      this.confirmLoading = true
+      axios.put(`/pronunciation/${id}/examine`, obj)
+        .then(async () => {
+          await this.getCurrentPage(this.current)
+          this.$message.success('已审核')
+          this.toConfirm = -1
+        }).finally(() => {
+          this.confirmLoading = false
+        })
+    },
+    edit (index, result) {
+      this.recordList[index].editable = result
+      this.recordList = [...this.recordList]
+    },
+    updatePronunciation (index) {
+      const old = this.recordList[index]
+      const pronunciation = {
+        word: old.word_id,
+        source: old.source,
+        ipa: old.pronunciation.ipa,
+        pinyin: old.pronunciation.pinyin,
+        county: old.county,
+        town: old.town
+      }
+      axios.put(`/pronunciation/${old.id}`, { pronunciation }).then(async () => {
+        await this.getCurrentPage(this.current)
+        this.$message.success('保存成功')
       })
     },
-    onChange (index) {
-      axios.put(`/pronunciation/${this.recordList[index].id}/visibility`).then(() => {
-        const recordList = [...this.recordList]
-        recordList[index].pronunciation.visibility = !recordList[index].pronunciation.visibility
-        recordList[index].visibility = !recordList[index].visibility
-        this.recordList = recordList
+    deletePronunciation (id) {
+      axios.delete(`/pronunciation/${id}`, { data: {} }).then(async () => {
+        await this.getCurrentPage(this.current)
+        this.$message.success('删除成功！')
       })
     }
   }
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
