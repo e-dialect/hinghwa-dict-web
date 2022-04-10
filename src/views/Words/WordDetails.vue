@@ -36,7 +36,7 @@
       <div>
         <a-tag color="rgb(179, 7, 30,0.7)"> 释义</a-tag>
       </div>
-      <a-row type="flex" justify="center">
+      <a-row justify="center" type="flex">
         <a-col :span="22">
           <Definition :definition="word.definition"/>
         </a-col>
@@ -45,7 +45,7 @@
       <div v-if="word.mandarin.length" style="padding-top:32px">
         <a-tag color="rgb(179, 7, 30,0.7)"> 普通话词汇</a-tag>
         <template v-for="(tag,index) in word.mandarin">
-          <a-tag color="blue" :key="index">
+          <a-tag :key="index" color="blue">
             <a :href="`https://www.baidu.com/s?wd=${tag}`" target="_blank">{{ tag }}</a>
           </a-tag>
         </template>
@@ -65,7 +65,7 @@
       <!--百科-->
       <div v-if="word.annotation" style="padding-top:32px">
         <a-tag color="rgb(179, 7, 30,0.7)"> 附注</a-tag>
-        <a-row type="flex" justify="center">
+        <a-row justify="center" type="flex">
           <a-col :span="22">
             <MarkdownViewer :text="word.annotation"/>
           </a-col>
@@ -112,7 +112,7 @@
       <!--相关文章-->
       <div v-if="word.related_articles.length" style="padding-top:32px">
         <a-tag color="rgb(179, 7, 30,0.7)"> 相关文章</a-tag>
-        <a-row type="flex" justify="center">
+        <a-row justify="center" type="flex">
           <a-col :span="22">
             <ArticleList
               :list-data="word.related_articles.map(item=>{return item.id})"

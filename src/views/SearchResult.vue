@@ -15,14 +15,14 @@
         />
       </template>
       <div v-if="Chinese.length">
-      <h1>查单字</h1>
-      <a-row justify="space-around" type="flex">
-        <PinyinList
-          :key-words="Chinese"
-          style="width: 80%"
-        />
-      </a-row>
-      <a-divider></a-divider>
+        <h1>查单字</h1>
+        <a-row justify="space-around" type="flex">
+          <PinyinList
+            :key-words="Chinese"
+            style="width: 80%"
+          />
+        </a-row>
+        <a-divider></a-divider>
       </div>
       <h1>查词语</h1>
       <a-row justify="space-around" type="flex">

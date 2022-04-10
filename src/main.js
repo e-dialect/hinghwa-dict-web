@@ -11,7 +11,7 @@ Vue.use(Antd)
 
 // axios
 Vue.prototype.$axios = axios
-axios.defaults.baseURL = 'https://api.pxm.edialect.top/'
+axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'https://api.pxm.test.edialect.top/' : 'https://api.pxm.edialect.top/'
 
 // 利用axios的cancelToken来取消请求
 const CancelToken = axios.CancelToken
@@ -26,7 +26,9 @@ axios.interceptors.request.use(function (config) {
     const source = CancelToken.source()
     config.cancelToken = source.token
     let data = cache[config.url]
-    if (config.params && cache[config.url]) { data = cache[config.url][JSON.stringify(config.params)] }
+    if (config.params && cache[config.url]) {
+      data = cache[config.url][JSON.stringify(config.params)]
+    }
     if (data && Date.now() - data.time < 60000) {
       source.cancel(data)
     }
@@ -51,9 +53,11 @@ axios.interceptors.response.use(function (response) {
       data: response.data
     }
     if (response.config.params) {
-      if (!cache[response.config.url])cache[response.config.url] = {}
+      if (!cache[response.config.url]) cache[response.config.url] = {}
       cache[response.config.url][JSON.stringify(response.config.params)] = data
-    } else { cache[response.config.url] = data }
+    } else {
+      cache[response.config.url] = data
+    }
   }
   return response
 }, function (error) {

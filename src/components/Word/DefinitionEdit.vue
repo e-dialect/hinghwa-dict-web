@@ -16,12 +16,12 @@
 
     <!--    <a-textarea v-model="text"/>-->
     <a-list
-      item-layout="horizontal"
       :data-source="definitions"
+      item-layout="horizontal"
     >
       <a-list-item slot="renderItem" slot-scope="item,index2">
         <a-list-item-meta>
-          <a-row slot="title" type="flex" align="middle" :gutter="4">
+          <a-row slot="title" :gutter="4" align="middle" type="flex">
             <a-col :span="1">
               <span>{{ OrderIndex[index2] }}</span>
             </a-col>
@@ -29,22 +29,22 @@
               <a-input v-model="item.content" placeholder="义项内容"/>
             </a-col>
             <a-col :span="1">
-              <a-button icon="plus" type="primary" size="small" @click="addItem(definitions,index2+1)"/>
+              <a-button icon="plus" size="small" type="primary" @click="addItem(definitions,index2+1)"/>
             </a-col>
             <a-col :span="1">
-              <a-button icon="minus" type="primary" size="small" @click="definitions.splice(index2,1)"/>
+              <a-button icon="minus" size="small" type="primary" @click="definitions.splice(index2,1)"/>
             </a-col>
           </a-row>
           <a-row
-            type="flex"
-            :gutter="4"
-            align="middle"
             v-for="(exp,index) in item.example"
             :key="index"
             slot="description"
+            :gutter="4"
+            align="middle"
+            type="flex"
           >
             <a-col :span="3">
-              <a-select style="width: 64px" v-model="exp.type">
+              <a-select v-model="exp.type" style="width: 64px">
                 <a-select-option value="例">
                   例
                 </a-select-option>
@@ -67,7 +67,7 @@
             </a-col>
           </a-row>
           <div slot="description" style="text-align: center;padding: 8px">
-            <a-button icon="plus" @click="addExplain(item.example)" size="small" type="dashed">
+            <a-button icon="plus" size="small" type="dashed" @click="addExplain(item.example)">
               增加新例句或俗语
             </a-button>
           </div>
@@ -86,7 +86,7 @@
 </template>
 
 <script>
-import { order, splitDefinition, combineDefinitions } from './Definition.js'
+import { combineDefinitions, order, splitDefinition } from './Definition.js'
 
 export default {
   name: 'DefinitionEdit',

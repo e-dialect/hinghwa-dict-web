@@ -40,7 +40,7 @@
             </a-input>
           </a-form-item>
           <a-form-item label="乡镇">
-            <AreaCascader :county.sync="user.county" :town.sync="user.town" :disabled="!editing"/>
+            <AreaCascader :county.sync="user.county" :disabled="!editing" :town.sync="user.town"/>
           </a-form-item>
           <a-form-item :wrapper-col="{ span: 24, offset: 5 }">
             <a-button v-if="!editing" type="primary" v-on:click="editing=true">
@@ -60,9 +60,9 @@
           </a-form-item>
           <a-form-item label="微信">
             <a-button
+              v-if="user.wechat"
               icon="wechat"
               type="link"
-              v-if="user.wechat"
               @click="deleteWechat()"
             >
               解除绑定

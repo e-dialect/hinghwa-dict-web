@@ -26,9 +26,9 @@
                 / {{ item.word.standard_ipa }}/
               </span>
             <a-button
-              type="link"
-              icon="play-circle"
               :disabled="!item.word.url"
+              icon="play-circle"
+              type="link"
               @click="playSound(item.word.url)"
             />
           </template>
@@ -37,7 +37,7 @@
           <a-button type="link">
             <router-link :to="{name:'WordDetails',params:{id:item.word.id.toString()}}">
               更多
-              <a-icon type="double-right" />
+              <a-icon type="double-right"/>
             </router-link>
           </a-button>
         </div>

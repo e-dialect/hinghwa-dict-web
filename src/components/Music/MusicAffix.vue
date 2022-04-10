@@ -4,9 +4,9 @@
 
       <a-popover
         v-model="visible"
+        placement="right"
         style="z-index: 1100"
         trigger="click"
-        placement="right"
       >
         <template v-slot:content>
           <a-card
@@ -18,8 +18,8 @@
             </template>
             <a-button
               slot="extra"
-              type="link"
               :disabled="$route.name==='Music'"
+              type="link"
               @click="$router.push({name:'Music'})"
             >
               进入方言曲库
@@ -32,8 +32,8 @@
             <audio
               ref="myAudio"
               :src="music.source"
-              style="width: 100%;"
-              controls loop autoplay
+              autoplay
+              controls loop style="width: 100%;"
             />
 
           </a-card>

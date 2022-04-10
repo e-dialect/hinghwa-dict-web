@@ -80,7 +80,7 @@
         type="primary"
         @click="id?updateArticle():createArticle()"
       >
-        {{ id ? "更新文章" : "创建文章" }}
+        {{ id ? '更新文章' : '创建文章' }}
       </a-button>
     </a-row>
 
@@ -121,8 +121,11 @@ export default {
      * 在edit文章时，返回int类型的文章id
      */
     id () {
-      if (this.$route.name === 'ArticleCreate') return 0
-      else return +this.$attrs.id
+      if (this.$route.name === 'ArticleCreate') {
+        return 0
+      } else {
+        return +this.$attrs.id
+      }
     }
   },
 
@@ -135,7 +138,10 @@ export default {
       axios.post('/articles', Object.assign({}, this.article)).then(res => {
         this.submit = true
         this.$message.success('恭喜你，创建成功！')
-        this.$router.push({ name: 'ArticleDetails', params: { id: res.data.id.toString() } })
+        this.$router.push({
+          name: 'ArticleDetails',
+          params: { id: res.data.id.toString() }
+        })
       }).catch(err => {
         this.$message.destroy()
         switch (err.response.status) {
@@ -173,7 +179,10 @@ export default {
       }).then(() => {
         this.submit = true
         this.$message.success('文章更新成功！')
-        this.$router.push({ name: 'ArticleDetails', params: { id: this.id.toString() } })
+        this.$router.push({
+          name: 'ArticleDetails',
+          params: { id: this.id.toString() }
+        })
       }).catch(err => {
         this.$message.destroy()
         switch (err.response.status) {
@@ -231,7 +240,9 @@ export default {
         }
         this.compareArticle = { ...this.article }
         this.isAuthor = true
-      } else this.getArticleDetails()
+      } else {
+        this.getArticleDetails()
+      }
     }
 
   },
@@ -247,14 +258,20 @@ export default {
   },
 
   beforeRouteEnter (to, from, next) {
-    if (to.name === 'ArticleCreate') next()
-    else if (to.params.id % 1 === 0) next()
-    else next({ name: 'NotFound' })
+    if (to.name === 'ArticleCreate') {
+      next()
+    } else if (to.params.id % 1 === 0) {
+      next()
+    } else {
+      next({ name: 'NotFound' })
+    }
   },
 
   beforeRouteLeave (to, from, next) {
     let deng = true
-    for (const i in this.article) { if (this.article[i] !== this.compareArticle[i])deng = false }
+    for (const i in this.article) {
+      if (this.article[i] !== this.compareArticle[i]) deng = false
+    }
     const key = 'page'
     if (this.submit === true) deng = true
     if (!deng) {

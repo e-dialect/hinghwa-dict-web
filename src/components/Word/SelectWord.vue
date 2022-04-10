@@ -1,22 +1,22 @@
 <template>
   <a-select
-    show-search
-    mode="multiple"
     v-model="words"
-    :not-found-content="fetching ? undefined : null"
-    style="width: 100%"
-    :maxTagTextLength="30"
     :filter-option="false"
-    @search="handleWordSearch"
-    placeholder="键入关键字选择相关词条"
+    :maxTagTextLength="30"
+    :not-found-content="fetching ? undefined : null"
+    mode="multiple"
     option-label-prop="label"
+    placeholder="键入关键字选择相关词条"
+    show-search
+    style="width: 100%"
+    @search="handleWordSearch"
   >
     <a-spin v-if="fetching" slot="notFoundContent" size="small"/>
     <a-select-option
       v-for="(item,index) in options_word"
       :key="index"
-      :value="item.id"
       :label="`${item.word}(${item.standard_pinyin})`"
+      :value="item.id"
     >
       {{ item.word }}-{{ item.standard_pinyin }}-{{ item.definition }}
     </a-select-option>

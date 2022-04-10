@@ -4,12 +4,12 @@
       title="每日一词"
     >
       <template v-slot:cover>
-        <img alt="每日一图" :src="cover" @click="$router.push(link)"/>
+        <img :src="cover" alt="每日一图" @click="$router.push(link)"/>
       </template>
       <template v-slot:extra>
         <router-link :to="link">More</router-link>
       </template>
-      <a-card-meta :title="title" :description="description">
+      <a-card-meta :description="description" :title="title">
       </a-card-meta>
     </a-card>
   </div>

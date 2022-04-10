@@ -2,7 +2,7 @@
   <div class="login">
     <a-row align="middle" justify="center" type="flex">
       <a-col>
-        <img :width="300" src="../../assets/blue.svg" alt="logo"/>
+        <img :width="300" alt="logo" src="../../assets/blue.svg"/>
       </a-col>
     </a-row>
     <a-row align="middle" justify="center" style="padding-bottom:20px" type="flex">
@@ -51,11 +51,11 @@
       </a-col>
       <a-col span="2">
         <a-button
+          :disabled="!email"
+          :loading="btnCodeLoading"
           shape="round"
           type="primary"
           @click="sendCode(email)"
-          :disabled="!email"
-          :loading="btnCodeLoading"
         >
           发送验证码
         </a-button>
@@ -64,11 +64,11 @@
     <a-row align="middle" justify="center" type="flex">
       <a-col span="2">
         <a-button
+          :disabled="!(username&&password&&email&&code)"
+          :loading="btnRegisterLoading"
           shape="round"
           type="primary"
           @click="finishRegister"
-          :loading="btnRegisterLoading"
-          :disabled="!(username&&password&&email&&code)"
         >
           注册
         </a-button>

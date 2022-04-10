@@ -1,22 +1,22 @@
 <template>
   <a-select
-    show-search
-    mode="multiple"
     v-model="articles"
-    :not-found-content="fetching ? undefined : null"
-    style="width: 100%"
-    :maxTagTextLength="30"
     :filter-option="false"
-    @search="handleArticleSearch"
-    placeholder="键入关键字选择相关文章"
+    :maxTagTextLength="30"
+    :not-found-content="fetching ? undefined : null"
+    mode="multiple"
     option-label-prop="label"
+    placeholder="键入关键字选择相关文章"
+    show-search
+    style="width: 100%"
+    @search="handleArticleSearch"
   >
     <a-spin v-if="fetching" slot="notFoundContent" size="small"/>
     <a-select-option
       v-for="(item,index) in options_article"
       :key="index"
-      :value="item.article.id"
       :label="`${item.article.title}(${item.author.nickname})`"
+      :value="item.article.id"
     >
       {{ item.article.title }}-{{ item.author.nickname }}-{{ item.article.description }}
     </a-select-option>

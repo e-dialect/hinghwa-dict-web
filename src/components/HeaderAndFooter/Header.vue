@@ -3,12 +3,12 @@
     <a-row align="middle" justify="space-around" type="flex">
       <a-col :span="3">
         <router-link to="/Home">
-          <img src="../../assets/blue.svg" alt="E方言图标" width="120px">
+          <img alt="E方言图标" src="../../assets/blue.svg" width="120px">
         </router-link>
       </a-col>
 
       <a-col :span="9">
-        <a-menu mode="horizontal" v-model="tab">
+        <a-menu v-model="tab" mode="horizontal">
           <a-menu-item key="Home">
             <router-link :to="{name:'Home'}">主页</router-link>
           </a-menu-item>

@@ -8,10 +8,10 @@
     <a-input
       v-if="inputVisible"
       ref="input"
-      type="text"
-      size="small"
-      :style="{ width: '78px' }"
       v-model="inputValue"
+      :style="{ width: '78px' }"
+      size="small"
+      type="text"
       @blur="handleInputConfirm"
       @keyup.enter="handleInputConfirm"
     />

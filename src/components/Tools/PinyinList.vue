@@ -1,18 +1,18 @@
 <template>
   <div>
     <a-spin
-      :spinning="loading"
-      :delay="500">
+      :delay="500"
+      :spinning="loading">
       <a-collapse
         v-if="characters.length"
+        :activeKey="Array.from(characters.keys())"
         :bordered="false"
         style="font-size: 22px;padding: 10px;background-color: white"
-        :activeKey="Array.from(characters.keys())"
       >
         <a-collapse-panel
           v-for="(item,index) in characters "
-          :header="item.label===item.traditional?`${item.label}`:`${item.label}(${item.traditional})`"
           :key="index.toString()"
+          :header="item.label===item.traditional?`${item.label}`:`${item.label}(${item.traditional})`"
         >
           <div v-for="(jtem,index2) in item.characters" :key="index2.toString()">
             <a-breadcrumb>
@@ -22,7 +22,7 @@
             <span v-for="(ktem,index3) in jtem.characters" :key="index3.toString()" style="padding-right: 16px">
               <span v-if="ktem.word===null">{{ ktem.pinyin }}</span>
               <router-link v-else :to="{name:'WordDetails',params:{id:ktem.word}}">{{ ktem.pinyin }}</router-link>
-              <a-button icon="sound" size="small" type="link" v-if="ktem.source" @click="playSound(ktem.source)"/>
+              <a-button v-if="ktem.source" icon="sound" size="small" type="link" @click="playSound(ktem.source)"/>
             </span>
           </div>
         </a-collapse-panel>

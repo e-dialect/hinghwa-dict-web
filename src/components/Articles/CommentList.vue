@@ -27,12 +27,12 @@
 
     <!--现有评论-->
     <a-list
+      v-if="filteredComments.length"
       :data-source="filteredComments"
       :header="`${filteredComments.length} ${filteredComments.length > 1 ? 'replies' : 'reply'}`"
+      :loading="{spinning:commentsLoading,delay:500}"
       :pagination="{pageSize: pageSize,hideOnSinglePage:true}"
       item-layout="horizontal"
-      :loading="{spinning:commentsLoading,delay:500}"
-      v-if="filteredComments.length"
     >
       <template v-slot:renderItem="item">
         <a-list-item>
@@ -49,8 +49,8 @@
             <template slot="actions">
               <span
                 v-if="item.user.id===user.id"
-                @click="commentDelete(item.id)"
                 :disabled="btnCommentSubmitting"
+                @click="commentDelete(item.id)"
               >
                删除评论
               </span>
@@ -67,7 +67,7 @@
               </span>
             </template>
             <comment-list
-              :comments="comments" :parent="item.id" :pageSize="3" :id="id"/>
+              :id="id" :comments="comments" :pageSize="3" :parent="item.id"/>
           </a-comment>
         </a-list-item>
       </template>

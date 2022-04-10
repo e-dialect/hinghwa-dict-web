@@ -4,10 +4,10 @@
     <template slot="title">
       <h2>快速录音</h2>
       <h5>
-          为批量录音加速再加速（此功能需要先行登录）
-          <br>
-          已经从用户资料中获取默认的县区和乡镇信息，实际情况请修改在文本框中~
-          <br>
+        为批量录音加速再加速（此功能需要先行登录）
+        <br>
+        已经从用户资料中获取默认的县区和乡镇信息，实际情况请修改在文本框中~
+        <br>
         发音人乡镇
         <AreaCascader
           :county.sync="form.county"
@@ -31,7 +31,7 @@
         >
           <span slot="index" slot-scope="record">
             <router-link :to="{name:'WordDetails',params:{id:record.word}}">
-              {{record.word}}
+              {{ record.word }}
             </router-link>
           </span>
           <span slot="customTitle"> Name</span>
@@ -56,7 +56,10 @@ import AreaCascader from '../../components/User/AreaCascader'
 
 export default {
   name: 'QuickRecording',
-  components: { AreaCascader, Recording },
+  components: {
+    AreaCascader,
+    Recording
+  },
   data () {
     return {
       recordList: [

@@ -1,13 +1,14 @@
 <template>
-  <a-spin :spinning="spinning" :delay="500" class="body">
-  <ArticleList :page-size="8" :list-data="listData">
-  </ArticleList>
+  <a-spin :delay="500" :spinning="spinning" class="body">
+    <ArticleList :list-data="listData" :page-size="8">
+    </ArticleList>
   </a-spin>
 </template>
 
 <script>
 import ArticleList from '@/components/Articles/ArticleList'
 import axios from 'axios'
+
 export default {
   name: 'Articles',
   components: {

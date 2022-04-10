@@ -24,6 +24,7 @@
 
 <script>
 import Record from '../../components/Admin/Record'
+
 export default {
   name: 'RecordConfirming',
   components: { Record },

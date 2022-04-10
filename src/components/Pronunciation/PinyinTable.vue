@@ -1,5 +1,5 @@
 <template>
-  <a-row type="flex" justify="center">
+  <a-row justify="center" type="flex">
     <a-col :span="18">
       <a-table :columns="columns" :data-source="pinyin">
         <span slot="customTitle"> Name</span>

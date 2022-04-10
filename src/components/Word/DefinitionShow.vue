@@ -1,7 +1,7 @@
 <template>
   <a-list
-    item-layout="horizontal"
     :data-source="analysedDefinition"
+    item-layout="horizontal"
     style="margin: 16px"
   >
     <a-list-item slot="renderItem" slot-scope="item">
@@ -9,7 +9,7 @@
         <div slot="title" style="font-size: 18px;color: black;padding-bottom: 8px">
           {{ item.content }}
         </div>
-        <div v-for="exp in item.example" :key="exp.content" style="padding: 5px" slot="description">
+        <div v-for="exp in item.example" :key="exp.content" slot="description" style="padding: 5px">
           <a-tag color="rgb(64, 49, 131)"> {{ exp.type }}</a-tag>
           <span style="padding:5px">
                   <ExampleSpan :content="exp.content"/>

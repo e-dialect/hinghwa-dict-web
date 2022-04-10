@@ -7,7 +7,7 @@
           @click="onCardClick(item)"
         >
           <template v-slot:cover>
-            <img :src="item.cover" :alt="item.routerName"/>
+            <img :alt="item.routerName" :src="item.cover"/>
           </template>
         </a-card>
 
@@ -69,8 +69,11 @@ export default {
   },
   methods: {
     onCardClick (item) {
-      if (!item.disabled) this.$router.push({ name: item.routerName })
-      else this.$message.warning('功能正在开发中，请耐心等候')
+      if (!item.disabled) {
+        this.$router.push({ name: item.routerName })
+      } else {
+        this.$message.warning('功能正在开发中，请耐心等候')
+      }
     }
   },
   computed: {

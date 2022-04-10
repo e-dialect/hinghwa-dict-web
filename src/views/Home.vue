@@ -10,19 +10,19 @@
       <a-card hoverable style="height:376px;text-align: center">
         <div style="text-align: right">
           <a-button
-            type="dashed"
             icon="more"
+            type="dashed"
             @click="$router.push({name:'WordDetails',params:{id:Math.ceil(Math.random()*3500)}})"
           >
             随机跳词
           </a-button>
         </div>
 
-        <img src="../assets/blue.svg" width="40%" alt="兴化语记logo" style="padding-top: 32px">
+        <img alt="兴化语记logo" src="../assets/blue.svg" style="padding-top: 32px" width="40%">
         <a-input-search
+          v-model="searchContent"
           placeholder="一键检索你想知道的"
           style="width:70%;"
-          v-model="searchContent"
           @search="search(searchContent)"
         />
         <div style="padding-top: 24px;text-align: left;font-size: 8px;margin:24px 24px;line-height: 8px">
@@ -31,20 +31,20 @@
           <p>搜词语：检索与输入相关的词语</p>
           <p>搜文章：检索与输入相关的文章</p>
         </div>
-        </a-card>
+      </a-card>
     </a-row>
 
     <a-row
       justify="space-around"
-      type="flex"
       style="padding-top:10px;padding-bottom:20px;padding-right:0;padding-left:0;"
+      type="flex"
     >
-      <a-col :span="21/toolList.length" v-for="item in toolList" :key="item.id">
+      <a-col v-for="item in toolList" :key="item.id" :span="21/toolList.length">
         <a-card hoverable>
           <template v-slot:cover>
             <img
-              :src="item.cover"
               :alt="item.name"
+              :src="item.cover"
               style="width: 100%"
               @click="$router.push({name:item.routerName})"/>
           </template>

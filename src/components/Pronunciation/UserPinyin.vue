@@ -7,8 +7,8 @@
         :pagination="pagination"
       >
          <span slot="status" slot-scope="text, record">
-          <a-badge status="warning" color="red" title="暂未通过审核" v-if="!record.pronunciation.visibility"/>
-          <a-badge status="success" title="已经通过审核" v-else/>
+          <a-badge v-if="!record.pronunciation.visibility" color="red" status="warning" title="暂未通过审核"/>
+          <a-badge v-else status="success" title="已经通过审核"/>
         </span>
         <span slot="word" slot-scope="text, record">
           <router-link :to="{name:'WordDetails',params:{id:record.pronunciation.word_id.toString()}}">

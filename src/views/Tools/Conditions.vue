@@ -4,18 +4,18 @@
     <!--   搜索按钮  -->
     <a-popconfirm
       slot="extra"
-      :visible="visible"
-      ok-text="继续"
-      cancel-text="取消"
-      @confirm="confirmShowing"
-      @cancel="visible=false;loading = false"
       :title="'这样搜索共有'+result.length+'个结果，若要显示可能需要一定的时间，请确认是否继续？'"
+      :visible="visible"
+      cancel-text="取消"
+      ok-text="继续"
+      @cancel="visible=false;loading = false"
+      @confirm="confirmShowing"
     >
       <a-button
+        :loading="btnLoading"
+        style="margin-left:32px"
         type="primary"
         v-on:click="getCharacters()"
-        style="margin-left:32px"
-        :loading="btnLoading"
       >
         按条件检索
       </a-button>
@@ -27,10 +27,10 @@
       <a-col span="8">
         <!--   筛选声母  -->
         <a-select
-          :showSearch="true"
           v-model="conditions.shengmu"
-          option-filter-prop="children"
           :filter-option="filterOption"
+          :showSearch="true"
+          option-filter-prop="children"
           style="width: 100%"
         >
           <a-select-option v-for="(value,key) in shengmu" :key="key">
@@ -42,10 +42,10 @@
       <a-col span="8">
         <!--   筛选韵母  -->
         <a-cascader
-          :options="yunmu"
-          :display-render="displayRender"
-          :showSearch="true"
           v-model="conditions.yunmu"
+          :display-render="displayRender"
+          :options="yunmu"
+          :showSearch="true"
           placeholder="（选择韵母）"
           style="width:100%"
         />
@@ -53,11 +53,11 @@
       <a-col span="8">
         <!--   筛选声调  -->
         <a-select
-          :showSearch="true"
           v-model="conditions.shengdiao"
+          :filter-option="filterOption"
+          :showSearch="true"
           option-filter-prop="children"
           style="width: 100%"
-          :filter-option="filterOption"
         >
           <a-select-option v-for="(value,key) in shengdiao" :key="key">
             {{ value }}
@@ -71,11 +71,11 @@
 
     <a-empty v-if="!result.length" description="无数据"/>
     <!--   搜索结果  -->
-    <a-skeleton v-else active :loading="loading">
+    <a-skeleton v-else :loading="loading" active>
       <a-collapse
+        :activeKey="activeKeys"
         :bordered="false"
         style="font-size: 22px;padding: 10px;background-color: white"
-        :activeKey="activeKeys"
       >
         <a-collapse-panel
           v-for="(pinyin,index) in characters"
@@ -86,12 +86,12 @@
             <a-col :span="2">
               <PlaySoundButton :url="pinyin.source"/>
             </a-col>
-            <a-col :span="2" v-for="(character,index2) in pinyin.characters" :key="index2">
+            <a-col v-for="(character,index2) in pinyin.characters" :key="index2" :span="2">
               <span v-if="!character.word">
                 <span>{{ character.character }}</span>
                 <span
-                  style="color: #8b8b8b;font-size: small"
                   v-if="character.character!==character.traditional"
+                  style="color: #8b8b8b;font-size: small"
                 >
                   {{ character.traditional }}
                 </span>
@@ -102,8 +102,8 @@
               >
                 <span>{{ character.character }}</span>
                 <span
-                  style="color: #8b8b8b;font-size: small"
                   v-if="character.character!==character.traditional"
+                  style="color: #8b8b8b;font-size: small"
                 >
                   {{ character.traditional }}
                 </span>

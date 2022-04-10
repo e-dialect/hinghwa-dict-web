@@ -7,8 +7,8 @@
 
     <template slot="extra">
       <a-input-search
-        placeholder="在全字段中搜索"
         v-model="searchInput"
+        placeholder="在全字段中搜索"
         style="width:200px; margin-bottom: 8px;"
         @search="searchText=searchInput;getCurrentPage(1)"
       />

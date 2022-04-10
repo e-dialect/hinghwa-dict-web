@@ -11,8 +11,8 @@
         <h2>审核词条创建申请（未完工）</h2>
       </div>
     </div>
-    <a-spin :spinning="spinning" :delay="500">
-      <a-form-model :model="application.content" :labelCol="{span: 3}" :wrapperCol="{span:16,offset:1}">
+    <a-spin :delay="500" :spinning="spinning">
+      <a-form-model :labelCol="{span: 3}" :model="application.content" :wrapperCol="{span:16,offset:1}">
         <a-form-model-item label="词条">
           <span @click="editing.word=!editing.word">{{ content.word }}</span>
           <a-input

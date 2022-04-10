@@ -40,10 +40,10 @@
           {{ user.telephone }}
         </a-descriptions-item>
         <a-descriptions-item label="县区">
-          {{user.county}}
+          {{ user.county }}
         </a-descriptions-item>
         <a-descriptions-item label="乡镇">
-          {{user.town}}
+          {{ user.town }}
         </a-descriptions-item>
       </a-descriptions>
 

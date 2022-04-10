@@ -4,10 +4,10 @@
 
     <a-carousel
       ref="zmd"
-      arrows
-      :slideToScroll="current"
       :autoplay="true"
       :autoplaySpeed="6000"
+      :slideToScroll="current"
+      arrows
       @click="console.log('carousel')"
     >
       <div
@@ -31,7 +31,7 @@
         :key="item.id"
         :to="{name:'ArticleDetails', params:{id:item.id.toString()}}"
       >
-        <img :alt="item.id" :src="item.url" style="height: 380px" />
+        <img :alt="item.id" :src="item.url" style="height: 380px"/>
       </router-link>
 
     </a-carousel>

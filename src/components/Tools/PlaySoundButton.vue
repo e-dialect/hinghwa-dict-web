@@ -1,5 +1,5 @@
 <template>
-  <a-button icon="sound" size="small" type="link" :disabled="!url" @click="playSound(url)"/>
+  <a-button :disabled="!url" icon="sound" size="small" type="link" @click="playSound(url)"/>
 </template>
 
 <script>

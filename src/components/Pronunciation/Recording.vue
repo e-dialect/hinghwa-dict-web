@@ -71,6 +71,7 @@
 <script>
 import axios from 'axios'
 import AreaCascader from '../User/AreaCascader'
+
 export default {
   name: 'Recording',
   props: ['visible', 'form', 'onCancel'],

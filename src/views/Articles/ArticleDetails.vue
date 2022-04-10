@@ -26,8 +26,8 @@
           <template #title>
             <h3> 评论区 </h3>
           </template>
-          <a-spin :spinning="commentsLoading" :delay="500">
-            <comment-list :parent="0" :pageSize="8" :id="id"/>
+          <a-spin :delay="500" :spinning="commentsLoading">
+            <comment-list :id="id" :pageSize="8" :parent="0"/>
           </a-spin>
         </a-card>
       </a-col>
@@ -62,8 +62,8 @@
         <a-card style="margin-top: 16px" title="文章操作">
           <div style="text-align: center;line-height: 48px">
             <a-button
-              style="margin-top:8px"
               :loading="btnLikeLoading"
+              style="margin-top:8px"
               type="primary"
               @click="btnLikeClick"
             >
@@ -73,9 +73,9 @@
             <br>
 
             <a-popconfirm
-              title="文章一旦删除变无法找回，你确定要继续操作？"
-              ok-text="删除"
               cancel-text="取消"
+              ok-text="删除"
+              title="文章一旦删除变无法找回，你确定要继续操作？"
               @confirm="deleteArticle"
             >
 

@@ -2,8 +2,8 @@
   <div>
     <a-list
       :data-source="listSource || []"
-      :pagination="pagination"
       :loading="{spinning: loading, delay: 500}"
+      :pagination="pagination"
       item-layout="vertical"
     >
       <template v-slot:renderItem="item">

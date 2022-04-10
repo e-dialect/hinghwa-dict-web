@@ -14,13 +14,13 @@
       </p>
     </div>
     <iframe
-      src="https://player.bilibili.com/player.html?aid=77966786&bvid=BV1RJ411q7yW&cid=133662582&page=1"
+      :allowfullscreen="true"
       :scrolling="true"
       border="0"
       framespacing="0"
-      :allowfullscreen="true"
-      width="100%"
       height="500px"
+      src="https://player.bilibili.com/player.html?aid=77966786&bvid=BV1RJ411q7yW&cid=133662582&page=1"
+      width="100%"
     >
     </iframe>
 
