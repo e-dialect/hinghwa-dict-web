@@ -132,6 +132,12 @@ const routes = [
     component: () => import('../views/Tools/WordConfirming.vue')
   },
   {
+    path: '/words/Create',
+    name: 'WordCreate',
+    props: true,
+    component: () => import('../views/Words/WordEdit.vue')
+  },
+  {
     path: '/words/:id',
     name: 'WordDetails',
     props: true,

@@ -9,9 +9,15 @@
       <span slot="customTitle"> Name</span>
 
       <div slot="word" slot-scope="text">
-        <router-link v-if="text" :to="{name:'WordDetails',params:{id:text.word}}">
+        <router-link v-if="text.word" :to="{name:'WordDetails',params:{id:text.word}}">
           {{ text.content.word }}
         </router-link>
+        <a-tooltip v-else>
+          <template slot="title">
+            这是一个申请新创建的词条
+          </template>
+          {{ text.content.word }}
+        </a-tooltip>
       </div>
 
       <div slot="contributor" slot-scope="text">
@@ -72,7 +78,6 @@ export default {
       ]
     }
   },
-  computed: {},
   async created () {
     await this.$store.dispatch('userUpdate')
     if (this.$store.getters.user.is_admin === false) {

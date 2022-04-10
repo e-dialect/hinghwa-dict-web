@@ -4,11 +4,11 @@
     <a-descriptions layout="vertical">
       <template v-slot:title>
         <h3>
-        <router-link :to="{name:'UserDetails',params:{id:user.id.toString()}}">
-          个人信息
-        </router-link>
+          <router-link :to="{name:'UserDetails',params:{id:user.id.toString()}}">
+            个人信息
+          </router-link>
         </h3>
-        <a-button type="dashed" style="float: right;">
+        <a-button style="float: right;" type="dashed">
           <router-link :to="{ name: 'UserSettings'}">修改</router-link>
         </a-button>
       </template>
@@ -16,7 +16,7 @@
         {{ user.username }}
       </a-descriptions-item>
       <a-descriptions-item label="昵称">
-        {{user.nickname}}
+        {{ user.nickname }}
       </a-descriptions-item>
       <a-descriptions-item label="身份">
         <user-tag :type="user.is_admin"></user-tag>
@@ -34,7 +34,7 @@
 
     <a-divider></a-divider>
 
-    <a-descriptions >
+    <a-descriptions>
       <template v-slot:title>
         <h3>
           贡献信息
@@ -46,7 +46,7 @@
         </router-link>
       </a-descriptions-item>
       <a-descriptions-item label="词条">
-        {{ contribution.word}}
+        {{ contribution.word }}
       </a-descriptions-item>
       <a-descriptions-item label="文章">
         <router-link :to="{name:'UserDetails',params:{id:user.id.toString()}}">
@@ -55,19 +55,19 @@
       </a-descriptions-item>
     </a-descriptions>
 
-    <a-row type="flex" align="middle">
+    <a-row align="middle" type="flex">
       <a-col :span="8">
         <router-link :to="{name:'QuickRecording'}">
           <a-button type="dashed">发布新语音</a-button>
         </router-link>
       </a-col>
       <a-col :span="8">
-        <router-link :to="{name:'UserDetails',params:{id:user.id.toString()}}">
-          <a-button type="dashed" :disabled="true">提交新词语</a-button>
+        <router-link :to="{name:'WordCreate'}">
+          <a-button type="dashed">提交新词语</a-button>
         </router-link>
       </a-col>
       <a-col :span="8">
-        <a-button type="dashed" >
+        <a-button type="dashed">
           <router-link :to="{name:'ArticleCreate'}">创建新文章</router-link>
         </a-button>
       </a-col>

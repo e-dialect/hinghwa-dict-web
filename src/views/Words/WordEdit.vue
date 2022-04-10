@@ -2,18 +2,19 @@
   <a-spin :delay="500" :spinning="spinning">
     <a-card>
       <template v-slot:title>
-        <h1>词条编辑</h1>
+        <h1 v-if="id">词条编辑</h1>
+        <h1 v-else>词条创建</h1>
       </template>
 
-      <a-form-model :model="word" :labelCol="{span: 3}" :wrapperCol="{span:16,offset:1}">
+      <a-form-model :labelCol="{span: 3}" :model="word" :wrapperCol="{span:16,offset:1}">
         <a-form-model-item label="词条">
-          <a-input v-model="word.word"/>
+          <a-input v-model="word.word" placeholder="填入词条标题"/>
         </a-form-model-item>
         <a-form-model-item label="拼音">
-          <a-input v-model="word.standard_pinyin"/>
+          <a-input v-model="word.standard_pinyin" placeholder="词条的拼音写法（不用类化）"/>
         </a-form-model-item>
         <a-form-model-item label="IPA">
-          <a-input v-model="word.standard_ipa"/>
+          <a-input v-model="word.standard_ipa" placeholder="词条的IPA（实际发音），实在不会可以留空找管理员帮忙"/>
         </a-form-model-item>
         <a-form-model-item label="释义">
           <DefinitionEdit v-model="word.definition"/>
@@ -31,10 +32,13 @@
           <MarkdownEditor v-model="word.annotation"></MarkdownEditor>
         </a-form-model-item>
         <a-form-model-item label="理由说明">
-          <a-input v-model="reason" placeholder="[可选]说明更改了哪些点，为何修改有助于更好帮助管理员审核"/>
+          <a-input v-if="id" v-model="reason" placeholder="[可选]说明更改了哪些点，为何修改有助于更好帮助管理员审核"/>
+          <a-input v-else v-model="reason" placeholder="[可选]说明有哪些看可能把握不准的地方，有助于更好帮助管理员审核"/>
         </a-form-model-item>
       </a-form-model>
-      <a-button @click="submit">提交更改</a-button>
+      <a-button @click="submit">
+        {{ id ? '提交更改' : '创建词条' }}
+      </a-button>
     </a-card>
   </a-spin>
 </template>
@@ -49,7 +53,6 @@ import SelectArticle from '../../components/Word/SelectArticle'
 
 export default {
   name: 'WordEdit',
-  props: ['id'],
   components: {
     SelectArticle,
     SelectWord,
@@ -63,8 +66,8 @@ export default {
       visible: false,
       word: {
         id: 0,
-        word: '例子',
-        definition: '这仅仅是一个样例',
+        word: '',
+        definition: '',
         contributor: {
           nickname: '用户昵称',
           avatar: 'http://dummyimage.com/100x100',
@@ -76,8 +79,16 @@ export default {
         related_articles: [],
         views: 100
       },
-      standard_pronunciation: null,
       reason: ''
+    }
+  },
+  computed: {
+    id () {
+      if (this.$route.name === 'WordCreate') {
+        return 0
+      } else {
+        return +this.$route.params.id
+      }
     }
   },
   created () {
@@ -98,36 +109,18 @@ export default {
         this.$router.push({ name: 'Login' })
         return
       }
-      this.spinning = true
-      await axios.get('words/' + this.id).then(res => {
-        this.word = res.data.word
-      }).catch(() => {
-        this.$message.destroy()
-        this.$router.replace({ name: 'NotFound' })
-      }).finally(() => {
-        this.spinning = false
-      })
-      this.standard_pronunciation = await this.getIPAPronunciation(this.word.standard_ipa)
-      await axios.get('/pronunciation', { params: { word: this.id } }).then(res => {
-        this.pronunciation = res.data.pronunciation
-        this.pronunciation.forEach((item, index) => {
-          item.key = index
+
+      if (this.id) {
+        this.spinning = true
+        await axios.get('words/' + this.id).then(res => {
+          this.word = res.data.word
+        }).catch(() => {
+          this.$message.destroy()
+          this.$router.replace({ name: 'NotFound' })
+        }).finally(() => {
+          this.spinning = false
         })
-      })
-    },
-    /**
-     * 根据ipa获取读音
-     * @param ipa
-     * @returns {Promise<string>} 音频url
-     */
-    async getIPAPronunciation (ipa) {
-      let url = ''
-      await axios.get(`/pronunciation/${ipa}`).then(res => {
-        if (res.data.url !== 'null') {
-          url = res.data.url
-        } else if (res.data.tts !== 'null') url = res.data.tts
-      })
-      return url
+      }
     },
     /**
      * 提交更改申请
@@ -139,10 +132,14 @@ export default {
         reason: this.reason
       }).then(res => {
         this.$message.success(`词条更改${res.data.id}申请已提交！正在等待管理员审核~`)
-        this.$router.push({
-          name: 'WordDetails',
-          params: { id: this.id }
-        })
+        if (this.id) {
+          this.$router.push({
+            name: 'WordDetails',
+            params: { id: this.id }
+          })
+        } else {
+          this.$router.push({ name: 'Home' })
+        }
       })
     }
 

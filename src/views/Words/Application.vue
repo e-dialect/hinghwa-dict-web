@@ -1,10 +1,15 @@
 <template>
   <a-card>
     <div slot="title">
-      <h2>审核词条变更申请（未完工）</h2>
-      <p>显示内容（不可编辑内容）为词条当前已公开的状态</p>
-      <p>申请发生变动的部分显示在下方的编辑模式内</p>
-      <p>未发生变动的部分默认隐藏编辑模式，但可手动点击对应的显示内容进入编辑模式</p>
+      <div v-if="application.word">
+        <h2>审核词条变更申请（未完工）</h2>
+        <p>显示内容（不可编辑内容）为词条当前已公开的状态</p>
+        <p>申请发生变动的部分显示在下方的编辑模式内</p>
+        <p>未发生变动的部分默认隐藏编辑模式，但可手动点击对应的显示内容进入编辑模式</p>
+      </div>
+      <div v-else>
+        <h2>审核词条创建申请（未完工）</h2>
+      </div>
     </div>
     <a-spin :spinning="spinning" :delay="500">
       <a-form-model :model="application.content" :labelCol="{span: 3}" :wrapperCol="{span:16,offset:1}">
@@ -31,7 +36,7 @@
         </a-form-model-item>
         <a-form-model-item label="释义">
           <div @click="editing.definition=!editing.definition">
-            <DefinitionShow :definition="content.definition"/>
+            <DefinitionShow v-if="application.word" :definition="content.definition"/>
           </div>
           <DefinitionEdit
             v-if="content.definition!==application.content.definition || editing.definition"
@@ -112,17 +117,17 @@ export default {
         articles: false,
         annotation: false
       }
-      // isNew: false
-      // TODO: 创建词条的审核
     }
   },
   async created () {
     await axios.get(`/words/applications/${this.id}`).then(res => {
       this.application = res.data.application
     })
-    await axios.get(`words/${this.application.word}`).then(res => {
-      this.content = res.data.word
-    })
+    if (this.application.word) {
+      await axios.get(`words/${this.application.word}`).then(res => {
+        this.content = res.data.word
+      })
+    }
     this.spinning = false
   },
   watch: {
@@ -137,7 +142,7 @@ export default {
         return
       }
       try {
-        if (result) {
+        if (result && this.application.word) {
           await axios.put(`words/${this.application.word}`, { word: this.application.content })
         }
         await axios.put(`/words/applications/${this.id}`, {
