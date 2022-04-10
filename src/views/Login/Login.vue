@@ -65,9 +65,9 @@ export default {
         username: this.username,
         password: this.password
       }).then(async (res) => {
-        await this.$store.dispatch('userLogin', res.data.id)
         localStorage.setItem('token', res.data.token)
         localStorage.setItem('login_time', Date.now().toString())
+        await this.$store.dispatch('userLogin', res.data.id)
         this.$message.success('登录成功')
         if (!this.$store.getters.user.county) {
           this.$message.warning('为了便于后续使用，请设置自己的所在乡镇~')

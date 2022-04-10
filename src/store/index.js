@@ -122,7 +122,9 @@ export default new Vuex.Store({
     userLogout (state) {
       localStorage.removeItem('id')
       localStorage.removeItem('token')
-      state.user = Object.create(defaultUser)
+      state.user = {
+        ...defaultUser
+      }
       state.publish_articles = []
       state.like_articles = []
       state.drawerVisibility = false
@@ -158,15 +160,20 @@ export default new Vuex.Store({
     },
     async userUpdate ({ state }) {
       state.drawerLoading = true
-      return axios.get('/users/' + state.user.id).then(res => {
+      return axios.get('/users/' + state.user.id).then(async (res) => {
+        if (!res.data.notification) {
+          await this.commit('userLogout')
+          return
+        }
         state.user = res.data.user
         state.publish_articles = res.data.publish_articles
         state.like_articles = res.data.like_articles
         state.contribution = res.data.contribution
         state.notification = res.data.notification
+      }).catch(async () => {
+        await this.commit('userLogout')
+      }).finally(() => {
         state.drawerLoading = false
-      }).catch(() => {
-        this.commit('userLogout')
       })
     }
   },
