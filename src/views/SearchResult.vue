@@ -120,8 +120,11 @@ export default {
       ).finally(() => {
         this.loading.words = false
       })
-      this.pronunciation.url = ''
-      this.pronunciation.loading = true
+      this.pronunciation = {
+        url: '',
+        loading: true,
+        disabled: false
+      }
       axios.get('pronunciation/combine', { params: { words: this.Chinese } }).then(res => {
         this.pronunciation.url = res.data.url
       }).catch(() => {
