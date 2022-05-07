@@ -1,15 +1,32 @@
 <template>
-  <a-button
-    :disabled="source===''"
-    icon="sound"
-    size="small"
-    type="link"
-    @click="playSound(source)"
-  />
+  <span>
+    <a-button
+      v-if="source&&pinyin_url"
+      icon="sound"
+      size="small"
+      type="link"
+      @click="playSound(pinyin_url,'拼音')"
+    />
+    <a-button
+      v-if="source&&ipa_url"
+      icon="sound"
+      size="small"
+      type="link"
+      @click="playSound(ipa_url,'IPA')"
+    />
+    <a-button
+      v-if="!source"
+      :disabled="true"
+      icon="sound"
+      size="small"
+      type="link"
+    />
+  </span>
 </template>
 
 <script>
 import axios from 'axios'
+
 export default {
   props:
     {
@@ -80,8 +97,8 @@ export default {
     }
   },
   methods: {
-    playSound (url) {
-      if (url !== this.url) this.$message.warning('该语音由机器生成仅供参考！（可能存在错误）')
+    playSound (url, word) {
+      if (url !== this.url) this.$message.warning(`该语音由程序根据${word}生成，仅供参考！（可能存在错误）`)
       new Audio(url).play()
     }
   }
