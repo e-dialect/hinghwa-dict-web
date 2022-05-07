@@ -25,11 +25,10 @@
             <span style="font-size: 80%;color: rgb(155,155,155);padding-left: 10px">
                 / {{ item.word.standard_ipa }}/
               </span>
-            <a-button
-              :disabled="!item.word.url"
-              icon="play-circle"
-              type="link"
-              @click="playSound(item.word.url)"
+            <PlaySoundButton
+              :url="item.pronunciation.url"
+              :ipa="item.word.standard_ipa"
+              :pinyin="item.word.standard_pinyin"
             />
           </template>
         </a-card-meta>
@@ -48,9 +47,11 @@
 </template>
 <script>
 import axios from 'axios'
+import PlaySoundButton from './PlaySoundButton'
 
 export default {
   name: 'WordList',
+  components: { PlaySoundButton },
   data () {
     return {
       listSource: null,
@@ -98,36 +99,11 @@ export default {
         words: this.listData.slice((page - 1) * this.pageSize, page * this.pageSize)
       }).then(async (res) => {
         this.listSource = res.data.words
-        for (let i = 0; i < this.listSource.length; i++) {
-          this.listSource[i].word.url = await this.getIPAPronunciation(this.listSource[i].word.standard_ipa)
-        }
       }).finally(
         () => {
           this.loading = false
         }
       )
-    },
-    /**
-     * 根据ipa获取读音
-     * @param ipa
-     * @returns {Promise<string>} 音频url
-     */
-    async getIPAPronunciation (ipa) {
-      let url = ''
-      await axios.get(`/pronunciation/${ipa}`).then(res => {
-        if (res.data.url !== 'null') {
-          url = res.data.url
-        } else if (res.data.tts !== 'null') url = res.data.tts
-      })
-      return url
-    },
-    /**
-     * 播放音频
-     * @param url 音频地址
-     */
-    playSound (url) {
-      const player = new Audio(url)
-      player.play()
     }
   }
 }

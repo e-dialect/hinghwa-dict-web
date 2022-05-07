@@ -22,7 +22,7 @@
             <span v-for="(ktem,index3) in jtem.characters" :key="index3.toString()" style="padding-right: 16px">
               <span v-if="ktem.word===null">{{ ktem.pinyin }}</span>
               <router-link v-else :to="{name:'WordDetails',params:{id:ktem.word}}">{{ ktem.pinyin }}</router-link>
-              <a-button v-if="ktem.source" icon="sound" size="small" type="link" @click="playSound(ktem.source)"/>
+              <PlaySoundButton :url="ktem.source" :pinyin="ktem.pinyin"/>
             </span>
           </div>
         </a-collapse-panel>
@@ -34,9 +34,11 @@
 
 <script>
 import axios from 'axios'
+import PlaySoundButton from './PlaySoundButton'
 
 export default {
   name: 'PinyinList',
+  components: { PlaySoundButton },
   props: ['keyWords'],
   data () {
     return {
