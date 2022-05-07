@@ -2,6 +2,7 @@
   <a-select
     v-model="words"
     :filter-option="false"
+    :labelInValue="true"
     :maxTagTextLength="30"
     :not-found-content="fetching ? undefined : null"
     mode="multiple"
@@ -28,21 +29,45 @@ import axios from 'axios'
 
 export default {
   name: 'SelectWord',
-  props: ['value'],
+  props: ['defaultValue', 'value'],
   data () {
     return {
       options_word: [],
+      words_: [],
+      model: [],
       fetching: false
     }
   },
   computed: {
     words: {
       get () {
-        return this.value
+        return this.words_
       },
       set (value) {
+        this.words_ = value
         this.$emit('input', value)
       }
+    }
+  },
+  created () {
+    if (this.defaultValue) {
+      this.defaultValue.forEach(item => {
+        this.words_.push({
+          key: item.id,
+          label: item.word
+        })
+      })
+    }
+  },
+  watch: {
+    defaultValue () {
+      this.words_ = []
+      this.defaultValue.forEach(item => {
+        this.words_.push({
+          key: item.id,
+          label: item.word
+        })
+      })
     }
   },
   methods: {

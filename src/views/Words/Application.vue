@@ -2,13 +2,13 @@
   <a-card>
     <div slot="title">
       <div v-if="application.word">
-        <h2>审核词条变更申请（未完工）</h2>
+        <h2>审核词条变更申请（测试中）</h2>
         <p>显示内容（不可编辑内容）为词条当前已公开的状态</p>
         <p>申请发生变动的部分显示在下方的编辑模式内</p>
         <p>未发生变动的部分默认隐藏编辑模式，但可手动点击对应的显示内容进入编辑模式</p>
       </div>
       <div v-else>
-        <h2>审核词条创建申请（未完工）</h2>
+        <h2>审核词条创建申请（测试中）</h2>
       </div>
     </div>
     <a-spin :delay="500" :spinning="spinning">
@@ -47,10 +47,11 @@
           <LineTags v-model="application.content.mandarin" tips="新词汇"/>
         </a-form-model-item>
         <a-form-model-item label="相关词条">
-          <SelectWord v-model="application.content.related_words"/>
+          <SelectWord
+            v-model="application.content.related_words" :default-value="related_words"/>
         </a-form-model-item>
         <a-form-model-item label="相关文章">
-          <SelectArticle v-model="application.content.related_articles"/>
+          <SelectArticle v-model="application.content.related_articles" :default-value="related_articles"/>
         </a-form-model-item>
         <a-form-model-item label="百科">
           <MarkdownEditor v-model="application.content.annotation"/>
@@ -116,12 +117,16 @@ export default {
         words: false,
         articles: false,
         annotation: false
-      }
+      },
+      related_words: [],
+      related_articles: []
     }
   },
   async created () {
     await axios.get(`/words/applications/${this.id}`).then(res => {
       this.application = res.data.application
+      this.related_articles = res.data.application.content.related_articles
+      this.related_words = res.data.application.content.related_words
     })
     if (this.application.word) {
       await axios.get(`words/${this.application.word}`).then(res => {
@@ -135,6 +140,18 @@ export default {
       this.created()
     }
   },
+  computed: {
+    submit () {
+      const o = { ...this.application.content }
+      o.related_words = [...this.application.content.related_words.map(item => {
+        return item.id
+      })]
+      o.related_articles = [...this.application.content.related_articles.map(item => {
+        return item.id
+      })]
+      return o
+    }
+  },
   methods: {
     async check (result) {
       if (!this.reason) {
@@ -142,14 +159,18 @@ export default {
         return
       }
       try {
-        if (result && this.application.word) {
-          await axios.put(`words/${this.application.word}`, { word: this.application.content })
-        }
-        await axios.put(`/words/applications/${this.id}`, {
+        const word = await axios.put(`/words/applications/${this.id}`, {
           reason: this.reason,
           result: result
         })
-        this.$message.success('提交审核结果成功')
+        if (result && this.application.word) {
+          await axios.put(`words/${this.application.word}`, { word: this.submit })
+        }
+        if (this.application.word) {
+          this.$message.success('提交审核结果成功')
+        } else {
+          this.$message.success(`提交审核结果成功，词条${this.application.content.word}（${word}）已创建`)
+        }
         this.$router.push({ name: 'WordConfirming' })
       } catch (e) {
         this.$message.error('提交审核结果失败！')

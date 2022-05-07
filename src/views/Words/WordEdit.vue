@@ -23,10 +23,10 @@
           <LineTags v-model="word.mandarin" tips="新词汇"></LineTags>
         </a-form-model-item>
         <a-form-model-item label="相关词条">
-          <SelectWord v-model="word.related_words"/>
+          <SelectWord :default-value="related_words" v-model="word.related_words"/>
         </a-form-model-item>
         <a-form-model-item label="相关文章">
-          <SelectArticle v-model="word.related_articles"/>
+          <SelectArticle v-model="word.related_articles" :default-value="related_articles"/>
         </a-form-model-item>
         <a-form-model-item label="附注">
           <MarkdownEditor v-model="word.annotation"></MarkdownEditor>
@@ -79,6 +79,8 @@ export default {
         related_articles: [],
         views: 100
       },
+      related_words: [],
+      related_articles: [],
       reason: ''
     }
   },
@@ -89,6 +91,16 @@ export default {
       } else {
         return +this.$route.params.id
       }
+    },
+    content () {
+      const o = { ...this.word }
+      o.related_words = [...this.word.related_words.map(item => {
+        return item.id
+      })]
+      o.related_articles = [...this.word.related_articles.map(item => {
+        return item.id
+      })]
+      return o
     }
   },
   created () {
@@ -114,6 +126,8 @@ export default {
         this.spinning = true
         await axios.get('words/' + this.id).then(res => {
           this.word = res.data.word
+          this.related_articles = this.word.related_articles
+          this.related_words = this.word.related_words
         }).catch(() => {
           this.$message.destroy()
           this.$router.replace({ name: 'NotFound' })
@@ -127,7 +141,7 @@ export default {
      */
     submit () {
       axios.post('/words/applications', {
-        content: this.word,
+        content: this.content,
         word: this.id,
         reason: this.reason
       }).then(res => {

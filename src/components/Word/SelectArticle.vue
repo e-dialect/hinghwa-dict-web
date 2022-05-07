@@ -2,6 +2,7 @@
   <a-select
     v-model="articles"
     :filter-option="false"
+    :labelInValue="true"
     :maxTagTextLength="30"
     :not-found-content="fetching ? undefined : null"
     mode="multiple"
@@ -28,21 +29,44 @@ import axios from 'axios'
 
 export default {
   name: 'SelectArticle',
-  props: ['value'],
+  props: ['value', 'defaultValue'],
   data () {
     return {
       options_article: [],
-      fetching: false
+      fetching: false,
+      articles_: []
     }
   },
   computed: {
     articles: {
       get () {
-        return this.value
+        return this.articles_
       },
       set (value) {
+        this.articles_ = value
         this.$emit('input', value)
       }
+    }
+  },
+  created () {
+    if (this.defaultValue) {
+      this.defaultValue.forEach(item => {
+        this.articles_.push({
+          key: item.id,
+          label: item.title
+        })
+      })
+    }
+  },
+  watch: {
+    defaultValue () {
+      this.articles_ = []
+      this.defaultValue.forEach(item => {
+        this.articles_.push({
+          key: item.id,
+          label: item.title
+        })
+      })
     }
   },
   methods: {
