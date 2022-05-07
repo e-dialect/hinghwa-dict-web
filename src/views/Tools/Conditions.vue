@@ -84,7 +84,7 @@
         >
           <a-row type="flex">
             <a-col :span="2">
-              <PlaySoundButton :url="pinyin.source"/>
+              <PlaySoundButton :url="pinyin.source" :pinyin="pinyin.pinyin"/>
             </a-col>
             <a-col v-for="(character,index2) in pinyin.characters" :key="index2" :span="2">
               <span v-if="!character.word">
