@@ -1,25 +1,26 @@
 <template>
   <span>
     <a-button
-      v-if="source&&pinyin_url"
+      v-if="source&&source!==url&&pinyin_url"
       icon="sound"
       size="small"
       type="link"
       @click="playSound(pinyin_url,'拼音')"
     />
     <a-button
-      v-if="source&&ipa_url"
+      v-if="source&&source!==url&&ipa_url"
       icon="sound"
       size="small"
       type="link"
       @click="playSound(ipa_url,'IPA')"
     />
     <a-button
-      v-if="!source"
-      :disabled="true"
+      v-if="source===url||!source"
+      :disabled="!source"
       icon="sound"
       size="small"
       type="link"
+      @click="playSound(source,'url')"
     />
   </span>
 </template>
@@ -58,16 +59,18 @@ export default {
       return ''
     }
   },
-  async created () {
+  created () {
+    this.pinyin_url = ''
+    this.ipa_url = ''
     if (this.ipa) {
-      await axios.get('pronunciation/combine', { params: { ipas: this.ipa } }).then(res => {
+      axios.get('pronunciation/combine', { params: { ipas: this.ipa } }).then(res => {
         this.ipa_url = res.data.url
       }).catch(() => {
         this.$message.destroy()
       })
     }
     if (this.pinyin) {
-      await axios.get('pronunciation/combine', { params: { pinyins: this.pinyin } }).then(res => {
+      axios.get('pronunciation/combine', { params: { pinyins: this.pinyin } }).then(res => {
         this.pinyin_url = res.data.url
       }).catch(() => {
         this.$message.destroy()
@@ -75,20 +78,20 @@ export default {
     }
   },
   watch: {
-    async pinyin () {
+    pinyin () {
       this.pinyin_url = ''
       if (this.pinyin) {
-        await axios.get('pronunciation/combine', { params: { pinyins: this.pinyin } }).then(res => {
+        axios.get('pronunciation/combine', { params: { pinyins: this.pinyin } }).then(res => {
           this.pinyin_url = res.data.url
         }).catch(() => {
           this.$message.destroy()
         })
       }
     },
-    async ipa () {
+    ipa () {
       this.ipa_url = ''
       if (this.ipa) {
-        await axios.get('pronunciation/combine', { params: { ipas: this.ipa } }).then(res => {
+        axios.get('pronunciation/combine', { params: { ipas: this.ipa } }).then(res => {
           this.ipa_url = res.data.url
         }).catch(() => {
           this.$message.destroy()
