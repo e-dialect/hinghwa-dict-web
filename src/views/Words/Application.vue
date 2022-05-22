@@ -144,10 +144,10 @@ export default {
     submit () {
       const o = { ...this.application.content }
       o.related_words = [...this.application.content.related_words.map(item => {
-        return item.id
+        return item.id || item.key
       })]
       o.related_articles = [...this.application.content.related_articles.map(item => {
-        return item.id
+        return item.id || item.key
       })]
       return o
     }

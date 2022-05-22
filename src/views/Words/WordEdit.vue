@@ -95,10 +95,10 @@ export default {
     content () {
       const o = { ...this.word }
       o.related_words = [...this.word.related_words.map(item => {
-        return item.id
+        return item.id || item.key
       })]
       o.related_articles = [...this.word.related_articles.map(item => {
-        return item.id
+        return item.id || item.key
       })]
       return o
     }
