@@ -20,6 +20,8 @@ export default {
   },
   data () {
     return {
+      myCounty: this.county,
+      myTown: this.town,
       towns: [{
         value: '城厢区',
         label: '城厢区',
@@ -208,14 +210,25 @@ export default {
   computed: {
     option: {
       get () {
-        return [this.county, this.town]
+        return [this.myCounty, this.myTown]
       },
       set (value) {
         this.$emit('update:county', value[0])
         this.$emit('update:town', value[1])
+        this.myCounty = value[0]
+        this.myTown = value[1]
       }
     }
+  },
+  watch: {
+    county: function (val) {
+      this.myCounty = val
+    },
+    town: function (val) {
+      this.myTown = val
+    }
   }
+
 }
 </script>
 
