@@ -1,6 +1,17 @@
 <template>
   <div class="body">
-
+    <a-alert type="warning" show-icon>
+      <template slot="message">
+        网站适配方案正在开发中，移动端用户必要时可访问旧版网站
+        <a href="http://dict.hinghwa.cn" target="_blank">dict.hinghwa.cn</a>
+        或微信小程序<strong>兴化语记</strong>，敬请谅解。
+      </template>
+    </a-alert>
+    <a-alert type="warning" show-icon>
+      <template slot="message">
+        由于微信小程序的限制，小程序中的录音功能可能会失效，若遇到该状况烦请通过网站贡献语音，谢谢您的支持。
+      </template>
+    </a-alert>
     <a-row
       align="middle"
       justify="center"

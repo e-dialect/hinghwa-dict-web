@@ -53,9 +53,6 @@ export default {
       await store.dispatch('userLogin', window.localStorage.getItem('id'))
     }
   },
-  async created () {
-
-  },
   mounted () {
     window.addEventListener('resize', this.onResize)
   },

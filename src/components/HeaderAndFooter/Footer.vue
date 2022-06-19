@@ -14,7 +14,7 @@
         <h4 style="color: white"> 相关网站：
           <a href="https://www.ydict.net/" style="color: white" target="_blank">榕典</a> &#8194;|
           <a href="https://www.moedict.tw/" style="color: white" target="_blank">萌典</a>&#8194;|
-          <a href="http://hinghwa.cn/" style="color: white" target="_blank">莆仙话词典</a>&#8194;|
+          <a href="http://dict.hinghwa.cn/" style="color: white" target="_blank">莆仙话词典</a>&#8194;|
           <a href="https://zhongguoyuyan.cn/" style="color: white" target="_blank">中国语言保护工程采录展示平台</a>
         </h4>
         <!--        <h4 style="color: white"> 关于我们：-->
