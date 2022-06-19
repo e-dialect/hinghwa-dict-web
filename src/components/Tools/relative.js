@@ -140,7 +140,7 @@ export const relative = [
       di: null,
       jie: null,
       mei: null,
-      fu: null,
+      fu: '高祖父',
       qi: null,
       zi: '曾祖父',
       nv: null
@@ -243,8 +243,8 @@ export const relative = [
       mu: '曾祖母',
       xiong: '伯祖父',
       di: '叔祖父',
-      jie: null,
-      mei: null,
+      jie: '姑祖母',
+      mei: '姑祖母',
       fu: null,
       qi: '祖母',
       zi: ['父亲', '伯父', '叔父'],
@@ -493,7 +493,7 @@ export const relative = [
     words: [
       {
         word: '外头公',
-        id: null
+        id: 2439
       }
     ],
     relations: {
@@ -514,7 +514,7 @@ export const relative = [
     words: [
       {
         word: '外头妈',
-        id: null
+        id: 2441
       }
     ],
     relations: {
@@ -827,8 +827,8 @@ export const relative = [
       mu: '外祖母',
       xiong: '舅父',
       di: '舅父',
-      jie: '母亲',
-      mei: '母亲',
+      jie: ['母亲', '姨母'],
+      mei: ['母亲', '姨母'],
       fu: '姨父',
       qi: null,
       zi: '表兄弟',
@@ -965,7 +965,7 @@ export const relative = [
     words: [
       {
         word: '乃侄',
-        id: null
+        id: 3854
       }
     ],
     relations: {
@@ -991,8 +991,8 @@ export const relative = [
     name: '侄女',
     words: [
       {
-        word: '乃侄',
-        id: null
+        word: '乃侄女',
+        id: 3855
       }
     ],
     relations: {
@@ -1123,7 +1123,7 @@ export const relative = [
     words: [
       {
         word: '乃甥',
-        id: null
+        id: 3856
       }
     ],
     relations: {
@@ -1150,7 +1150,7 @@ export const relative = [
     words: [
       {
         word: '乃甥女',
-        id: null
+        id: 3857
       }
     ],
     relations: {
@@ -1391,7 +1391,7 @@ export const relative = [
     words: [
       {
         word: '囝',
-        id: null
+        id: 2508
       }
     ],
     relations: {
@@ -1412,7 +1412,7 @@ export const relative = [
     words: [
       {
         word: '囝婿',
-        id: null
+        id: 2511
       }
     ],
     relations: {
@@ -1477,15 +1477,15 @@ export const relative = [
     words: [
       {
         word: '孙',
-        id: null
+        id: 4929
       },
       {
         word: '里头孙',
-        id: null
+        id: 3553
       },
       {
         word: '正孙',
-        id: null
+        id: 5579
       }
     ],
     relations: {
@@ -1510,11 +1510,11 @@ export const relative = [
       },
       {
         word: '里头孙',
-        id: null
+        id: 3553
       },
       {
         word: '正孙',
-        id: null
+        id: 5579
       },
       {
         word: '子孙',
@@ -1539,12 +1539,12 @@ export const relative = [
     words: [
       {
         word: '孙',
-        id: null
+        id: 4929
       }
     ],
     relations: {
-      fa: '男亲',
-      mu: '儿妇',
+      fa: '女婿',
+      mu: '女亲',
       xiong: '孙儿',
       di: '孙儿',
       jie: '孙女',
@@ -1560,7 +1560,7 @@ export const relative = [
     words: [
       {
         word: '曾孙',
-        id: null
+        id: 5495
       }
     ],
     relations: {
@@ -1581,7 +1581,7 @@ export const relative = [
     words: [
       {
         word: '曾孙',
-        id: null
+        id: 5495
       }
     ],
     relations: {
@@ -1602,7 +1602,7 @@ export const relative = [
     words: [
       {
         word: '玄孙',
-        id: null
+        id: 2646
       }
     ],
     relations: {
@@ -1623,7 +1623,7 @@ export const relative = [
     words: [
       {
         word: '老公',
-        id: null
+        id: 3463
       }
     ],
     relations: {
@@ -1644,7 +1644,7 @@ export const relative = [
     words: [
       {
         word: '大官',
-        id: null
+        id: 1543
       }
     ],
     relations: {
@@ -1665,7 +1665,7 @@ export const relative = [
     words: [
       {
         word: '大家',
-        id: null
+        id: 1545
       }
     ],
     relations: {
@@ -1729,7 +1729,7 @@ export const relative = [
     words: [
       {
         word: '小郎',
-        id: null
+        id: 4758
       }
     ],
     relations: {
@@ -1770,8 +1770,8 @@ export const relative = [
     name: '姑姊妹',
     words: [
       {
-        word: '',
-        id: null
+        word: '小姑',
+        id: 4760
       }
     ],
     relations: {
@@ -1792,7 +1792,7 @@ export const relative = [
     words: [
       {
         word: '老妈',
-        id: null
+        id: 3468
       }
     ],
     relations: {
@@ -1840,7 +1840,7 @@ export const relative = [
     words: [
       {
         word: '丈母',
-        id: null
+        id: 1643
       }
     ],
     relations: {
@@ -1914,8 +1914,8 @@ export const relative = [
     name: '舅弟',
     words: [
       {
-        word: '',
-        id: null
+        word: '阿舅囝',
+        id: 42
       }
     ],
     relations: {
@@ -1942,8 +1942,8 @@ export const relative = [
     name: '舅弟妇',
     words: [
       {
-        word: '',
-        id: null
+        word: '阿妗囝',
+        id: 17
       }
     ],
     relations: {
@@ -1963,8 +1963,8 @@ export const relative = [
     name: '姨姊妹',
     words: [
       {
-        word: '',
-        id: null
+        word: '阿姨囝',
+        id: 32
       }
     ],
     relations: {
@@ -1996,8 +1996,8 @@ export const relative = [
     name: '姨姊妹夫',
     words: [
       {
-        word: '',
-        id: null
+        word: '襟友',
+        id: 3273
       }
     ],
     relations: {
