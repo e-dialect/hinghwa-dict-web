@@ -25,4 +25,4 @@ jobs:
           yarn run lint
       - name: Build H5
         run: |
-          yarn run build:h5
+          yarn run build
