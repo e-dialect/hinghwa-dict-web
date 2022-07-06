@@ -23,6 +23,6 @@ jobs:
       - name: Lint
         run: |
           yarn run lint
-      - name: Build H5
+      - name: Build
         run: |
           yarn run build
