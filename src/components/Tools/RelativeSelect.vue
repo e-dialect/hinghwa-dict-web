@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-row>
-      <a-tag color="orange">己身</a-tag>
+      <a-tag color="orange" style="margin: 5px">己身</a-tag>
       <span v-for="(item, index) in selected" :key="index">
         <span>{{ ' 的 ' }}</span>
         <a-tag color="orange">{{ item }}</a-tag>
@@ -14,13 +14,14 @@
         :key="item.name"
         :disabled="topLength > 1 || !top.relations[item.filed]"
         @click="push(item.filed)"
+        style="margin: 5px"
       >
         {{ item.name }}
       </a-button>
-      <a-button :disabled="stack.length === 1" @click="pop()">
+      <a-button :disabled="stack.length === 1" @click="pop()" style="margin: 5px">
         <a-icon type="arrow-left"/>
       </a-button>
-      <a-button @click="clear()">AC</a-button>
+      <a-button @click="clear()" style="margin: 5px">AC</a-button>
     </a-row>
 
     <a-divider/>
@@ -198,6 +199,7 @@ export default {
     }
   }
 }
+
 </script>
 
 <style scoped></style>

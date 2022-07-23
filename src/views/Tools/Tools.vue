@@ -1,7 +1,7 @@
 <template>
   <a-card>
     <div v-for="(item,index) in tools" :key="index">
-      <a-card-grid hoverable style="width:50%;text-align:center">
+      <a-card-grid hoverable style="width:33%;text-align:center">
         <a-card
           :bordered="false"
           @click="onCardClick(item)"
@@ -35,6 +35,11 @@ export default {
           disabled: false
         },
         {
+          cover: cdn + '聪明花开.png',
+          routerName: 'PuxianExam',
+          disabled: true
+        },
+        {
           cover: cdn + '快速录制.png',
           routerName: 'QuickRecording',
           disabled: false
@@ -45,23 +50,23 @@ export default {
           disabled: false
         },
         {
-          cover: cdn + '聪明花开.png',
-          routerName: 'PuxianExam',
-          disabled: true
-        },
-        {
           cover: cdn + '词条审核.png',
           routerName: 'WordConfirming',
           disabled: false
         },
         {
-          cover: cdn + '日常用语.png',
-          routerName: 'DailyExpressions',
+          cover: cdn + '方言曲库.png',
+          routerName: 'Music',
           disabled: false
         },
         {
-          cover: cdn + '方言曲库.png',
-          routerName: 'Music',
+          cover: cdn + '亲戚计算.png',
+          routerName: 'Relative',
+          disabled: false
+        },
+        {
+          cover: cdn + '日常用语.png',
+          routerName: 'DailyExpressions',
           disabled: false
         }
       ]
