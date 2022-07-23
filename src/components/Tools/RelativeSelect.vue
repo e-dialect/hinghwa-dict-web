@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-row>
-      <a-tag color="orange">己身</a-tag>
+      <a-tag color="orange" style="margin: 5px">己身</a-tag>
       <span v-for="(item, index) in selected" :key="index">
         <span>{{ ' 的 ' }}</span>
         <a-tag color="orange">{{ item }}</a-tag>
