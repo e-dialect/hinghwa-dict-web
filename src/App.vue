@@ -49,7 +49,7 @@ export default {
         window.localStorage.removeItem('id')
       }
     }
-    if (window.localStorage.getItem('id')) {
+    if (parseInt(window.localStorage.getItem('id'))) {
       await store.dispatch('userLogin', window.localStorage.getItem('id'))
     }
   },

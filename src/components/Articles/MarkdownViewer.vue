@@ -7,6 +7,7 @@
     class="md"
     defaultOpen="preview"
     style="z-index: auto"
+    :xssOptions="xss"
   >
   </mavon-editor>
 </template>
@@ -18,7 +19,17 @@ import 'mavon-editor/dist/css/index.css'
 export default {
   name: 'MarkdownViewer',
   components: { mavonEditor },
-  props: ['text']
+  props: ['text'],
+  data () {
+    return {
+      xss: {
+        whiteList: {
+          iframe: ['src', 'height', 'width'],
+          div: ['style', 'height', 'width', 'align']
+        }
+      }
+    }
+  }
 }
 </script>
 
