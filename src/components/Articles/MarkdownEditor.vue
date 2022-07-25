@@ -5,6 +5,7 @@
     style="z-index: auto"
     @imgAdd="$imgAdd"
     @imgDel="$imgDel"
+    :xssOptions="xss"
   />
 </template>
 
@@ -20,6 +21,16 @@ export default {
     mavonEditor
   },
   props: ['value'],
+  data () {
+    return {
+      xss: {
+        whiteList: {
+          iframe: ['src', 'height', 'width'],
+          div: ['style', 'height', 'width', 'align']
+        }
+      }
+    }
+  },
   computed: {
     content: {
       get () {

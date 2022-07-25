@@ -5697,9 +5697,9 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-mavon-editor@^2.9.1:
+mavon-editor@^2:
   version "2.10.4"
-  resolved "https://registry.yarnpkg.com/mavon-editor/-/mavon-editor-2.10.4.tgz#58d6c4dc208933f0ac4595c10c60655899ba8ba8"
+  resolved "https://registry.npmmirror.com/mavon-editor/-/mavon-editor-2.10.4.tgz#58d6c4dc208933f0ac4595c10c60655899ba8ba8"
   integrity sha512-CFsBLkgt/KZBDg+SJYe2fyYv4zClY149PiwpH0rDAiiP4ae1XNs0GC8nBsoTeipsHcebDLN1QMkt3bUsnMDjQw==
   dependencies:
     xss "^1.0.6"
