@@ -29,7 +29,7 @@
 
       <a-col span="8"/>
       <a-col span="4">
-        <a-button :disabled="username===''||password===''" shape="round" type="primary" @click="login"> 登录</a-button>
+        <a-button :disabled="username===''||password===''" shape="round" type="primary" @click="login" @keyup.enter="login"> 登录</a-button>
       </a-col>
       <a-col span="4">
         <router-link to="./forget"> 忘记密码</router-link>
@@ -79,7 +79,18 @@ export default {
           this.$message.error('用户名或密码错误')
         }
       })
+    },
+    keyDown (e) {
+      if (e.keyCode === 13) {
+        this.login()
+      }
     }
+  },
+  mounted () {
+    window.addEventListener('keydown', this.keyDown)
+  },
+  destroyed () {
+    window.removeEventListener('keydown', this.keyDown, false)
   }
 }
 </script>
