@@ -12,7 +12,7 @@
         <a-collapse-panel
           v-for="(item,index) in characters "
           :key="index.toString()"
-          :header="item.label===item.traditional?`${item.label}`:`${item.label}(${item.traditional})`"
+          :header="item.label===item.traditional?`${item.label}`:`${item.label}（${item.traditional}）`"
         >
           <div v-for="(jtem,index2) in item.characters" :key="index2.toString()">
             <a-breadcrumb>
