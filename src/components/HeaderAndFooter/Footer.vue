@@ -11,24 +11,30 @@
       <!--                </a-popover>-->
       <!--            </a-col>-->
       <a-col span="12">
+
         <h4 style="color: white"> 相关网站：
           <a href="https://www.ydict.net/" style="color: white" target="_blank">榕典</a> &#8194;|
           <a href="https://www.moedict.tw/" style="color: white" target="_blank">萌典</a>&#8194;|
-          <a href="http://dict.hinghwa.cn/" style="color: white" target="_blank">莆仙话词典</a>&#8194;|
           <a href="https://zhongguoyuyan.cn/" style="color: white" target="_blank">中国语言保护工程采录展示平台</a>
         </h4>
-        <!--        <h4 style="color: white"> 关于我们：-->
-        <!--          <router-link style="color: white" to="/about">团队介绍</router-link>&#8194;|-->
-        <!--          <router-link style="color: white" to="/contact">联系我们</router-link>&#8194;|-->
-        <!--          <a href="" style="color: white">Github</a>-->
-        <!--        </h4>-->
-        <h4>Copyrights © {{ new Date().getFullYear() }}
-          <a href="https://edialect.top" target="_blank">Easy Dialect</a>
-            . All Rights Reserved.
-        </h4>
-        <a href="http://beian.miit.gov.cn" style="color:#C7C7C7" target="_blank">
-          闽ICP备2021006892号
-        </a>
+
+        <div>
+          关于我们：
+          <a href="http://dict.hinghwa.cn/" style="color: #C7C7C7" target="_blank">旧版</a>&#8194;|
+          <a href="http://m.hinghwa.cn/" style="color: #C7C7C7" target="_blank">移动版</a>&#8194;|
+          <!-- <router-link style="color: white" to="/about">团队介绍</router-link>&#8194;|-->
+          <a href="http://hinghwa.cn/articles/175" style="color: #C7C7C7" target="_blank">联系我们</a>&#8194;|
+          <a href="https://github.com/e-dialect" style="color: #C7C7C7" target="_blank">Github</a>
+        </div>
+
+        <div>
+          版权所有 © {{ new Date().getFullYear() }}
+          <a href="https://edialect.top" target="_blank">E方言</a>
+          <a href="http://beian.miit.gov.cn" style="color:#C7C7C7" target="_blank">
+            闽ICP备2021006892号
+          </a>
+        </div>
+
       </a-col>
     </a-row>
   </div>
