@@ -39,6 +39,11 @@ export default {
     }
   },
   async beforeCreate () {
+    if (document.documentElement.clientHeight / document.documentElement.clientWidth > 4 / 3) {
+      if (confirm('根据您的屏幕长宽比建议您访问移动版 m.hinghwa.cn ，是否立刻跳转？')) {
+        window.open('https://m.hinghwa.cn', '_self')
+      }
+    }
     document.addEventListener('DOMContentLoaded', () => {
       const width = document.documentElement.clientWidth
       document.body.style.zoom = Number(width / 12).toString() + '%'
