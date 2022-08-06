@@ -2,9 +2,12 @@
   <div class="body">
     <a-alert type="warning" show-icon>
       <template slot="message">
-        网站适配方案正在开发中，移动端用户必要时可访问旧版网站
-        <a href="http://dict.hinghwa.cn" target="_blank">dict.hinghwa.cn</a>
-        或微信小程序<strong>兴化语记</strong>，敬请谅解。
+        网站移动版
+        <a href="http://m.hinghwa.cn" target="_blank">m.hinghwa.cn</a>
+        现已开放测试，必要时可访问
+        <a href="http://dict.hinghwa.cn" target="_blank">旧版网站</a>
+        或微信小程序
+        <i>兴化语记</i>
       </template>
     </a-alert>
     <a-alert type="warning" show-icon>
