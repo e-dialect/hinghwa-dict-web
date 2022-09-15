@@ -37,7 +37,7 @@ export default {
         {
           cover: cdn + '聪明花开.png',
           routerName: 'PuxianExam',
-          disabled: true
+          disabled: false
         },
         {
           cover: cdn + '快速录制.png',
