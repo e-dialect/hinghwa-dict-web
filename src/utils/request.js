@@ -9,7 +9,7 @@ const request = axios.create({
 })
 
 request.interceptors.request.use((conf) => {
-  conf.headers.Authorization = `${localStorage.getItem('token') || ''}`
+  conf.headers.token = `${localStorage.getItem('token') || ''}`
   message.loading('加载中...', 0)
   return conf
 }, (err) => Promise.reject(err))
