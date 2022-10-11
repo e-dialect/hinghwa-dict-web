@@ -137,6 +137,7 @@ import Recording from '../../components/Pronunciation/Recording'
 import DefinitionShow from '../../components/Word/DefinitionShow'
 import PlaySoundButton from '../../components/Tools/PlaySoundButton'
 import MarkdownViewer from '../../components/Articles/MarkdownViewer'
+import { getWordDetails } from '@/services/words'
 
 export default {
   name: 'WordDetails',
@@ -251,9 +252,8 @@ export default {
      * 获取当前这个词条的具体信息
      */
     async getWordDetails () {
-      this.spinning = true
-      await axios.get('words/' + this.id).then(res => {
-        this.word = res.data.word
+      await getWordDetails(this.id).then(res => {
+        this.word = res.word
         this.form = {
           word: this.word.id,
           item: this.word.word,
@@ -264,8 +264,6 @@ export default {
       }).catch(() => {
         this.$message.destroy()
         this.$router.replace({ name: 'NotFound' })
-      }).finally(() => {
-        this.spinning = false
       })
       await axios.get('/pronunciation', { params: { word: this.id } }).then(res => {
         this.pronunciation = res.data.pronunciation
