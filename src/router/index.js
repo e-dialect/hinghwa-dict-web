@@ -188,7 +188,7 @@ const routes = [
     component: () => import('../views/Quiz/QuizEdit')
   },
   {
-    path: '/PuxianExam/:id',
+    path: '/PuxianExam',
     name: 'QuizDetails',
     props: true,
     component: () => import('../views/Quiz/QuizDetails')
@@ -198,12 +198,6 @@ const routes = [
     name: 'QuizResearch',
     props: true,
     component: () => import('../views/Quiz/QuizResearch')
-  },
-  {
-    path: '/PuxianExam/Quizsearch',
-    name: 'QuizSearch',
-    props: route => ({ keyWords: route.query.key }),
-    component: () => import('../views/Quiz/QuizSearchResult')
   }
 ]
 

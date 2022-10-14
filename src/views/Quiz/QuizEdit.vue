@@ -58,13 +58,20 @@ export default {
       }
     }
   },
+  async created () {
+    await this.$store.dispatch('userUpdate')
+    if (!this.$store.getters.user.is_admin) {
+      this.$message.error('仅管理员有权访问该模块！或请重新登录！')
+      this.$router.push({ name: 'PuxianExam' })
+    }
+  },
   methods: {
     /**
      * 创建测试题的命令操作
      */
     createQuiz () {
       this.btnQuizLoading = true
-      axios.post('/quizzes', Object.assign({}, this.quiz)).then(res => {
+      axios.post('http://127.0.0.1:4523/mock/404238/quizzes/', Object.assign({}, this.quiz)).then(res => {
         this.submit = true
         this.$message.success('恭喜你，创建成功！')
         this.$router.push({

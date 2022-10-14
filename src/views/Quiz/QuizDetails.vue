@@ -1,4 +1,4 @@
-<template>
+<template v-if="quiz">
   <a-card :title="quiz.id +'-'+ quiz.question">
     <template v-slot:title>
       <h1 style="padding-left:32px; color: rgb(26,26,73); font-size:250%">
@@ -19,7 +19,15 @@
       </a-row>
 
     </template>
-    <a-radio class='option' v-for="(item,index) in quiz.options" :key="index"  :default-checked="false">{{item}}</a-radio><br>
+    <div style="margin-bottom: 10px">
+    <a-card v-for="(item1,index1)  in quiz.options"
+        @click="addClass(index1,$event)"
+        :key="index1"
+            class="option"
+            hoverable
+    size="small">
+    {{item1}}</a-card>
+    </div>
     <!-- 查看答案按钮 -->
     <a-button
       type="dashed"
@@ -28,7 +36,7 @@
       class="btn"
     >
     </a-button><br>
-    <div v-show="isShow1">{{ quiz.answer.toString()}}</div>
+    <div v-show="isShow1">{{ quiz.answer}}</div>
     <!-- 查看解析按钮 -->
     <a-button
       type="dashed"
@@ -42,6 +50,7 @@
     <a-button
       type="dashed"
       class="btn"
+      @click="nextquestion"
     >
       下一题
     </a-button>
@@ -49,6 +58,7 @@
 </template>
 
 <script>
+
 import axios from 'axios'
 
 export default {
@@ -66,21 +76,34 @@ export default {
       isShow2: false,
       answerbtnText: '查看答案',
       explanbtnText: '查看解析',
-      radio: '0'
+      current: 0
     }
   },
   created () {
     axios.get('http://127.0.0.1:4523/mock/404238/quizzes/' + this.id).then(res => {
       this.quiz = res.data.quiz
-      this.id = res.data.id
     })
   },
   methods: {
     answershowToggle () {
       this.isShow1 = !this.isShow1
+      console.log(this.quiz.id)
     },
     explanshowToggle () {
       this.isShow2 = !this.isShow2
+    },
+    nextquestion () {
+      axios.get('http://127.0.0.1:4523/mock/404238/quizzes/' + this.id).then(res => {
+        this.quiz = res.data.quiz
+      })
+    },
+    addClass: function (index, event) {
+      this.current = index // 获取点击对象
+      if (this.current !== this.quiz.answer) {
+        this.$message.error('很抱歉，回答错误，再接再厉哦~')
+      } else if (this.current === this.quiz.answer) {
+        this.$message.success('恭喜你 回答正确！')
+      }
     }
   }
 }
@@ -89,8 +112,5 @@ export default {
 <style scoped>
 .btn{
   margin: 10px;
-}
-.option{
-  display: block;
 }
 </style>
