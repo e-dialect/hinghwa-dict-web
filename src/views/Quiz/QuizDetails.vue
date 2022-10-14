@@ -95,6 +95,7 @@ export default {
     nextquestion () {
       axios.get('http://127.0.0.1:4523/mock/404238/quizzes/' + this.id).then(res => {
         this.quiz = res.data.quiz
+        this.$router.push('/PuxianExam/' + this.quiz.id)
       })
     },
     addClass: function (index, event) {

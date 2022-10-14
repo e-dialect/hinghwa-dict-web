@@ -188,7 +188,7 @@ const routes = [
     component: () => import('../views/Quiz/QuizEdit')
   },
   {
-    path: '/PuxianExam',
+    path: '/PuxianExam/:id',
     name: 'QuizDetails',
     props: true,
     component: () => import('../views/Quiz/QuizDetails')
