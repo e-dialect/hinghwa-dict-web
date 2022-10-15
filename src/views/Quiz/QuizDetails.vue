@@ -28,7 +28,7 @@
     size="small">
     {{item1}}</a-card>
     </div>
-    <!-- 查看答案按钮 -->
+    <!-- 查看答案与解析按钮 -->
     <a-button
       type="dashed"
       @click="answershowToggle"
@@ -36,16 +36,7 @@
       class="btn"
     >
     </a-button><br>
-    <div v-show="isShow1">{{ quiz.answer}}</div>
-    <!-- 查看解析按钮 -->
-    <a-button
-      type="dashed"
-      @click="explanshowToggle"
-      v-text="explanbtnText"
-      class="btn"
-    >
-    </a-button><br>
-    <div v-show="isShow2">{{ quiz.explanation }}</div>
+    <div v-show="isShow">正确答案：{{ quiz.answer}}<br>答案解析：{{ quiz.explanation }}</div>
     <!-- 下一题按钮 -->
     <a-button
       type="dashed"
@@ -72,10 +63,8 @@ export default {
         explanation: '这个是个答案解析',
         id: 21
       },
-      isShow1: false,
-      isShow2: false,
-      answerbtnText: '查看答案',
-      explanbtnText: '查看解析',
+      isShow: false,
+      answerbtnText: '查看答案与解析',
       current: 0
     }
   },
@@ -86,16 +75,13 @@ export default {
   },
   methods: {
     answershowToggle () {
-      this.isShow1 = !this.isShow1
-      console.log(this.quiz.id)
-    },
-    explanshowToggle () {
-      this.isShow2 = !this.isShow2
+      this.isShow = !this.isShow
     },
     nextquestion () {
       axios.get('http://127.0.0.1:4523/mock/404238/quizzes/' + this.id).then(res => {
         this.quiz = res.data.quiz
         this.$router.push('/PuxianExam/' + this.quiz.id)
+        this.isShow = false
       })
     },
     addClass: function (index, event) {
