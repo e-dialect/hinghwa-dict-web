@@ -19,13 +19,15 @@
       </a-row>
 
     </template>
+<!--    选项区域-->
     <div style="margin-bottom: 10px">
     <a-card v-for="(item1,index1)  in quiz.options"
         @click="addClass(index1,$event)"
         :key="index1"
             class="option"
             hoverable
-    size="small">
+            size="small"
+            :class="{errorActive:errorIndex===index1,correctActive:correctIndex===index1}">
     {{item1}}</a-card>
     </div>
     <!-- 查看答案与解析按钮 -->
@@ -36,7 +38,7 @@
       class="btn"
     >
     </a-button><br>
-    <div v-show="isShow">正确答案：{{ quiz.answer}}<br>答案解析：{{ quiz.explanation }}</div>
+    <div v-show="isShow">你的答案：{{userAnswer}}<br>正确答案：{{ quiz.answer}}<br>答案解析：{{ quiz.explanation }}</div>
     <!-- 下一题按钮 -->
     <a-button
       type="dashed"
@@ -64,8 +66,11 @@ export default {
         id: 21
       },
       isShow: false,
-      answerbtnText: '查看答案与解析',
-      current: 0
+      answerbtnText: '提交答案并查看解析',
+      current: 0,
+      errorIndex: '',
+      correctIndex: '',
+      userAnswer: '还没有答题呢，快来试试吧'
     }
   },
   created () {
@@ -78,18 +83,26 @@ export default {
       this.isShow = !this.isShow
     },
     nextquestion () {
+      this.errorIndex = ''
+      this.correctIndex = ''
+      this.userAnswer = '还没有答题呢，快来试试吧'
+      this.isShow = false
       axios.get('http://127.0.0.1:4523/mock/404238/quizzes/' + this.id).then(res => {
         this.quiz = res.data.quiz
         this.$router.push('/PuxianExam/' + this.quiz.id)
-        this.isShow = false
       })
     },
-    addClass: function (index, event) {
-      this.current = index // 获取点击对象
-      if (this.current !== this.quiz.answer) {
+    addClass: function (index1, event) {
+      this.errorIndex = ''
+      this.correctIndex = ''
+      this.current = index1
+      this.userAnswer = index1
+      if (this.userAnswer !== this.quiz.answer) {
+        this.errorIndex = index1
         this.$message.error('很抱歉，回答错误，再接再厉哦~')
       } else if (this.current === this.quiz.answer) {
         this.$message.success('恭喜你 回答正确！')
+        this.correctIndex = index1
       }
     }
   }
@@ -99,5 +112,11 @@ export default {
 <style scoped>
 .btn{
   margin: 10px;
+}
+.correctActive{
+  background-color: yellowgreen;
+}
+.errorActive{
+  background-color: salmon;
 }
 </style>
