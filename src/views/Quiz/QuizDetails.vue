@@ -30,15 +30,16 @@
             :class="{errorActive:errorIndex===index1,correctActive:correctIndex===index1}">
     {{item1}}</a-card>
     </div>
-    <!-- 查看答案与解析按钮 -->
+<!--    答案与解析区域-->
+    <div v-show="isShow">你的答案：{{userAnswer}}<br>正确答案：{{ quiz.answer}}<br>答案解析：{{ quiz.explanation }}</div>
+    <!-- 重置本题按钮 -->
     <a-button
       type="dashed"
-      @click="answershowToggle"
+      @click="answerAgain"
       v-text="answerbtnText"
       class="btn"
     >
     </a-button><br>
-    <div v-show="isShow">你的答案：{{userAnswer}}<br>正确答案：{{ quiz.answer}}<br>答案解析：{{ quiz.explanation }}</div>
     <!-- 下一题按钮 -->
     <a-button
       type="dashed"
@@ -66,11 +67,11 @@ export default {
         id: 21
       },
       isShow: false,
-      answerbtnText: '提交答案并查看解析',
+      answerbtnText: '重置本题',
       current: 0,
       errorIndex: '',
       correctIndex: '',
-      userAnswer: '还没有答题呢，快来试试吧'
+      userAnswer: ''
     }
   },
   created () {
@@ -79,13 +80,14 @@ export default {
     })
   },
   methods: {
-    answershowToggle () {
-      this.isShow = !this.isShow
+    answerAgain () {
+      this.errorIndex = ''
+      this.correctIndex = ''
+      this.isShow = false
     },
     nextquestion () {
       this.errorIndex = ''
       this.correctIndex = ''
-      this.userAnswer = '还没有答题呢，快来试试吧'
       this.isShow = false
       axios.get('http://127.0.0.1:4523/mock/404238/quizzes/' + this.id).then(res => {
         this.quiz = res.data.quiz
@@ -97,8 +99,10 @@ export default {
       this.correctIndex = ''
       this.current = index1
       this.userAnswer = index1
+      this.isShow = true
       if (this.userAnswer !== this.quiz.answer) {
         this.errorIndex = index1
+        this.correctIndex = index1
         this.$message.error('很抱歉，回答错误，再接再厉哦~')
       } else if (this.current === this.quiz.answer) {
         this.$message.success('恭喜你 回答正确！')
