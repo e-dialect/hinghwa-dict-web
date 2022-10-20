@@ -102,10 +102,7 @@ export default {
       this.isShow = true
       if (this.userAnswer !== this.quiz.answer) {
         this.errorIndex = index1
-        this.correctIndex = index1
-        this.$message.error('很抱歉，回答错误，再接再厉哦~')
       } else if (this.current === this.quiz.answer) {
-        this.$message.success('恭喜你 回答正确！')
         this.correctIndex = index1
       }
     }
