@@ -71,7 +71,18 @@
           <router-link :to="{name:'ArticleCreate'}">创建新文章</router-link>
         </a-button>
       </a-col>
-
+      <a-descriptions style="margin-top: 14px">
+      <a-descriptions-item label="题库">
+        <router-link :to="{name:'UserDetails',params:{id:user.id.toString()}}">
+          {{ publish_articles.length }}
+        </router-link>
+      </a-descriptions-item>
+      </a-descriptions>
+      <a-col :span="24" >
+        <a-button type="dashed">
+          <router-link :to="{name:'QuizCreate'}">贡献新题库</router-link>
+        </a-button>
+      </a-col>
     </a-row>
 
     <a-divider/>

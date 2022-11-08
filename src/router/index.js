@@ -173,6 +173,31 @@ const routes = [
     path: '/Forbidden',
     name: 'Forbidden',
     component: () => import('../views/Forbidden.vue')
+  },
+  // 答题区
+  {
+    path: '/PuxianExam',
+    name: 'PuxianExam',
+    props: true,
+    component: () => import('../views/Quiz/Quiz')
+  },
+  {
+    path: '/PuxianExam/Create',
+    name: 'QuizCreate',
+    props: true,
+    component: () => import('../views/Quiz/QuizEdit')
+  },
+  {
+    path: '/PuxianExam/:id',
+    name: 'QuizDetails',
+    props: true,
+    component: () => import('../views/Quiz/QuizDetails')
+  },
+  {
+    path: '/PuxianExam/Research',
+    name: 'QuizResearch',
+    props: true,
+    component: () => import('../views/Quiz/QuizResearch')
   }
 ]
 
