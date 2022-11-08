@@ -30,8 +30,8 @@
             :class="{errorActive:errorIndex===index1,correctActive:correctIndex===index1}">
     {{item1}}</a-card>
     </div>
-<!--    答案与解析区域-->
-    <div v-show="isShow">你的答案：{{userAnswer}}<br>正确答案：{{ quiz.answer}}<br>答案解析：{{ quiz.explanation }}</div>
+<!--    答案解析区域-->
+    <div v-show="isShow">答案解析：{{ quiz.explanation }}</div>
     <!-- 重置本题按钮 -->
     <a-button
       type="dashed"
@@ -102,7 +102,10 @@ export default {
       this.isShow = true
       if (this.userAnswer !== this.quiz.answer) {
         this.errorIndex = index1
+        this.correctIndex = index1
+        this.$message.error('很抱歉，回答错误，再接再厉哦~')
       } else if (this.current === this.quiz.answer) {
+        this.$message.success('恭喜你 回答正确！')
         this.correctIndex = index1
       }
     }
