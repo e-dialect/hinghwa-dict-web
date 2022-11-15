@@ -10,7 +10,7 @@
               </a-col>
               <a-col :span="4">
                 <a-upload
-                  v-show="editing"
+                  v-if="editing"
                   :before-upload="checkImageBeforeUpload"
                   :customRequest="imageUpload"
                   :show-upload-list="false">
@@ -24,14 +24,11 @@
           </a-form-item>
 
           <a-form-item label="昵称">
-            <a-input v-model="user.nickname" :disabled="!editing" placeholder="真的要做空白昵称人嘛？"/>
+            <a-input v-model="user.nickname" :disabled="!editing" placeholder="真的不留下一个昵称吗？"/>
           </a-form-item>
 
           <a-form-item label="生日">
-            <a-date-picker
-              v-model="birthday"
-              :disabled="!editing"
-            />
+            <a-date-picker v-model="birthday" :disabled="!editing"/>
           </a-form-item>
 
           <a-form-item label="电话">
@@ -39,26 +36,25 @@
               <a-icon slot="prefix" type="phone"/>
             </a-input>
           </a-form-item>
+
           <a-form-item label="乡镇">
             <AreaCascader :county.sync="user.county" :disabled="!editing" :town.sync="user.town"/>
           </a-form-item>
+
           <a-form-item :wrapper-col="{ span: 24, offset: 5 }">
-            <a-button v-if="!editing" type="primary" v-on:click="editing=true">
-              编辑
-            </a-button>
+            <a-button v-if="!editing" type="primary" @click="editing=true"> 编辑 </a-button>
             <div v-else>
               <a-button
                 type="primary"
-                v-on:click="updateUser().finally(() => {editing = false})"
+                v-on:click="updateUser()"
                 :loading="btnUserLoading"
               >
                 提交
               </a-button>
-              <a-button @click="editing=false;user=Object.assign({}, $store.getters.user)">
-                取消编辑
-              </a-button>
+              <a-button @click="cancelEdit()"> 取消编辑 </a-button>
             </div>
           </a-form-item>
+
           <a-form-item label="微信">
             <a-button
               v-if="user.wechat"
@@ -68,8 +64,9 @@
             >
               解除绑定
             </a-button>
-            <h3 v-else> 请前往小程序端进行绑定</h3>
+            <h4 v-else> 请前往小程序端进行绑定</h4>
           </a-form-item>
+
           <a-form-item :wrapper-col="{ span: 12, offset: 5 }" label="资料完善度">
             <a-progress :percent="percent" type="circle"/>
           </a-form-item>
@@ -180,10 +177,11 @@
 <script>
 import moment from 'moment'
 import 'moment/locale/zh-cn'
-import AreaCascader from '../../components/User/AreaCascader'
+import AreaCascader
+from '../../components/User/AreaCascader'
 import { EmailReg } from '@/consts/reg-exp'
 import { changeEmailRequest, changePasswordRequest, deleteWechatRequest, updateUserRequest } from '@/services/users'
-import { sendCodeRequest, uploadFile, checkImageBeforeUpload } from '@/services/website'
+import { checkImageBeforeUpload, sendCodeRequest, uploadFile } from '@/services/website'
 
 export default {
   name: 'userSettings',
@@ -207,6 +205,7 @@ export default {
         avatar: 'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png',
         county: '',
         town: '',
+        wechat: false,
         is_admin: false
       },
       oldPassword: '', // 用户输入的旧密码
@@ -234,6 +233,22 @@ export default {
     }
   },
   methods: {
+    /**
+     * 刷新用户信息
+     */
+    async refreshUser () {
+      await this.$store.dispatch('userUpdate')
+      this.user = { ...this.$store.getters.user }
+    },
+
+    /**
+     * 取消编辑
+     */
+    cancelEdit () {
+      this.user = { ...this.$store.getters.user }
+      this.editing = false
+    },
+
     /**
      * 修改密码
      */
@@ -264,7 +279,7 @@ export default {
     changeEmail () {
       this.btnEmailLoading = true
       changeEmailRequest(this.id, this.newEmail, this.emailCode).then(() => {
-        this.$store.commit('userUpdate')
+        this.refreshUser()
       }).finally(() => {
         this.btnEmailLoading = false
       })
@@ -276,10 +291,11 @@ export default {
      */
     async updateUser () {
       this.btnUserLoading = true
-      updateUserRequest(this.id, this.user).then(async () => {
-        await this.$store.commit('userUpdate')
+      await updateUserRequest(this.id, this.user).then(async () => {
+        await this.refreshUser()
       }).finally(() => {
         this.btnUserLoading = false
+        this.editing = false
       })
     },
     /**
@@ -292,13 +308,12 @@ export default {
         this.user.avatar = url
       }
     },
-
     /**
      * 取消绑定微信
      */
     deleteWechat () {
       deleteWechatRequest(this.id).then(() => {
-        this.$store.commit('userUpdate')
+        this.refreshUser()
       })
     }
   },
@@ -314,8 +329,9 @@ export default {
       if (this.user.telephone !== '') now += 1
       if (this.user.county !== '') now += 1
       if (this.user.town !== '') now += 1
-      return parseInt(now * 100 / 8)
+      return now * 100 / 8
     },
+
     currentUsername () {
       return this.$store.getters.user.username
     },
@@ -333,13 +349,9 @@ export default {
     }
   },
   created () {
-    this.user = { ...this.$store.getters.user }
-  },
-  watch: {
-    '$store.getters.user' () {
-      this.user = { ...this.$store.getters.user }
-    }
+    this.refreshUser()
   }
+
 }
 </script>
 
