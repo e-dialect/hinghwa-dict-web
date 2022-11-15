@@ -11,7 +11,7 @@
               <a-col :span="4">
                 <a-upload
                   v-show="editing"
-                  :before-upload="beforeUpload"
+                  :before-upload="checkImageBeforeUpload"
                   :customRequest="imageUpload"
                   :show-upload-list="false">
                   <a-button>
@@ -180,11 +180,10 @@
 <script>
 import moment from 'moment'
 import 'moment/locale/zh-cn'
-import axios from 'axios'
 import AreaCascader from '../../components/User/AreaCascader'
 import { EmailReg } from '@/consts/reg-exp'
 import { changeEmailRequest, changePasswordRequest, deleteWechatRequest, updateUserRequest } from '@/services/users'
-import { sendCodeRequest } from '@/services/website'
+import { sendCodeRequest, uploadFile, checkImageBeforeUpload } from '@/services/website'
 
 export default {
   name: 'userSettings',
@@ -193,6 +192,7 @@ export default {
     return {
       moment, // 字符串转时间object时需要用到的变量
       EmailReg: EmailReg, // 邮箱正则表达式
+      checkImageBeforeUpload: checkImageBeforeUpload, // 上传图片前的校验函数
 
       // 用户的信息
       user: {
@@ -286,40 +286,11 @@ export default {
      * 上传图片
      * @param image 即将上传的文件信息
      */
-    imageUpload (image) {
-      var data = new FormData()
-      data.append('file', image.file)
-      axios({
-        url: '/website/files',
-        method: 'post',
-        data: data,
-        headers: { 'Content-Type': 'multipart/form-data' }
-      }).then((res) => {
-        this.user.avatar = res.data.url
-        this.$message.success('成功上传啦~')
-      }).catch(err => {
-        this.$message.destroy()
-        switch (err.response.status) {
-          default: {
-            this.$message.error(err.toString())
-          }
-        }
-      })
-    },
-    /**
-     * 在上传之前检查即将上传的文件
-     * @param file 即将上传的文件
-     */
-    beforeUpload (file) {
-      const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
-      if (!isJpgOrPng) {
-        this.$message.error('仅支持上传jpg或png文件!')
+    async imageUpload (image) {
+      const url = await uploadFile(image.file)
+      if (url) {
+        this.user.avatar = url
       }
-      const isLt2M = file.size / 1024 / 1024 < 2
-      if (!isLt2M) {
-        this.$message.error('上传的图片大小不超过2MB!')
-      }
-      return isJpgOrPng && isLt2M
     },
 
     /**

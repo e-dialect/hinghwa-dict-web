@@ -43,7 +43,7 @@ export function changePasswordRequest (id, oldPassword, newPassword) {
     message.success('更改密码成功')
   }).catch(err => {
     message.destroy()
-    switch (err.status) {
+    switch (err.response.status) {
       case 401: {
         message.error('原密码错误！')
         break
@@ -67,7 +67,7 @@ export function changeEmailRequest (id, email, code) {
  * US0305 取消绑定微信
  */
 export function deleteWechatRequest (id) {
-  return request.del(`/users/${id}/wechat`, { data: {} }).then(() => {
+  return request.del(`/users/${id}/wechat`, { }).then(() => {
     message.success('取消绑定成功！')
   })
 }

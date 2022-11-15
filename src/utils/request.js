@@ -39,9 +39,9 @@ request.interceptors.response.use((res) => res,
     })
   })
 
-export function get (url, data) {
+export function get (url, data, config = {}) {
   return new Promise((resolve, reject) => {
-    request.get(url, { params: data })
+    request.get(url, { params: data, ...config })
       .then((res) => {
         resolve(res.data)
       })
@@ -51,9 +51,9 @@ export function get (url, data) {
   })
 }
 
-export function post (url, data) {
+export function post (url, data, config = {}) {
   return new Promise((resolve, reject) => {
-    request.post(url, data)
+    request.post(url, data, config)
       .then((res) => {
         resolve(res.data)
       })
@@ -63,9 +63,9 @@ export function post (url, data) {
   })
 }
 
-export function put (url, data) {
+export function put (url, data, config = {}) {
   return new Promise((resolve, reject) => {
-    request.put(url, data)
+    request.put(url, data, config)
       .then((res) => {
         resolve(res.data)
       })
@@ -75,9 +75,9 @@ export function put (url, data) {
   })
 }
 
-export function del (url, data) {
+export function del (url, data = {}, config = {}) {
   return new Promise((resolve, reject) => {
-    request.delete(url, data)
+    request.delete(url, { data, ...config })
       .then((res) => {
         resolve(res.data)
       })
