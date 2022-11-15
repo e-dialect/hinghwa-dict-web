@@ -94,23 +94,22 @@
           </a-form-item>
 
           <a-form-item label="当前密码">
-            <a-dropdown :trigger="['click']">
+            <a-popover trigger="click" placement="bottom">
               <a class="ant-dropdown-link" style="color:#ff0000" @click="e => e.preventDefault()">
                 修改密码
                 <a-icon type="down"/>
               </a>
-              <a-menu slot="overlay">
-                <a-form :label-col="labelCol" :wrapper-col="wrapperCol">
-                  <a-form-item :wrapper-col="{ span: 12, offset: 1 }" label="旧密码">
+                <a-form slot="content" :label-col="{span:7, offset: 1}" >
+                  <a-form-item :wrapper-col="{ span: 12, offset: 2 }" label="旧密码">
                     <a-input-password v-model="oldPassword"/>
                   </a-form-item>
-                  <a-form-item :wrapper-col="{ span: 12, offset: 1 }" label="新密码">
+                  <a-form-item :wrapper-col="{ span: 12, offset: 2 }" label="新密码">
                     <a-input-password v-model="newPassword"/>
                   </a-form-item>
-                  <a-form-item :wrapper-col="{ span: 12, offset: 1 }" label="重复新密码">
+                  <a-form-item :wrapper-col="{ span: 12, offset: 2 }" label="重复新密码">
                     <a-input-password v-model="confirmPassword"/>
                   </a-form-item>
-                  <a-form-item :wrapper-col="{ span: 12, offset: 7 }">
+                  <a-form-item :wrapper-col="{ span: 12, offset: 8 }">
                     <a-button
                       :loading="btnPasswordLoading"
                       type="danger"
@@ -120,8 +119,7 @@
                     </a-button>
                   </a-form-item>
                 </a-form>
-              </a-menu>
-            </a-dropdown>
+            </a-popover>
           </a-form-item>
 
           <a-form-item label="安全邮箱">
