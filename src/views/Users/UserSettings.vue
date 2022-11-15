@@ -252,6 +252,18 @@ export default {
      * 修改密码
      */
     changePassword () {
+      if (!this.oldPassword) {
+        this.$message.error('请输入旧密码')
+        return
+      }
+      if (!this.newPassword) {
+        this.$message.error('请输入新密码')
+        return
+      }
+      if (!this.confirmPassword) {
+        this.$message.error('请确认新密码')
+        return
+      }
       if (this.newPassword !== this.confirmPassword) {
         this.$message.error('两次输入的密码不一致')
         return
