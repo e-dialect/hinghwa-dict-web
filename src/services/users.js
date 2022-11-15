@@ -43,7 +43,7 @@ export function changePasswordRequest (id, oldPassword, newPassword) {
     message.success('更改密码成功')
   }).catch(err => {
     message.destroy()
-    switch (err.response.status) {
+    switch (err.status) {
       case 401: {
         message.error('原密码错误！')
         break
@@ -56,10 +56,18 @@ export function changePasswordRequest (id, oldPassword, newPassword) {
  * US0303 修改邮箱
  */
 export function changeEmailRequest (id, email, code) {
-  return request.put(`/users${id}/email`, {
+  return request.put(`/users/${id}/email`, {
     email, code
   }).then(() => {
     message.success('修改成功！')
+  }).catch(err => {
+    message.destroy()
+    switch (err.status) {
+      case 401: {
+        message.error('验证码错误！')
+        break
+      }
+    }
   })
 }
 

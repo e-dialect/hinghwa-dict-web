@@ -126,22 +126,23 @@
 
           <a-form-item label="安全邮箱">
             <a-input v-model="user.email" disabled/>
-            <a-dropdown :trigger="['click']">
+            <a-popover trigger="click" placement="bottom">
               <a class="ant-dropdown-link" style="color:red" @click="e => e.preventDefault()">
                 修改安全邮箱
                 <a-icon type="down"/>
               </a>
-              <a-menu slot="overlay">
-                <a-form>
-                  <a-form-item :wrapper-col="{ span: 12, offset: 3 }" label="新邮箱">
+
+                <a-form slot="content" :label-col="{span:4}"  >
+                  <a-form-item label="新邮箱" :wrapper-col="{ span: 16, offset: 2 }">
                     <a-input v-model="newEmail"/>
                   </a-form-item>
-                  <a-form-item :wrapper-col="{ span: 16, offset: 3 }" label="验证码">
+
+                  <a-form-item label="验证码" :wrapper-col="{ span: 16, offset: 2 }">
                     <a-row align="middle" justify="start" type="flex">
-                      <a-col :span="16">
+                      <a-col :span="14">
                         <a-input v-model="emailCode"/>
                       </a-col>
-                      <a-col :span="2">
+                      <a-col :span="8">
                         <a-button
                           :disabled="!EmailReg.test(newEmail)"
                           :loading="btnCodeLoading"
@@ -153,7 +154,8 @@
                       </a-col>
                     </a-row>
                   </a-form-item>
-                  <a-form-item :wrapper-col="{ span: 12, offset: 7 }">
+
+                  <a-form-item :wrapper-col="{ span: 12, offset: 8 }">
                     <a-button
                       :disabled="emailCode===''"
                       :loading="btnEmailLoading"
@@ -164,8 +166,7 @@
                     </a-button>
                   </a-form-item>
                 </a-form>
-              </a-menu>
-            </a-dropdown>
+            </a-popover>
           </a-form-item>
 
         </a-form>
