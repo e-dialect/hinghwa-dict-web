@@ -22,7 +22,7 @@
       <a-col span="12">
         <a-input v-model="article.cover"></a-input>
         <a-upload
-          :before-upload="beforeUpload"
+          :before-upload="checkImageBeforeUpload"
           :customRequest="customRequest"
           :show-upload-list="false"
         >
@@ -89,14 +89,15 @@
 
 <script>
 import axios from 'axios'
-import MarkdownEditor from '../../components/Articles/MarkdownEditor'
-import { beforeUpload, imageUpload } from '../../components/Articles/ImageUpload'
+import { checkImageBeforeUpload, uploadFile } from '@/services/website'
+import MarkdownEditor from '@/components/Articles/MarkdownEditor'
 
 export default {
   name: 'ArticleEdit',
   // props: { articleID: String },
   data () {
     return {
+      checkImageBeforeUpload: checkImageBeforeUpload,
       // 用户输入的文章名称和简介
       article: {
         title: '',
@@ -109,8 +110,7 @@ export default {
       btnCoverLoading: false,
       submit: false,
       isAuthor: false,
-      compareArticle: { ...this.article },
-      beforeUpload: beforeUpload
+      compareArticle: { ...this.article }
     }
   },
   components: {
@@ -222,7 +222,7 @@ export default {
      */
     customRequest (data) {
       this.btnCoverLoading = true
-      imageUpload(data.file).then(url => {
+      uploadFile(data.file).then(url => {
         this.article.cover = url
         this.btnCoverLoading = false
       })
