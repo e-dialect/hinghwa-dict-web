@@ -42,7 +42,7 @@
           </a-form-item>
 
           <a-form-item :wrapper-col="{ span: 24, offset: 5 }">
-            <a-button v-if="!editing" type="primary" @click="editing=true"> 编辑 </a-button>
+            <a-button v-if="!editing" type="primary" @click="editing=true"> 编辑</a-button>
             <div v-else>
               <a-button
                 type="primary"
@@ -51,7 +51,7 @@
               >
                 提交
               </a-button>
-              <a-button @click="cancelEdit()"> 取消编辑 </a-button>
+              <a-button @click="cancelEdit()"> 取消编辑</a-button>
             </div>
           </a-form-item>
 
@@ -99,26 +99,26 @@
                 修改密码
                 <a-icon type="down"/>
               </a>
-                <a-form slot="content" :label-col="{span:7, offset: 1}" >
-                  <a-form-item :wrapper-col="{ span: 12, offset: 2 }" label="旧密码">
-                    <a-input-password v-model="oldPassword"/>
-                  </a-form-item>
-                  <a-form-item :wrapper-col="{ span: 12, offset: 2 }" label="新密码">
-                    <a-input-password v-model="newPassword"/>
-                  </a-form-item>
-                  <a-form-item :wrapper-col="{ span: 12, offset: 2 }" label="重复新密码">
-                    <a-input-password v-model="confirmPassword"/>
-                  </a-form-item>
-                  <a-form-item :wrapper-col="{ span: 12, offset: 8 }">
-                    <a-button
-                      :loading="btnPasswordLoading"
-                      type="danger"
-                      v-on:click="changePassword"
-                    >
-                      确认修改
-                    </a-button>
-                  </a-form-item>
-                </a-form>
+              <a-form slot="content" :label-col="{span:7, offset: 1}">
+                <a-form-item :wrapper-col="{ span: 12, offset: 2 }" label="旧密码">
+                  <a-input-password v-model="oldPassword"/>
+                </a-form-item>
+                <a-form-item :wrapper-col="{ span: 12, offset: 2 }" label="新密码">
+                  <a-input-password v-model="newPassword"/>
+                </a-form-item>
+                <a-form-item :wrapper-col="{ span: 12, offset: 2 }" label="重复新密码">
+                  <a-input-password v-model="confirmPassword"/>
+                </a-form-item>
+                <a-form-item :wrapper-col="{ span: 12, offset: 8 }">
+                  <a-button
+                    :loading="btnPasswordLoading"
+                    type="danger"
+                    v-on:click="changePassword"
+                  >
+                    确认修改
+                  </a-button>
+                </a-form-item>
+              </a-form>
             </a-popover>
           </a-form-item>
 
@@ -130,40 +130,40 @@
                 <a-icon type="down"/>
               </a>
 
-                <a-form slot="content" :label-col="{span:4}"  >
-                  <a-form-item label="新邮箱" :wrapper-col="{ span: 16, offset: 2 }">
-                    <a-input v-model="newEmail"/>
-                  </a-form-item>
+              <a-form slot="content" :label-col="{span:4}">
+                <a-form-item label="新邮箱" :wrapper-col="{ span: 16, offset: 2 }">
+                  <a-input v-model="newEmail"/>
+                </a-form-item>
 
-                  <a-form-item label="验证码" :wrapper-col="{ span: 16, offset: 2 }">
-                    <a-row align="middle" justify="start" type="flex">
-                      <a-col :span="14">
-                        <a-input v-model="emailCode"/>
-                      </a-col>
-                      <a-col :span="8">
-                        <a-button
-                          :disabled="!EmailReg.test(newEmail)"
-                          :loading="btnCodeLoading"
-                          type="primary"
-                          v-on:click="sendCode(newEmail)"
-                        >
-                          发送验证码
-                        </a-button>
-                      </a-col>
-                    </a-row>
-                  </a-form-item>
+                <a-form-item label="验证码" :wrapper-col="{ span: 16, offset: 2 }">
+                  <a-row align="middle" justify="start" type="flex">
+                    <a-col :span="14">
+                      <a-input v-model="emailCode"/>
+                    </a-col>
+                    <a-col :span="8">
+                      <a-button
+                        :disabled="!EmailReg.test(newEmail)"
+                        :loading="btnCodeLoading"
+                        type="primary"
+                        v-on:click="sendCode(newEmail)"
+                      >
+                        发送验证码
+                      </a-button>
+                    </a-col>
+                  </a-row>
+                </a-form-item>
 
-                  <a-form-item :wrapper-col="{ span: 12, offset: 8 }">
-                    <a-button
-                      :disabled="emailCode===''"
-                      :loading="btnEmailLoading"
-                      type="danger"
-                      v-on:click="changeEmail"
-                    >
-                      确认修改
-                    </a-button>
-                  </a-form-item>
-                </a-form>
+                <a-form-item :wrapper-col="{ span: 12, offset: 8 }">
+                  <a-button
+                    :disabled="emailCode===''"
+                    :loading="btnEmailLoading"
+                    type="danger"
+                    v-on:click="changeEmail"
+                  >
+                    确认修改
+                  </a-button>
+                </a-form-item>
+              </a-form>
             </a-popover>
           </a-form-item>
 
