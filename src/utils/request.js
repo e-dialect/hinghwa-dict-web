@@ -10,13 +10,11 @@ const request = axios.create({
 
 request.interceptors.request.use((conf) => {
   conf.headers.token = `${localStorage.getItem('token') || ''}`
-  message.loading('加载中...', 0)
   return conf
 }, (err) => Promise.reject(err))
 
 request.interceptors.response.use((res) => res,
   ({ response }) => {
-    message.destroy()
     switch (response?.status) {
       case 401:
         message.error(response?.data?.msg || '你没有权限访问该页面，请登录')

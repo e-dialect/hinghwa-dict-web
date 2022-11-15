@@ -50,6 +50,7 @@
               <a-button
                 type="primary"
                 v-on:click="updateUser().finally(() => {editing = false})"
+                :loading="btnUserLoading"
               >
                 提交
               </a-button>
@@ -134,18 +135,18 @@
                 <a-icon type="down"/>
               </a>
               <a-menu slot="overlay">
-                <a-form :label-col="labelCol" :wrapper-col="wrapperCol">
+                <a-form>
                   <a-form-item :wrapper-col="{ span: 12, offset: 3 }" label="新邮箱">
                     <a-input v-model="newEmail"/>
                   </a-form-item>
-                  <a-form-item :wrapper-col="{ span: 12, offset: 3 }" label="验证码">
+                  <a-form-item :wrapper-col="{ span: 16, offset: 3 }" label="验证码">
                     <a-row align="middle" justify="start" type="flex">
                       <a-col :span="16">
                         <a-input v-model="emailCode"/>
                       </a-col>
                       <a-col :span="2">
                         <a-button
-                          :disabled="!RegExp(/^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/).test(newEmail)"
+                          :disabled="!EmailReg.test(newEmail)"
                           :loading="btnCodeLoading"
                           type="primary"
                           v-on:click="sendCode(newEmail)"
@@ -181,6 +182,9 @@ import moment from 'moment'
 import 'moment/locale/zh-cn'
 import axios from 'axios'
 import AreaCascader from '../../components/User/AreaCascader'
+import { EmailReg } from '@/consts/reg-exp'
+import { changeEmailRequest, changePasswordRequest, deleteWechatRequest, updateUserRequest } from '@/services/users'
+import { sendCodeRequest } from '@/services/website'
 
 export default {
   name: 'userSettings',
@@ -188,6 +192,7 @@ export default {
   data () {
     return {
       moment, // 字符串转时间object时需要用到的变量
+      EmailReg: EmailReg, // 邮箱正则表达式
 
       // 用户的信息
       user: {
@@ -223,7 +228,8 @@ export default {
 
       btnCodeLoading: false,
       btnEmailLoading: false,
-      btnPasswordLoading: false
+      btnPasswordLoading: false,
+      btnUserLoading: false
 
     }
   },
@@ -232,87 +238,48 @@ export default {
      * 修改密码
      */
     changePassword () {
-      if (this.newPassword === this.confirmPassword) {
-        this.btnPasswordLoading = true
-        axios.put(`/users/${this.user.id}/password`, {
-          oldpassword: this.oldPassword,
-          newpassword: this.newPassword
-        }).then(() => {
-          this.$message.success('更改密码成功')
-        }).catch(err => {
-          switch (err.response.status) {
-            case 401: {
-              this.$message.error('原密码错误！')
-              break
-            }
-          }
-        }).finally(() => {
-          this.btnPasswordLoading = false
-        })
-      } else {
+      if (this.newPassword !== this.confirmPassword) {
         this.$message.error('两次输入的密码不一致')
+        return
       }
+      this.btnPasswordLoading = true
+      changePasswordRequest(this.id, this.oldPassword, this.newPassword).finally(() => {
+        this.btnPasswordLoading = false
+      })
     },
+
     /**
      * 发送邮箱验证码
      */
     sendCode (email) {
       this.btnCodeLoading = true
-      axios.post('/website/email', { email: email }).then(
-        () => {
-          this.$message.success('验证码已成功发送至' + email)
-        }).catch(() => {
-        this.$message.error('发送失败！')
-      }).finally(() => {
+      sendCodeRequest(email).finally(() => {
         this.btnCodeLoading = false
       })
     },
+
     /**
      * 修改邮箱按钮
      */
     changeEmail () {
       this.btnEmailLoading = true
-      axios.put('/users' / +this.user.id + '/email', {
-        email: this.newEmail,
-        code: this.emailCode
-      }).then(() => {
+      changeEmailRequest(this.id, this.newEmail, this.emailCode).then(() => {
         this.$store.commit('userUpdate')
-        this.$message.success('修改成功！')
       }).finally(() => {
         this.btnEmailLoading = false
       })
     },
+
     /**
      * 更新用户信息
      * @return {Promise<void>}
      */
     async updateUser () {
-      return axios.put('/users/' + this.user.id, { user: this.user }).then(async (res) => {
-        localStorage.setItem('token', res.data.token)
-        await this.$store.dispatch('userUpdate')
-        this.$message.success('修改成功！')
-      }).catch(err => {
-        this.$message.destroy()
-        switch (err.response.status) {
-          case 401: {
-            this.$message.error('请检查登录状态！')
-            break
-          }
-          case 409: {
-            this.$message.error('该用户名存在冲突！')
-            break
-          }
-          case 400: {
-            this.$message.error('400:格式错误！')
-            break
-          }
-          default: {
-            console.log(err.response)
-            this.$message.error('未知错误！请联系管理员！')
-            this.$message.error('错误内容:' + err.response.data.msg)
-            break
-          }
-        }
+      this.btnUserLoading = true
+      updateUserRequest(this.id, this.user).then(async () => {
+        await this.$store.commit('userUpdate')
+      }).finally(() => {
+        this.btnUserLoading = false
       })
     },
     /**
@@ -354,10 +321,13 @@ export default {
       }
       return isJpgOrPng && isLt2M
     },
+
+    /**
+     * 取消绑定微信
+     */
     deleteWechat () {
-      axios.delete(`/users/${this.user.id}/wechat`, { data: {} }).then(() => {
-        this.$message.success('取消绑定成功！')
-        this.user.wechat = false
+      deleteWechatRequest(this.id).then(() => {
+        this.$store.commit('userUpdate')
       })
     }
   },
@@ -377,6 +347,9 @@ export default {
     },
     currentUsername () {
       return this.$store.getters.user.username
+    },
+    id () {
+      return this.$store.getters.user.id
     },
 
     birthday: {
@@ -403,7 +376,7 @@ export default {
 .body {
   background: white;
   padding: 30px;
-  width: 70%;
+  width: 80%;
   display: flex;
   flex-direction: column;
   justify-content: center;
