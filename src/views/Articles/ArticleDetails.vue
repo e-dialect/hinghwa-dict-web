@@ -2,7 +2,8 @@
   <a-spin v-if="hasDeleted===false" :delay="500" :spinning="spinning">
     <a-row :gutter="20" justify="center" type="flex">
       <!--文章主体部分-->
-      <a-col span="17">
+      <a-col span="17" @click="click($event)">
+        <SelectSearch ref="SelectSearch"></SelectSearch>
 
         <!--标题、封面、简介-->
         <a-card>
@@ -117,12 +118,14 @@
 import axios from 'axios'
 import CommentList from '../../components/Articles/CommentList'
 import MarkdownViewer from '../../components/Articles/MarkdownViewer'
+import SelectSearch from '@/components/Tools/SelectSearch.vue'
 
 export default {
   name: 'ArticleDetails',
   components: {
     MarkdownViewer,
-    CommentList
+    CommentList,
+    SelectSearch
   },
   props: { id: String },
   data () {
@@ -228,6 +231,12 @@ export default {
           this.hasDeleted = true
         }, 500)
       })
+    },
+    /**
+     * 划词翻译
+     */
+    click (e) {
+      this.$refs.SelectSearch.SelectText(e)
     }
   }
 }

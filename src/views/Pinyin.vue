@@ -1,5 +1,6 @@
 <template>
-  <div style="background: white;padding: 24px">
+  <div style="background: white;padding: 24px" @click="click($event)">
+    <SelectSearch ref="SelectSearch"></SelectSearch>
     <h1>拼音方案</h1>
     <div>
       <p>
@@ -53,10 +54,11 @@
 
 <script>
 import PinyinTable from '../components/Pronunciation/PinyinTable'
+import SelectSearch from '@/components/Tools/SelectSearch.vue'
 
 export default {
   name: 'Pinyin',
-  components: { PinyinTable },
+  components: { SelectSearch, PinyinTable },
   data () {
     return {
       columns: [
@@ -449,6 +451,11 @@ export default {
         example: '及 gih7'
       }]
 
+    }
+  },
+  methods: {
+    click (e) {
+      this.$refs.SelectSearch.SelectText(e)
     }
   }
 }
