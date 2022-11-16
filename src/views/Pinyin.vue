@@ -1,6 +1,6 @@
 <template>
-  <div style="background: white;padding: 24px" @click="click($event)">
-    <SelectSearch ref="SelectSearch"></SelectSearch>
+  <SelectSearch>
+  <div style="background: white;padding: 24px">
     <h1>拼音方案</h1>
     <div>
       <p>
@@ -50,6 +50,7 @@
     </p>
     <pinyin-table :columns="columns2" :pinyin="tone"/>
   </div>
+  </SelectSearch>
 </template>
 
 <script>
@@ -451,11 +452,6 @@ export default {
         example: '及 gih7'
       }]
 
-    }
-  },
-  methods: {
-    click (e) {
-      this.$refs.SelectSearch.SelectText(e)
     }
   }
 }
