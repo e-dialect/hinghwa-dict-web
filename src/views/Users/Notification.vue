@@ -29,7 +29,7 @@
                 <a-row :gutter="[64]">
                   <a-col :span="4">
                     <a-button style="width: 96px" type="primary"
-                              @click="selected=[...notification.sent.map((item)=>{return item.id})]">全选
+                              @click="selected=[...notification.received.map((item)=>{return item.id})]">全选
                     </a-button>
                   </a-col>
                   <a-col :span="4">
