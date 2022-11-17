@@ -359,6 +359,12 @@ export default {
         this.$message.success('取消绑定成功！')
         this.user.wechat = false
       })
+    },
+    hasLogin () {
+      if (!this.$store.getters.loginStatus) {
+        this.$message.error('请先登录！')
+        this.$router.push({ name: 'Login' })
+      }
     }
   },
   computed: {
@@ -390,6 +396,7 @@ export default {
   },
   created () {
     this.user = { ...this.$store.getters.user }
+    this.hasLogin()
   },
   watch: {
     '$store.getters.user' () {
