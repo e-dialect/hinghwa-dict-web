@@ -10,8 +10,8 @@
               </a-col>
               <a-col :span="4">
                 <a-upload
-                  v-show="editing"
-                  :before-upload="beforeUpload"
+                  v-if="editing"
+                  :before-upload="checkImageBeforeUpload"
                   :customRequest="imageUpload"
                   :show-upload-list="false">
                   <a-button>
@@ -24,14 +24,11 @@
           </a-form-item>
 
           <a-form-item label="昵称">
-            <a-input v-model="user.nickname" :disabled="!editing" placeholder="真的要做空白昵称人嘛？"/>
+            <a-input v-model="user.nickname" :disabled="!editing" placeholder="真的不留下一个昵称吗？"/>
           </a-form-item>
 
           <a-form-item label="生日">
-            <a-date-picker
-              v-model="birthday"
-              :disabled="!editing"
-            />
+            <a-date-picker v-model="birthday" :disabled="!editing"/>
           </a-form-item>
 
           <a-form-item label="电话">
@@ -39,25 +36,25 @@
               <a-icon slot="prefix" type="phone"/>
             </a-input>
           </a-form-item>
+
           <a-form-item label="乡镇">
             <AreaCascader :county.sync="user.county" :disabled="!editing" :town.sync="user.town"/>
           </a-form-item>
+
           <a-form-item :wrapper-col="{ span: 24, offset: 5 }">
-            <a-button v-if="!editing" type="primary" v-on:click="editing=true">
-              编辑
-            </a-button>
+            <a-button v-if="!editing" type="primary" @click="editing=true"> 编辑</a-button>
             <div v-else>
               <a-button
                 type="primary"
-                v-on:click="updateUser().finally(() => {editing = false})"
+                v-on:click="updateUser()"
+                :loading="btnUserLoading"
               >
                 提交
               </a-button>
-              <a-button @click="editing=false;user=Object.assign({}, $store.getters.user)">
-                取消编辑
-              </a-button>
+              <a-button @click="cancelEdit()"> 取消编辑</a-button>
             </div>
           </a-form-item>
+
           <a-form-item label="微信">
             <a-button
               v-if="user.wechat"
@@ -67,8 +64,9 @@
             >
               解除绑定
             </a-button>
-            <h3 v-else> 请前往小程序端进行绑定</h3>
+            <h4 v-else> 请前往小程序端进行绑定</h4>
           </a-form-item>
+
           <a-form-item :wrapper-col="{ span: 12, offset: 5 }" label="资料完善度">
             <a-progress :percent="percent" type="circle"/>
           </a-form-item>
@@ -96,78 +94,77 @@
           </a-form-item>
 
           <a-form-item label="当前密码">
-            <a-dropdown :trigger="['click']">
+            <a-popover trigger="click" placement="bottom">
               <a class="ant-dropdown-link" style="color:#ff0000" @click="e => e.preventDefault()">
                 修改密码
                 <a-icon type="down"/>
               </a>
-              <a-menu slot="overlay">
-                <a-form :label-col="labelCol" :wrapper-col="wrapperCol">
-                  <a-form-item :wrapper-col="{ span: 12, offset: 1 }" label="旧密码">
-                    <a-input-password v-model="oldPassword"/>
-                  </a-form-item>
-                  <a-form-item :wrapper-col="{ span: 12, offset: 1 }" label="新密码">
-                    <a-input-password v-model="newPassword"/>
-                  </a-form-item>
-                  <a-form-item :wrapper-col="{ span: 12, offset: 1 }" label="重复新密码">
-                    <a-input-password v-model="confirmPassword"/>
-                  </a-form-item>
-                  <a-form-item :wrapper-col="{ span: 12, offset: 7 }">
-                    <a-button
-                      :loading="btnPasswordLoading"
-                      type="danger"
-                      v-on:click="changePassword"
-                    >
-                      确认修改
-                    </a-button>
-                  </a-form-item>
-                </a-form>
-              </a-menu>
-            </a-dropdown>
+              <a-form slot="content" :label-col="{span:7, offset: 1}">
+                <a-form-item :wrapper-col="{ span: 12, offset: 2 }" label="旧密码">
+                  <a-input-password v-model="oldPassword"/>
+                </a-form-item>
+                <a-form-item :wrapper-col="{ span: 12, offset: 2 }" label="新密码">
+                  <a-input-password v-model="newPassword"/>
+                </a-form-item>
+                <a-form-item :wrapper-col="{ span: 12, offset: 2 }" label="重复新密码">
+                  <a-input-password v-model="confirmPassword"/>
+                </a-form-item>
+                <a-form-item :wrapper-col="{ span: 12, offset: 8 }">
+                  <a-button
+                    :loading="btnPasswordLoading"
+                    type="danger"
+                    v-on:click="changePassword"
+                  >
+                    确认修改
+                  </a-button>
+                </a-form-item>
+              </a-form>
+            </a-popover>
           </a-form-item>
 
           <a-form-item label="安全邮箱">
             <a-input v-model="user.email" disabled/>
-            <a-dropdown :trigger="['click']">
+            <a-popover trigger="click" placement="bottom">
               <a class="ant-dropdown-link" style="color:red" @click="e => e.preventDefault()">
                 修改安全邮箱
                 <a-icon type="down"/>
               </a>
-              <a-menu slot="overlay">
-                <a-form :label-col="labelCol" :wrapper-col="wrapperCol">
-                  <a-form-item :wrapper-col="{ span: 12, offset: 3 }" label="新邮箱">
-                    <a-input v-model="newEmail"/>
-                  </a-form-item>
-                  <a-form-item :wrapper-col="{ span: 12, offset: 3 }" label="验证码">
-                    <a-row align="middle" justify="start" type="flex">
-                      <a-col :span="16">
-                        <a-input v-model="emailCode"/>
-                      </a-col>
-                      <a-col :span="2">
-                        <a-button
-                          :disabled="!RegExp(/^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/).test(newEmail)"
-                          :loading="btnCodeLoading"
-                          type="primary"
-                          v-on:click="sendCode(newEmail)"
-                        >
-                          发送验证码
-                        </a-button>
-                      </a-col>
-                    </a-row>
-                  </a-form-item>
-                  <a-form-item :wrapper-col="{ span: 12, offset: 7 }">
-                    <a-button
-                      :disabled="emailCode===''"
-                      :loading="btnEmailLoading"
-                      type="danger"
-                      v-on:click="changeEmail"
-                    >
-                      确认修改
-                    </a-button>
-                  </a-form-item>
-                </a-form>
-              </a-menu>
-            </a-dropdown>
+
+              <a-form slot="content" :label-col="{span:4}">
+                <a-form-item label="新邮箱" :wrapper-col="{ span: 16, offset: 2 }">
+                  <a-input v-model="newEmail"/>
+                </a-form-item>
+
+                <a-form-item label="验证码" :wrapper-col="{ span: 16, offset: 2 }">
+                  <a-row align="middle" justify="start" type="flex">
+                    <a-col :span="14">
+                      <a-input v-model="emailCode"/>
+                    </a-col>
+                    <a-col :span="8">
+                      <a-button
+                        :disabled="!EmailReg.test(newEmail)"
+                        :loading="btnCodeLoading"
+                        type="primary"
+                        v-on:click="sendCode(newEmail)"
+                      >
+                        发送验证码
+                      </a-button>
+                    </a-col>
+                  </a-row>
+                </a-form-item>
+
+                <a-form-item :wrapper-col="{ span: 12, offset: 8 }">
+                  <a-button
+                    :disabled="emailCode===''"
+                    :loading="btnEmailLoading"
+                    type="danger"
+                    v-on:click="changeEmail"
+                  >
+                    确认修改
+                  </a-button>
+                </a-form-item>
+              </a-form>
+            </a-popover>
           </a-form-item>
 
         </a-form>
@@ -179,8 +176,11 @@
 <script>
 import moment from 'moment'
 import 'moment/locale/zh-cn'
-import axios from 'axios'
-import AreaCascader from '../../components/User/AreaCascader'
+import AreaCascader
+from '../../components/User/AreaCascader'
+import { EmailReg } from '@/consts/reg-exp'
+import { changeEmailRequest, changePasswordRequest, deleteWechatRequest, updateUserRequest } from '@/services/users'
+import { checkImageBeforeUpload, sendCodeRequest, uploadFile } from '@/services/website'
 
 export default {
   name: 'userSettings',
@@ -188,6 +188,8 @@ export default {
   data () {
     return {
       moment, // 字符串转时间object时需要用到的变量
+      EmailReg: EmailReg, // 邮箱正则表达式
+      checkImageBeforeUpload: checkImageBeforeUpload, // 上传图片前的校验函数
 
       // 用户的信息
       user: {
@@ -202,6 +204,7 @@ export default {
         avatar: 'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png',
         county: '',
         town: '',
+        wechat: false,
         is_admin: false
       },
       oldPassword: '', // 用户输入的旧密码
@@ -223,141 +226,105 @@ export default {
 
       btnCodeLoading: false,
       btnEmailLoading: false,
-      btnPasswordLoading: false
+      btnPasswordLoading: false,
+      btnUserLoading: false
 
     }
   },
   methods: {
     /**
+     * 刷新用户信息
+     */
+    async refreshUser () {
+      await this.$store.dispatch('userUpdate')
+      this.user = { ...this.$store.getters.user }
+    },
+
+    /**
+     * 取消编辑
+     */
+    cancelEdit () {
+      this.user = { ...this.$store.getters.user }
+      this.editing = false
+    },
+
+    /**
      * 修改密码
      */
     changePassword () {
-      if (this.newPassword === this.confirmPassword) {
-        this.btnPasswordLoading = true
-        axios.put(`/users/${this.user.id}/password`, {
-          oldpassword: this.oldPassword,
-          newpassword: this.newPassword
-        }).then(() => {
-          this.$message.success('更改密码成功')
-        }).catch(err => {
-          switch (err.response.status) {
-            case 401: {
-              this.$message.error('原密码错误！')
-              break
-            }
-          }
-        }).finally(() => {
-          this.btnPasswordLoading = false
-        })
-      } else {
-        this.$message.error('两次输入的密码不一致')
+      if (!this.oldPassword) {
+        this.$message.error('请输入旧密码')
+        return
       }
+      if (!this.newPassword) {
+        this.$message.error('请输入新密码')
+        return
+      }
+      if (!this.confirmPassword) {
+        this.$message.error('请确认新密码')
+        return
+      }
+      if (this.newPassword !== this.confirmPassword) {
+        this.$message.error('两次输入的密码不一致')
+        return
+      }
+      this.btnPasswordLoading = true
+      changePasswordRequest(this.id, this.oldPassword, this.newPassword).finally(() => {
+        this.btnPasswordLoading = false
+      })
     },
+
     /**
      * 发送邮箱验证码
      */
     sendCode (email) {
       this.btnCodeLoading = true
-      axios.post('/website/email', { email: email }).then(
-        () => {
-          this.$message.success('验证码已成功发送至' + email)
-        }).catch(() => {
-        this.$message.error('发送失败！')
-      }).finally(() => {
+      sendCodeRequest(email).finally(() => {
         this.btnCodeLoading = false
       })
     },
+
     /**
      * 修改邮箱按钮
      */
     changeEmail () {
       this.btnEmailLoading = true
-      axios.put('/users' / +this.user.id + '/email', {
-        email: this.newEmail,
-        code: this.emailCode
-      }).then(() => {
-        this.$store.commit('userUpdate')
-        this.$message.success('修改成功！')
+      changeEmailRequest(this.id, this.newEmail, this.emailCode).then(() => {
+        this.refreshUser()
       }).finally(() => {
         this.btnEmailLoading = false
       })
     },
+
     /**
      * 更新用户信息
      * @return {Promise<void>}
      */
     async updateUser () {
-      return axios.put('/users/' + this.user.id, { user: this.user }).then(async (res) => {
-        localStorage.setItem('token', res.data.token)
-        await this.$store.dispatch('userUpdate')
-        this.$message.success('修改成功！')
-      }).catch(err => {
-        this.$message.destroy()
-        switch (err.response.status) {
-          case 401: {
-            this.$message.error('请检查登录状态！')
-            break
-          }
-          case 409: {
-            this.$message.error('该用户名存在冲突！')
-            break
-          }
-          case 400: {
-            this.$message.error('400:格式错误！')
-            break
-          }
-          default: {
-            console.log(err.response)
-            this.$message.error('未知错误！请联系管理员！')
-            this.$message.error('错误内容:' + err.response.data.msg)
-            break
-          }
-        }
+      this.btnUserLoading = true
+      await updateUserRequest(this.id, this.user).then(async () => {
+        await this.refreshUser()
+      }).finally(() => {
+        this.btnUserLoading = false
+        this.editing = false
       })
     },
     /**
      * 上传图片
      * @param image 即将上传的文件信息
      */
-    imageUpload (image) {
-      var data = new FormData()
-      data.append('file', image.file)
-      axios({
-        url: '/website/files',
-        method: 'post',
-        data: data,
-        headers: { 'Content-Type': 'multipart/form-data' }
-      }).then((res) => {
-        this.user.avatar = res.data.url
-        this.$message.success('成功上传啦~')
-      }).catch(err => {
-        this.$message.destroy()
-        switch (err.response.status) {
-          default: {
-            this.$message.error(err.toString())
-          }
-        }
-      })
+    async imageUpload (image) {
+      const url = await uploadFile(image.file)
+      if (url) {
+        this.user.avatar = url
+      }
     },
     /**
-     * 在上传之前检查即将上传的文件
-     * @param file 即将上传的文件
+     * 取消绑定微信
      */
-    beforeUpload (file) {
-      const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
-      if (!isJpgOrPng) {
-        this.$message.error('仅支持上传jpg或png文件!')
-      }
-      const isLt2M = file.size / 1024 / 1024 < 2
-      if (!isLt2M) {
-        this.$message.error('上传的图片大小不超过2MB!')
-      }
-      return isJpgOrPng && isLt2M
-    },
     deleteWechat () {
-      axios.delete(`/users/${this.user.id}/wechat`, { data: {} }).then(() => {
-        this.$message.success('取消绑定成功！')
-        this.user.wechat = false
+      deleteWechatRequest(this.id).then(() => {
+        this.refreshUser()
       })
     },
     hasLogin () {
@@ -379,10 +346,14 @@ export default {
       if (this.user.telephone !== '') now += 1
       if (this.user.county !== '') now += 1
       if (this.user.town !== '') now += 1
-      return parseInt(now * 100 / 8)
+      return now * 100 / 8
     },
+
     currentUsername () {
       return this.$store.getters.user.username
+    },
+    id () {
+      return this.$store.getters.user.id
     },
 
     birthday: {
@@ -395,13 +366,9 @@ export default {
     }
   },
   created () {
-    this.user = { ...this.$store.getters.user }
     this.hasLogin()
+    this.refreshUser()
   },
-  watch: {
-    '$store.getters.user' () {
-      this.user = { ...this.$store.getters.user }
-    }
   }
 }
 </script>
@@ -410,7 +377,7 @@ export default {
 .body {
   background: white;
   padding: 30px;
-  width: 70%;
+  width: 80%;
   display: flex;
   flex-direction: column;
   justify-content: center;

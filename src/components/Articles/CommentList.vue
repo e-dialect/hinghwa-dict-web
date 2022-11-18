@@ -4,16 +4,20 @@
     <a-comment v-show="replyTo===parent">
       <template v-slot:avatar>
         <a-avatar
+          v-if="$store.getters.loginStatus"
           :alt="user.nickname"
           :src="user.avatar"
         />
       </template>
       <template v-slot:content>
         <a-form-item>
-          <a-textarea v-model="newCommentValue" :rows="4"/>
+          <a-textarea
+            v-if="$store.getters.loginStatus"
+            v-model="newCommentValue" :rows="4"/>
         </a-form-item>
         <a-form-item>
           <a-button
+            v-if="$store.getters.loginStatus"
             :disabled="newCommentValue===''"
             :loading="btnCommentSubmitting"
             html-type="submit" type="primary"
@@ -55,6 +59,7 @@
                删除评论
               </span>
               <span
+                v-if="$store.getters.loginStatus"
                 @click="$store.commit('changeReplyTo',item.id)"
               >
                 回复评论
