@@ -1,9 +1,10 @@
 <template>
   <a-spin v-if="hasDeleted===false" :delay="500" :spinning="spinning">
-    <SelectSearch>
-      <a-row :gutter="20" justify="center" type="flex">
-        <!--文章主体部分-->
-        <a-col span="17">
+
+    <a-row :gutter="20" justify="center" type="flex">
+      <!--文章主体部分-->
+      <a-col span="17">
+        <SelectSearch>
           <!--标题、封面、简介-->
           <a-card>
             <template #title>
@@ -30,75 +31,75 @@
               <comment-list :id="id" :pageSize="8" :parent="0"/>
             </a-spin>
           </a-card>
-        </a-col>
+        </SelectSearch>
+      </a-col>
 
-        <!--文章的附加信息-->
-        <a-col span="7">
-          <!-- 文章的附加信息-->
+      <!--文章的附加信息-->
+      <a-col span="7">
+        <!-- 文章的附加信息-->
 
-          <a-card style="margin-top: 16px" title="文章信息">
-            <h3>文章作者：</h3>
-            <a-card-meta :title="article.author.nickname">
-              <router-link
-                slot="avatar"
-                :to="{name:'UserDetails',params:{id:article.author.id.toString()}}"
-              >
-                <a-avatar :src="article.author.avatar"/>
-              </router-link>
-            </a-card-meta>
+        <a-card style="margin-top: 16px" title="文章信息">
+          <h3>文章作者：</h3>
+          <a-card-meta :title="article.author.nickname">
+            <router-link
+              slot="avatar"
+              :to="{name:'UserDetails',params:{id:article.author.id.toString()}}"
+            >
+              <a-avatar :src="article.author.avatar"/>
+            </router-link>
+          </a-card-meta>
+          <br>
+          <h3> 发布时间:<br>&nbsp;&nbsp;&nbsp;&nbsp;{{ article.publish_time }} </h3>
+          <h3> 最近更新:<br>&nbsp;&nbsp;&nbsp;&nbsp;{{ article.update_time }} </h3>
+          <h3>
+            <a-icon type="eye"/>
+            阅读量：{{ article.views }}
+          </h3>
+          <h3>
+            <a-icon type="like"/>
+            点赞量：{{ article.likes }}
+          </h3>
+        </a-card>
+
+        <a-card style="margin-top: 16px" title="文章操作">
+          <div style="text-align: center;line-height: 48px">
+            <a-button
+              :loading="btnLikeLoading"
+              style="margin-top:8px"
+              type="primary"
+              @click="btnLikeClick"
+            >
+              {{ me.liked ? '取消' : '' }}点赞
+            </a-button>
+
             <br>
-            <h3> 发布时间:<br>&nbsp;&nbsp;&nbsp;&nbsp;{{ article.publish_time }} </h3>
-            <h3> 最近更新:<br>&nbsp;&nbsp;&nbsp;&nbsp;{{ article.update_time }} </h3>
-            <h3>
-              <a-icon type="eye"/>
-              阅读量：{{ article.views }}
-            </h3>
-            <h3>
-              <a-icon type="like"/>
-              点赞量：{{ article.likes }}
-            </h3>
-          </a-card>
 
-          <a-card style="margin-top: 16px" title="文章操作">
-            <div style="text-align: center;line-height: 48px">
+            <a-popconfirm
+              cancel-text="取消"
+              ok-text="删除"
+              title="文章一旦删除变无法找回，你确定要继续操作？"
+              @confirm="deleteArticle"
+            >
+
               <a-button
-                :loading="btnLikeLoading"
-                style="margin-top:8px"
+                v-if="me.is_author"
+                :loading="btnDeleteLoading"
                 type="primary"
-                @click="btnLikeClick"
               >
-                {{ me.liked ? '取消' : '' }}点赞
+                删除
               </a-button>
+            </a-popconfirm>
 
-              <br>
+            <br>
 
-              <a-popconfirm
-                cancel-text="取消"
-                ok-text="删除"
-                title="文章一旦删除变无法找回，你确定要继续操作？"
-                @confirm="deleteArticle"
-              >
+            <router-link :to="{name:'ArticleEdit',params:{id: id}}">
+              <a-button v-if="me.is_author" type="primary"> 编辑</a-button>
+            </router-link>
 
-                <a-button
-                  v-if="me.is_author"
-                  :loading="btnDeleteLoading"
-                  type="primary"
-                >
-                  删除
-                </a-button>
-              </a-popconfirm>
-
-              <br>
-
-              <router-link :to="{name:'ArticleEdit',params:{id: id}}">
-                <a-button v-if="me.is_author" type="primary"> 编辑</a-button>
-              </router-link>
-
-            </div>
-          </a-card>
-        </a-col>
-      </a-row>
-    </SelectSearch>
+          </div>
+        </a-card>
+      </a-col>
+    </a-row>
   </a-spin>
   <a-result
     v-else
