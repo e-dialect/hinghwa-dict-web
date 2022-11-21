@@ -2,17 +2,16 @@
   <div>
     <!--划词功能-->
     <a-card
-      v-if="selectWordVisible"
       class="select-word"
-      :style="{top:selectY,left:selectX,'z-index':2400,'max-width':'400px'}"
+      :style="{top:selectY,left:selectX,'z-index':2400,'max-width':'400px',visibility:selectWordVisible}"
     >
       <template slot="title">
         <span>划线取词</span>
         <span style="color: gray; font-size: smaller">（功能开发中）</span>
       </template>
-      <li>
+      <li @click="search(selectedWord)" ref="menu">
         前往搜索：
-        <span @click="search(selectedWord)">{{ selectedWord }}</span>
+        <span>{{ selectedWord }}</span>
       </li>
     </a-card>
 
@@ -29,11 +28,12 @@ export default {
   props: [],
   data () {
     return {
-      selectWordVisible: false,
+      selectWordVisible: 'hidden',
       selectedWord: '',
       selectX: '',
       selectY: '',
-      currentTimeout: null
+      currentTimeout: null,
+      w: document.documentElement.scrollWidth
     }
   },
   methods: {
@@ -50,14 +50,21 @@ export default {
       if (word) {
         clearTimeout(this.currentTimeout)
         this.currentTimeout = setTimeout(() => {
-          this.selectWordVisible = true
+          // 判断是否碰壁
+          if (e.clientX + this.$refs.menu.scrollWidth + 148 > this.w) {
+            // 没有碰壁
+            this.selectX = e.clientX - this.$refs.menu.scrollWidth - 148 + 'px'
+            this.selectY = e.clientY + 'px'
+          } else {
+            // 碰壁了
+            this.selectX = e.clientX - 100 + 'px'
+            this.selectY = e.clientY + 'px'
+          }
+          this.selectWordVisible = 'visible'
         }, 3500)
-        // get mouse position
-        this.selectX = e.clientX + 'px'
-        this.selectY = e.clientY + 'px'
       } else {
         clearTimeout(this.currentTimeout)
-        this.selectWordVisible = false
+        this.selectWordVisible = 'hidden'
       }
     },
     search (content) {
@@ -77,10 +84,7 @@ export default {
 <style scoped>
 .select-word {
   background: #fff;
-  position: fixed;
-  /*margin-top: -60px;*/
-  /*margin-left: -70px;*/
-  /*line-height: 42px;*/
+  position: absolute;
   border-radius: 5px;
   box-shadow: 0 0 5px #ccc;
 }
