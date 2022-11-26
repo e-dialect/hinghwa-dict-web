@@ -232,12 +232,6 @@ export default {
           this.hasDeleted = true
         }, 500)
       })
-    },
-    /**
-     * 划词翻译
-     */
-    click (e) {
-      this.$refs.SelectSearch.SelectText(e)
     }
   }
 }
