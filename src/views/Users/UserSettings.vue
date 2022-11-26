@@ -233,6 +233,15 @@ export default {
   },
   methods: {
     /**
+     * 判断是否登录
+     */
+    hasLogin () {
+      if (!this.$store.getters.loginStatus) {
+        this.$message.error('请先登录！')
+        this.$router.push({ name: 'Login' })
+      }
+    },
+    /**
      * 刷新用户信息
      */
     async refreshUser () {
@@ -361,6 +370,7 @@ export default {
   },
   created () {
     this.refreshUser()
+    this.hasLogin()
   }
 
 }
