@@ -1,4 +1,5 @@
 <template>
+  <SelectSearch>
   <div style="background: white;padding: 24px">
     <h1>拼音方案</h1>
     <div>
@@ -49,14 +50,16 @@
     </p>
     <pinyin-table :columns="columns2" :pinyin="tone"/>
   </div>
+  </SelectSearch>
 </template>
 
 <script>
 import PinyinTable from '../components/Pronunciation/PinyinTable'
+import SelectSearch from '@/components/Tools/SelectSearch.vue'
 
 export default {
   name: 'Pinyin',
-  components: { PinyinTable },
+  components: { SelectSearch, PinyinTable },
   data () {
     return {
       columns: [

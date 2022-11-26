@@ -1,35 +1,37 @@
 <template>
   <a-spin v-if="hasDeleted===false" :delay="500" :spinning="spinning">
+
     <a-row :gutter="20" justify="center" type="flex">
       <!--文章主体部分-->
       <a-col span="17">
+        <SelectSearch>
+          <!--标题、封面、简介-->
+          <a-card>
+            <template #title>
+              <h1> {{ article.title }} </h1>
+            </template>
 
-        <!--标题、封面、简介-->
-        <a-card>
-          <template #title>
-            <h1> {{ article.title }} </h1>
-          </template>
+            <template #cover>
+              <img :alt="'这里本是文章的封面，其地址为'+article.cover+',但是显示不出来了'" :src="article.cover">
+            </template>
 
-          <template #cover>
-            <img :alt="'这里本是文章的封面，其地址为'+article.cover+',但是显示不出来了'" :src="article.cover">
-          </template>
+            <p> 文章简介： {{ article.description }} </p>
+          </a-card>
 
-          <p> 文章简介： {{ article.description }} </p>
-        </a-card>
-
-        <!---文章主体部分--->
-        <a-card>
-          <MarkdownViewer :text="article.content"/>
-        </a-card>
-        <!--评论区-->
-        <a-card>
-          <template #title>
-            <h3> 评论区 </h3>
-          </template>
-          <a-spin :delay="500" :spinning="commentsLoading">
-            <comment-list :id="id" :pageSize="8" :parent="0"/>
-          </a-spin>
-        </a-card>
+          <!---文章主体部分--->
+          <a-card>
+            <MarkdownViewer :text="article.content"/>
+          </a-card>
+          <!--评论区-->
+          <a-card>
+            <template #title>
+              <h3> 评论区 </h3>
+            </template>
+            <a-spin :delay="500" :spinning="commentsLoading">
+              <comment-list :id="id" :pageSize="8" :parent="0"/>
+            </a-spin>
+          </a-card>
+        </SelectSearch>
       </a-col>
 
       <!--文章的附加信息-->
@@ -117,12 +119,14 @@
 import axios from 'axios'
 import CommentList from '../../components/Articles/CommentList'
 import MarkdownViewer from '../../components/Articles/MarkdownViewer'
+import SelectSearch from '@/components/Tools/SelectSearch.vue'
 
 export default {
   name: 'ArticleDetails',
   components: {
     MarkdownViewer,
-    CommentList
+    CommentList,
+    SelectSearch
   },
   props: { id: String },
   data () {

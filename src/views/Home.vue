@@ -47,7 +47,6 @@
         </div>
       </a-card>
     </a-row>
-
     <a-row
       justify="space-around"
       style="padding-top:10px;padding-bottom:20px;padding-right:0;padding-left:0;"
@@ -109,6 +108,26 @@ export default {
       }
     }
   }
-
 }
 </script>
+<style>
+.select-word {
+  background: #fff;
+  position: fixed;
+  margin-top: -70px;
+  margin-left: -50px;
+  line-height: 42px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px #ccc;
+}
+li {
+  padding: 0 15px;
+  color: #8c8c8c;
+  list-style: none;
+}
+li:hover {
+  color: #417be0;
+  cursor: pointer;
+  background: #e7edfb;
+}
+</style>
