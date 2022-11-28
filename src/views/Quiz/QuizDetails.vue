@@ -44,7 +44,7 @@
     <a-button
       type="dashed"
       class="btn"
-      @click="nextquestion"
+      @click="nextQuestion"
     >
       下一题
     </a-button>
@@ -53,10 +53,11 @@
 
 <script>
 
-import axios from 'axios'
+import { getQuiz, getRandomQuiz } from '@/services/quiz'
 
 export default {
   name: 'QuizDetails',
+  props: ['id'],
   data () {
     return {
       quiz: {
@@ -64,7 +65,7 @@ export default {
         options: [],
         answer: 0,
         explanation: '这个是个答案解析',
-        id: 21
+        id: 0
       },
       isShow: false,
       answerbtnText: '重置本题',
@@ -75,24 +76,25 @@ export default {
     }
   },
   created () {
-    axios.get('http://127.0.0.1:4523/mock/404238/quizzes/' + this.id).then(res => {
-      this.quiz = res.data.quiz
-    })
+    this.getQuiz()
+  },
+  mounted: () => {
+    this.id = this.$route.query.id
+    this.nextQuestion()
   },
   methods: {
+    /**
+     *获取测试题
+     **/
+    async getQuiz () {
+      await getQuiz(this.id).then(res => {
+        this.quiz = res.quiz
+      })
+    },
     answerAgain () {
       this.errorIndex = ''
       this.correctIndex = ''
       this.isShow = false
-    },
-    nextquestion () {
-      this.errorIndex = ''
-      this.correctIndex = ''
-      this.isShow = false
-      axios.get('http://127.0.0.1:4523/mock/404238/quizzes/' + this.id).then(res => {
-        this.quiz = res.data.quiz
-        this.$router.push('/PuxianExam/' + this.quiz.id)
-      })
     },
     addClass: function (index1, event) {
       this.errorIndex = ''
@@ -108,6 +110,15 @@ export default {
         this.$message.success('恭喜你 回答正确！')
         this.correctIndex = index1
       }
+    },
+    async nextQuestion () {
+      this.errorIndex = ''
+      this.correctIndex = ''
+      this.isShow = false
+      await getRandomQuiz().then(res => {
+        this.quiz = res.quiz
+        this.$router.push('/PuxianExam/' + this.quiz.id)
+      })
     }
   }
 }
