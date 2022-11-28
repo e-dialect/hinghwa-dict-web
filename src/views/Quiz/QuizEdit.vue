@@ -70,8 +70,9 @@ export default {
      * 创建测试题的命令操作
      */
     createQuiz () {
+      // TODO 重构至 services/quiz.js
       this.btnQuizLoading = true
-      axios.post('http://127.0.0.1:4523/mock/404238/quizzes/', Object.assign({}, this.quiz)).then(res => {
+      axios.post('/quizzes', Object.assign({}, this.quiz)).then(res => {
         this.submit = true
         this.$message.success('恭喜你，创建成功！')
         this.$router.push({
