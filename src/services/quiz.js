@@ -9,15 +9,14 @@ export function getQuiz (id) {
   return request.get(`/quizzes/${id}`)
 }
 
-// /**
-//  * QZ0201 搜索指定的测试
-//  * @param key 搜索关键词
-//  * @returns {Promise<unknown>}
-//  */
-// export async function searchQuiz(key) {
-//   return await request.get('/quizzes', { keywords: key })
-// }
-//
+/**
+ * QZ0201 搜索指定的测试
+ * @param key 搜索关键词
+ * @returns {Promise<unknown>}
+ */
+export async function searchQuiz (key) {
+  return await request.get('/quizzes', { keywords: key })
+}
 
 /**
  * QZ0202 获取随机的测试

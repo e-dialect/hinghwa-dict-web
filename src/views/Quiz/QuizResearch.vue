@@ -18,7 +18,7 @@
 
 <script>
 
-import axios from 'axios'
+import { searchQuiz } from '@/services/quiz'
 
 export default {
   name: 'QuizResearch',
@@ -29,10 +29,11 @@ export default {
     }
   },
   methods: {
-    search (content) {
+    async search (content) {
       if (content) {
-        axios.get('http://127.0.0.1:4523/mock/404238/quizzes').then(res => {
-          this.result = res.data.result
+        console.log(content)
+        await searchQuiz(content).then(res => {
+          this.result = res.result
         })
       } else {
         this.$message.warning('请先输入搜索内容哦~')
