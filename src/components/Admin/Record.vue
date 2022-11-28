@@ -23,8 +23,9 @@
 
       <div slot="id" slot-scope="text">
         <a
-          :href="`https://api.pxm.edialect.top/adminword/pronunciation/${text.id}/change/`"
+          :href="`${BASE_URL}/admin/word/pronunciation/${text.id}/change/`"
         >
+          <!--FIXME-->
           {{ text.id }}
         </a>
       </div>
@@ -142,11 +143,13 @@
 
 <script>
 import axios from 'axios'
+import { BASE_URL } from '@/consts/urls'
 
 export default {
   name: 'Record',
   data () {
     return {
+      BASE_URL: BASE_URL,
       total: 300,
       recordList: [],
       tableLoading: true,

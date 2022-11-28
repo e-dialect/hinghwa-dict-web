@@ -5,13 +5,14 @@ import store from './store'
 import 'ant-design-vue/dist/antd.css'
 import Antd, { message } from 'ant-design-vue'
 import axios from 'axios'
+import { BASE_URL } from '@/consts/urls'
 
 Vue.config.productionTip = false
 Vue.use(Antd)
 
 // axios
 Vue.prototype.$axios = axios
-axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? 'https://api.pxm.test.edialect.top/' : 'https://api.pxm.edialect.top/'
+axios.defaults.baseURL = BASE_URL
 
 // 利用axios的cancelToken来取消请求
 const CancelToken = axios.CancelToken
