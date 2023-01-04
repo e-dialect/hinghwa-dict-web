@@ -97,9 +97,15 @@
           <a-tag :color="text.visibility ? 'green' : 'red'">
             {{ text.visibility ? '通过' : '不通过' }}
           </a-tag>
-          <a-button v-if="record.editable" @click="toConfirm=text.id;reason=''">
-            重新审核
-          </a-button>
+          <a-popconfirm
+            title="您做的修改将无法保留，且会再次向修改人发送邮件通知修改结果，您确定要重新审核吗？"
+            @confirm="toConfirm=text.id;reason=''"
+            okText="确定"
+            cancelText="取消">
+            <a-button v-if="record.editable">
+              重新审核
+            </a-button>
+          </a-popconfirm>
         </a-popover>
       </div>
 
