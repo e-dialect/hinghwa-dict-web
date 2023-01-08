@@ -79,7 +79,15 @@
         <audio :src="record.source" controls preload="none" style="max-width: 128px"></audio>
       </div>
 
-      <div slot="exam" slot-scope="text,record">
+<!--      审核情况列-->
+      <div slot="recordStatus" slot-scope="text"
+           style="width: 70px"
+           :class="{pass:text.recordStatus==='已通过',fail:text.recordStatus==='不通过',unreviewed:text.recordStatus==='未审核'}">
+        <div>{{ text.recordStatus}}</div>
+      </div>
+
+<!--      操作列-->
+      <div slot="action" slot-scope="text,record,index">
         <a-button v-if="!text.granted" @click="toConfirm=text.id;reason=''">
           审核
         </a-button>
@@ -94,9 +102,6 @@
               {{ text.verifier.nickname }}
             </router-link>
           </template>
-          <a-tag :color="text.visibility ? 'green' : 'red'">
-            {{ text.visibility ? '通过' : '不通过' }}
-          </a-tag>
           <a-popconfirm
             title="您做的修改将无法保留，且会再次向修改人发送邮件通知修改结果，您确定要重新审核吗？"
             @confirm="toConfirm=text.id;reason=''"
@@ -107,9 +112,6 @@
             </a-button>
           </a-popconfirm>
         </a-popover>
-      </div>
-
-      <div slot="action" slot-scope="text,record,index">
         <a-button
           v-if="!record.editable"
           type="link"
@@ -207,10 +209,25 @@ export default {
         },
         {
           title: '审核情况',
-          key: 'exam',
-          scopedSlots: { customRender: 'exam' },
+          key: 'recordStatus',
+          scopedSlots: { customRender: 'recordStatus' },
           align: 'center',
-          width: 50
+          width: 50,
+          filters: [
+            {
+              text: '未审核',
+              value: '未审核'
+            },
+            {
+              text: '已通过',
+              value: '已通过'
+            },
+            {
+              text: '不通过',
+              value: '不通过'
+            }
+          ],
+          onFilter: (value, record) => record.recordStatus.indexOf(value) === 0
         },
         {
           title: '操作',
@@ -265,6 +282,16 @@ export default {
         })
         .then((res) => {
           this.recordList = res.data.pronunciation
+          this.recordList.forEach(item => {
+            this.$set(item, 'recordStatus', '未审核')
+            if (item.pronunciation.visibility === false && item.pronunciation.granted === true) {
+              item.recordStatus = '不通过'
+            } else if (item.pronunciation.visibility === true && item.pronunciation.granted === true) {
+              item.recordStatus = '已通过'
+            } else if (item.pronunciation.granted === false) {
+              item.recordStatus = '未审核'
+            }
+          })
           this.recordList.forEach((record, index) => {
             record.key = index
             record.editable = false
@@ -326,4 +353,14 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.pass{
+  color: #89e85c;
+}
+.unreviewed{
+  color: #8b8b8b;
+}
+.fail{
+  color: #ff3e31;
+}
+</style>
