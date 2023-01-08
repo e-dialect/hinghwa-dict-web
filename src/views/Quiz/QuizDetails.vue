@@ -32,13 +32,21 @@
     </div>
 <!--    答案解析区域-->
     <div v-show="isShow">答案解析：{{ quiz.explanation }}</div>
-    <!-- 重置本题按钮 -->
+    <!-- 播放语音 -->
+    <audio :src="quiz.voice_source"
+           v-if="quiz.voice_source"
+           controls preload="none"
+           style="max-width: 128px"
+           @mouseover="showHover=true"
+           @mouseout="showHover=false"></audio><br>
+    <div class="suspend" v-show="showHover">以莆仙话播放题中关键词，便于您对题目的理解~</div>
+      <!-- 重置本题按钮 -->
     <a-button
       type="dashed"
       @click="answerAgain"
-      v-text="answerbtnText"
       class="btn"
     >
+      重置本题
     </a-button><br>
     <!-- 下一题按钮 -->
     <a-button
@@ -65,14 +73,15 @@ export default {
         options: [],
         answer: 0,
         explanation: '这个是个答案解析',
-        id: 0
+        id: 0,
+        voice_source: ''
       },
       isShow: false,
-      answerbtnText: '重置本题',
       current: 0,
       errorIndex: '',
       correctIndex: '',
-      userAnswer: ''
+      userAnswer: '',
+      showHover: false
     }
   },
   created () {
@@ -133,5 +142,15 @@ export default {
 }
 .errorActive{
   background-color: salmon;
+}
+.suspend{
+  width: 270px;
+  height: 26px;
+  position: absolute;
+  border: 1px solid #cccccc;
+  background-color: khaki;
+  padding: 3px;
+  font-size: smaller;
+  z-index: 999;
 }
 </style>
