@@ -23,6 +23,7 @@
           <a href="http://dict.hinghwa.cn/" style="color: #C7C7C7" target="_blank">旧版</a>&#8194;|
           <a href="http://m.hinghwa.cn/" style="color: #C7C7C7" target="_blank">移动版</a>&#8194;|
           <!-- <router-link style="color: white" to="/about">团队介绍</router-link>&#8194;|-->
+          <a href="https://support.qq.com/product/420021" style="color: #C7C7C7" target="_blank">反馈社区</a>&#8194;|
           <a href="http://hinghwa.cn/articles/175" style="color: #C7C7C7" target="_blank">联系我们</a>&#8194;|
           <a href="https://github.com/e-dialect" style="color: #C7C7C7" target="_blank">GitHub</a>
         </div>

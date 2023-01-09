@@ -15,6 +15,15 @@
         由于微信小程序的限制，小程序中的录音功能可能会失效，若遇到该状况烦请通过网站贡献语音，谢谢您的支持。
       </template>
     </a-alert>
+    <a-alert type="warning" show-icon>
+      <template slot="message">
+        若您使用过程中有任何疑问或宝贵想法，欢迎您通过
+        <a href="https://support.qq.com/product/420021" target="_blank">兔小巢社区</a>
+        或
+        <a href="https://github.com/e-dialect" target="_blank">GitHub&nbsp;社区</a>
+        向我们反馈
+      </template>
+    </a-alert>
     <a-row
       align="middle"
       justify="center"
