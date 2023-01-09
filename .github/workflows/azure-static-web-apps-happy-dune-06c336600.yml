@@ -1,10 +1,11 @@
 name: Azure Static Web Apps CI/CD
 
 on:
+  push:
+    branches: [ $default-branch ]
   pull_request:
-    types: [closed]
-    branches:
-      - master
+    types: [opened, synchronize, reopened, closed]
+    branches: [ $default-branch ]
 
 permissions:
   contents: read
