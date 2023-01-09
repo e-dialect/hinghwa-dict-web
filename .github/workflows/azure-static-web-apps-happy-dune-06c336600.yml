@@ -10,10 +10,8 @@ on:
       - master
 
 permissions:
-  checks: write
-  contents: write
-  pull-requests: write
-  security-events: write
+  issues: write
+  contents: read
 
 jobs:
   build_and_deploy_job:
