@@ -20,7 +20,7 @@
         若您使用过程中有任何疑问或宝贵想法，欢迎您通过
         <a href="https://support.qq.com/product/420021" target="_blank">兔小巢社区</a>
         或
-        <a href="https://github.com/e-dialect" target="_blank">GitHub社区</a>
+        <a href="https://github.com/e-dialect" target="_blank">GitHub&nbsp;社区</a>
         向我们反馈
       </template>
     </a-alert>
