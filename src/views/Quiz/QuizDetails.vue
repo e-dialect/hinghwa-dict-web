@@ -2,11 +2,17 @@
   <a-card :title="quiz.id +'-'+ quiz.question">
 
     <template v-slot:extra>
-      <a-button v-if="quiz.voice_source" icon="sound" size="small" @click="playSound(quiz.voice_source)">播放关键词</a-button>
       <a-row>
-        <router-link :to="{name:'QuizCreate',params:{id:quiz.id}}">
+        <a-col>
+      <a-button v-if="quiz.voice_source" icon="sound" size="small" @click="playSound(quiz.voice_source)">播放关键词</a-button>
+        </a-col>
+      </a-row>
+      <a-row>
+        <a-col>
+      <router-link :to="{name:'QuizCreate',params:{id:quiz.id}}">
           <a-button icon="edit" size="small" style="margin-top: 10px"> 修改测试题</a-button>
         </router-link>
+        </a-col>
       </a-row>
     </template>
 <!--    选项区域-->
