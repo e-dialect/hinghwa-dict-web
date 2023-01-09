@@ -1,0 +1,20 @@
+name: close-azure-page
+
+on:
+  workflow_run:
+    workflows:
+      - "build-and-deploy"
+    types:
+      - completed
+
+jobs:
+  close_pull_request_job:
+    runs-on: ubuntu-latest
+    name: Close Azure Page
+    steps:
+      - name: Close Azure Page
+        id: closepullrequest
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_HAPPY_DUNE_06C336600 }}
+          action: "close"
