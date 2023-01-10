@@ -21,8 +21,7 @@
 import myHeader from './components/HeaderAndFooter/Header.vue'
 import myFooter from './components/HeaderAndFooter/Footer.vue'
 import MusicAffix from './components/Music/MusicAffix.vue'
-import { message } from 'ant-design-vue'
-import store from './store'
+import { refreshToken } from '@/services/login'
 
 export default {
   components: {
@@ -48,14 +47,8 @@ export default {
       const width = document.documentElement.clientWidth
       document.body.style.zoom = Number(width / 12).toString() + '%'
     })
-    if (window.localStorage.getItem('login_time')) {
-      if (Date.now() - new Date(window.localStorage.getItem('login_time')) > 6000) {
-        message.error('登录已过期！请重新登录！')
-        window.localStorage.removeItem('id')
-      }
-    }
-    if (parseInt(window.localStorage.getItem('id'))) {
-      await store.dispatch('userLogin', window.localStorage.getItem('id'))
+    if (window.localStorage.getItem('token')) {
+      await refreshToken()
     }
   },
   mounted () {
