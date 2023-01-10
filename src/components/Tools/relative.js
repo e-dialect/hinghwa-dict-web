@@ -163,8 +163,8 @@ export const relative = [
       mei: null,
       fu: null,
       qi: '曾祖母',
-      zi: '祖父',
-      nv: null
+      zi: ['祖父','伯祖父','叔祖父'],
+      nv: ['姑祖母']
     }
   },
   {
@@ -184,8 +184,8 @@ export const relative = [
       mei: null,
       fu: '曾祖父',
       qi: null,
-      zi: '祖父',
-      nv: null
+      zi: ['祖父','伯祖父','叔祖父'],
+      nv: ['姑祖母']
     }
   },
   {
@@ -696,7 +696,7 @@ export const relative = [
     }
   },
   {
-    name: '婶母',
+    name: '叔母',
     words: [
       {
         word: '阿婶',
