@@ -35,6 +35,7 @@ jobs:
             var fs = require('fs');
             fs.writeFileSync('${{github.workspace}}/pr.zip', Buffer.from(download.data));
       - run: unzip pr.zip
+
       - name: "Save PR number to env.number"
         run: echo "number=$(cat ./pr/NR)" >> $GITHUB_ENV
 
@@ -63,5 +64,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issue_number,
-              body: 'Your PR is deployed at ${{ steps.builddeploy.outputs.static_web_app_url }}'
+              body: 'This PR is deployed at ${{ steps.builddeploy.outputs.static_web_app_url }}'
             });
