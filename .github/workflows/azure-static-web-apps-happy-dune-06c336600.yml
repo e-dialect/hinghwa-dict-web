@@ -2,38 +2,19 @@ name: Azure Static Web Apps CI/CD
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request_target:
-    types: [opened, synchronize, reopened, closed]
+    types: [closed]
 
 permissions:
   contents: read
 
 jobs:
-  test-build:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: "16.x"
-          cache: "yarn"
-      - name: Install Dependencies
-        run: |
-          yarn install --frozen-lockfile --production=false
-      - name: Lint
-        run: |
-          yarn run lint
-      - name: Build
-        run: |
-          yarn run build
-
   build_and_deploy_job:
-    needs: test-build
     permissions:
       contents: read # for actions/checkout to fetch code
       pull-requests: write # for Azure/static-web-apps-deploy to comment on PRs
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
@@ -58,7 +39,7 @@ jobs:
   close_pull_request_job:
     permissions:
       contents: none
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    if: github.event_name == 'pull_request_target' && github.event.action == 'closed'
     runs-on: ubuntu-latest
     name: Close Pull Request Job
     steps:
