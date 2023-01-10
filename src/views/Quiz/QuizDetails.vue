@@ -1,23 +1,19 @@
 <template v-if="quiz">
   <a-card :title="quiz.id +'-'+ quiz.question">
-    <template v-slot:title>
-      <h1 style="padding-left:32px; color: rgb(26,26,73); font-size:250%">
-        <strong>
-          {{ quiz.id }}
-        </strong>
-      </h1>
-      <span style="font-size: 100%;padding-left: 50px">
-          {{ quiz.question }}
-        </span>
-    </template>
 
     <template v-slot:extra>
       <a-row>
-        <router-link :to="{name:'QuizCreate',params:{id:quiz.id}}">
-          <a-button icon="edit" size="small"> 修改测试题</a-button>
-        </router-link>
+        <a-col>
+      <a-button v-if="quiz.voice_source" icon="sound" size="small" @click="playSound(quiz.voice_source)">播放关键词</a-button>
+        </a-col>
       </a-row>
-
+      <a-row>
+        <a-col>
+      <router-link :to="{name:'QuizCreate',params:{id:quiz.id}}">
+          <a-button icon="edit" size="small" style="margin-top: 10px"> 修改测试题</a-button>
+        </router-link>
+        </a-col>
+      </a-row>
     </template>
 <!--    选项区域-->
     <div style="margin-bottom: 10px">
@@ -32,13 +28,13 @@
     </div>
 <!--    答案解析区域-->
     <div v-show="isShow">答案解析：{{ quiz.explanation }}</div>
-    <!-- 重置本题按钮 -->
+      <!-- 重置本题按钮 -->
     <a-button
       type="dashed"
       @click="answerAgain"
-      v-text="answerbtnText"
       class="btn"
     >
+      重置本题
     </a-button><br>
     <!-- 下一题按钮 -->
     <a-button
@@ -65,10 +61,10 @@ export default {
         options: [],
         answer: 0,
         explanation: '这个是个答案解析',
-        id: 0
+        id: 0,
+        voice_source: ''
       },
       isShow: false,
-      answerbtnText: '重置本题',
       current: 0,
       errorIndex: '',
       correctIndex: '',
@@ -119,6 +115,9 @@ export default {
         this.quiz = res.quiz
         this.$router.push('/PuxianExam/' + this.quiz.id)
       })
+    },
+    playSound (url) {
+      new Audio(url).play()
     }
   }
 }
