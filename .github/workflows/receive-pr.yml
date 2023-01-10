@@ -1,0 +1,42 @@
+name: Receive PR
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16.x"
+          cache: "yarn"
+      - name: Install Dependencies
+        run: |
+          yarn install --frozen-lockfile --production=false
+
+      - name: Lint
+        run: |
+          yarn run lint
+
+      - name: Build
+        run: |
+          yarn run build-dev
+
+      - name: Save PR number
+        run: |
+          mkdir -p ./pr
+          echo ${{ github.event.number }} > ./pr/NR
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: pr
+          path: |
+            ./pr/NR
+            ./dist
