@@ -163,13 +163,19 @@ export default {
           reason: this.reason,
           result: result
         })
-        if (result && this.application.word) {
+        if (result && this.application.word !== 0) {
           await axios.put(`words/${this.application.word}`, { word: this.submit })
+        } else if (result && this.application.word === 0) {
+          await axios.post('/words', { word: this.submit })
         }
-        if (this.application.word) {
-          this.$message.success('提交审核结果成功')
+        if (result && this.application.word !== 0) {
+          this.$message.success(`提交审核结果成功，词条（${this.application.content.word}）${word}已修改`)
+        } else if (result && this.application.word === 0) {
+          this.$message.success(`提交审核结果成功，词条（${this.application.content.word}）${word}已创建`)
+        } else if (result === false && this.application.word !== 0) {
+          this.$message.success('提交审核结果成功，词条修改不通过')
         } else {
-          this.$message.success(`提交审核结果成功，词条${this.application.content.word}（${word}）已创建`)
+          this.$message.success('提交审核结果成功，词条创建不通过')
         }
         this.$router.push({ name: 'WordConfirming' })
       } catch (e) {
