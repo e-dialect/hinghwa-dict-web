@@ -23,7 +23,6 @@ jobs:
 
       - name: Lint
         run: |
-          npx browserslist@latest --update-db -y
           yarn run lint
 
       - name: Build
