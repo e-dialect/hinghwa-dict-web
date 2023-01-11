@@ -163,7 +163,7 @@ export const relative = [
       mei: null,
       fu: null,
       qi: '曾祖母',
-      zi: ['祖父','伯祖父','叔祖父'],
+      zi: ['祖父', '伯祖父', '叔祖父'],
       nv: ['姑祖母']
     }
   },
@@ -184,7 +184,7 @@ export const relative = [
       mei: null,
       fu: '曾祖父',
       qi: null,
-      zi: ['祖父','伯祖父','叔祖父'],
+      zi: ['祖父', '伯祖父', '叔祖父'],
       nv: ['姑祖母']
     }
   },
@@ -205,7 +205,7 @@ export const relative = [
       mei: null,
       fu: null,
       qi: '外曾祖母',
-      zi: ['外祖父','叔祖父','伯祖父'],
+      zi: ['外祖父', '叔祖父', '伯祖父'],
       nv: ['姑祖母']
     }
   },
@@ -226,7 +226,7 @@ export const relative = [
       mei: null,
       fu: '外曾祖父',
       qi: null,
-      zi: ['外祖父','叔祖父','伯祖父'],
+      zi: ['外祖父', '叔祖父', '伯祖父'],
       nv: ['姑祖母']
     }
   },
@@ -289,7 +289,7 @@ export const relative = [
       mei: '姑祖母',
       fu: null,
       qi: '伯祖母',
-      zi: ['堂伯父','堂叔父'],
+      zi: ['堂伯父', '堂叔父'],
       nv: '堂姑母'
     }
   },
@@ -316,7 +316,7 @@ export const relative = [
       mei: null,
       fu: '伯祖父',
       qi: null,
-      zi: ['堂伯父','堂叔父'],
+      zi: ['堂伯父', '堂叔父'],
       nv: '堂姑母'
     }
   },
@@ -337,7 +337,7 @@ export const relative = [
       mei: '姑祖母',
       fu: null,
       qi: '叔祖母',
-      zi: ['堂伯父','堂叔父'],
+      zi: ['堂伯父', '堂叔父'],
       nv: '堂姑母'
     }
   },
@@ -358,7 +358,7 @@ export const relative = [
       mei: null,
       fu: '叔祖父',
       qi: null,
-      zi: ['堂伯父','堂叔父'],
+      zi: ['堂伯父', '堂叔父'],
       nv: '堂姑母'
     }
   },
@@ -380,7 +380,7 @@ export const relative = [
         '叔祖母'
       ],
       xiong: '堂伯父',
-      di: ['堂伯父','堂叔父'],
+      di: ['堂伯父', '堂叔父'],
       jie: ['堂姑母'],
       mei: ['堂姑母'],
       fu: null,
@@ -431,7 +431,7 @@ export const relative = [
         '伯祖母',
         '叔祖母'
       ],
-      xiong: ['堂伯父','堂叔父'],
+      xiong: ['堂伯父', '堂叔父'],
       di: '堂叔父',
       jie: ['堂姑母'],
       mei: ['堂姑母'],
@@ -479,7 +479,7 @@ export const relative = [
       mei: '姑祖母',
       fu: '姑祖父',
       qi: null,
-      zi: ['表叔父','表伯父'],
+      zi: ['表叔父', '表伯父'],
       nv: '表姑母'
     }
   },
@@ -500,7 +500,7 @@ export const relative = [
       mei: null,
       fu: null,
       qi: '姑祖母',
-      zi: ['表叔父','表伯父'],
+      zi: ['表叔父', '表伯父'],
       nv: '表姑母'
     }
   },
@@ -521,7 +521,7 @@ export const relative = [
       mei: ['祖母', '姨祖母'],
       fu: null,
       qi: '舅祖母',
-      zi: ['表叔父','表伯父'],
+      zi: ['表叔父', '表伯父'],
       nv: '表姑母'
     }
   },
@@ -542,7 +542,7 @@ export const relative = [
       mei: null,
       fu: '舅祖父',
       qi: null,
-      zi: ['表叔父','表伯父'],
+      zi: ['表叔父', '表伯父'],
       nv: '表姑母'
     }
   },
@@ -563,7 +563,7 @@ export const relative = [
       mei: ['祖母', '姨祖母'],
       fu: '姨祖父',
       qi: null,
-      zi: ['表叔父','表伯父'],
+      zi: ['表叔父', '表伯父'],
       nv: '表姑母'
     }
   },
@@ -584,7 +584,7 @@ export const relative = [
       mei: null,
       fu: null,
       qi: '姨祖母',
-      zi: ['表叔父','表伯父'],
+      zi: ['表叔父', '表伯父'],
       nv: '表姑母'
     }
   },
