@@ -1287,7 +1287,7 @@ export const relative = [
       ],
       mu: [
         '伯母',
-        '婶婶'
+        '叔母'
       ],
       xiong: '堂兄弟',
       di: '堂兄弟',
@@ -1314,7 +1314,7 @@ export const relative = [
       ],
       mu: [
         '伯母',
-        '婶婶'
+        '叔母'
       ],
       xiong: '堂兄弟',
       di: '堂兄弟',
@@ -1340,8 +1340,8 @@ export const relative = [
         '姨丈'
       ],
       mu: [
-        '姑妈',
-        '姨妈'
+        '姑母',
+        '姨母'
       ],
       xiong: '表兄弟',
       di: '表兄弟',
@@ -1363,12 +1363,12 @@ export const relative = [
     ],
     relations: {
       fa: [
-        '姑丈',
-        '姨丈'
+        '姑父',
+        '姨父'
       ],
       mu: [
-        '姑妈',
-        '姨妈'
+        '姑母',
+        '姨母'
       ],
       xiong: '表兄弟',
       di: '表兄弟',
