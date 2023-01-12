@@ -35,11 +35,12 @@ request.interceptors.response.use((res) => res,
     // eslint-disable-next-line prefer-promise-reject-errors
     return Promise.reject({
       status: response?.status,
-      message: response?.data?.message
+      message: response?.data?.msg,
+      data: response?.data
     })
   })
 
-export function get (url, data, config = {}) {
+export function get (url, data = {}, config = {}) {
   return new Promise((resolve, reject) => {
     request.get(url, { params: data, ...config })
       .then((res) => {
