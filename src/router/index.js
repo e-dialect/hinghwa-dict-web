@@ -198,6 +198,13 @@ const routes = [
     name: 'QuizResearch',
     props: true,
     component: () => import('../views/Quiz/QuizResearch')
+  },
+  // 词典区
+  {
+    path: '/Dictionary',
+    name: 'Dictionary',
+    props: true,
+    component: () => import('../views/Dictionary/Dictionary.vue')
   }
 ]
 
