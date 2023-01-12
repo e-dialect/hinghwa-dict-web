@@ -67,7 +67,10 @@
         <a-tag color="rgb(179, 7, 30,0.7)"> 附注</a-tag>
         <a-row justify="center" type="flex">
           <a-col :span="22">
-            <MarkdownViewer :text="word.annotation"/>
+            <a-card>
+              <p>{{word.annotation}}</p>
+            </a-card>
+            <a-card :text="word.annotation"/>
           </a-col>
         </a-row>
       </div>
@@ -136,14 +139,12 @@ import ArticleList from '../../components/Articles/ArticleList'
 import Recording from '../../components/Pronunciation/Recording'
 import DefinitionShow from '../../components/Word/DefinitionShow'
 import PlaySoundButton from '../../components/Tools/PlaySoundButton'
-import MarkdownViewer from '../../components/Articles/MarkdownViewer'
 import { getWordDetails } from '@/services/words'
 
 export default {
   name: 'WordDetails',
   props: ['id'],
   components: {
-    MarkdownViewer,
     PlaySoundButton,
     Definition: DefinitionShow,
     Recording,
