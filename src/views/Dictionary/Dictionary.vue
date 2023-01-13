@@ -3,7 +3,6 @@
     <template v-slot:title>
       <h1>音序查词</h1>
       <div style="color:gray">
-        <!--行间距小一点-->
         <p>兴化语记作为在线工具同样提供词语查询功能。</p>
         <p style="line-height: 1px">在输入框中输入词语，点击查询即可。</p>
       </div>
@@ -26,21 +25,31 @@
 
     <!--显示拼音区域-->
     <template>
+      <a-collapse defaultActiveKey="1">
+        <a-collapse-panel header="音序选择表" key="1">
       <template v-for="list in nextNodeList">
         <a-card :key="list[0]" >
-          <a-tag color="blue" @click="prefix=list[0]">
+          <a-row>
+          <a-col style="margin-bottom: 5px">
+          <a-tag color="blue" @click="prefix=list[0]" style="font-size: larger">
             {{String(list[0]).toUpperCase()}}
           </a-tag>
+          </a-col>
+          </a-row>
           <template v-for="pinyin in list[1]">
+            <a-col span="2" :key="pinyin" style="margin-bottom: 3px">
             <a-tag
               :key="pinyin"
               @click="pushPinyin(pinyin)"
             >
               {{ pinyin }}
             </a-tag>
+            </a-col>
           </template>
         </a-card>
       </template>
+        </a-collapse-panel>
+        </a-collapse>
     </template>
     <a-divider v-show="nextNodeList.length && words.length"/>
 
