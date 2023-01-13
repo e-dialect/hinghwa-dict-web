@@ -15,6 +15,9 @@
           <a-menu-item key="Pinyin">
             <router-link :to="{name:'Pinyin'}">拼音</router-link>
           </a-menu-item>
+          <a-menu-item key="Dictionary">
+            <router-link :to="{name:'Dictionary'}">词典</router-link>
+          </a-menu-item>
           <a-menu-item key="Articles">
             <router-link :to="{name:'Articles'}">文章</router-link>
           </a-menu-item>

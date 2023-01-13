@@ -163,8 +163,8 @@ export const relative = [
       mei: null,
       fu: null,
       qi: '曾祖母',
-      zi: '祖父',
-      nv: null
+      zi: ['祖父', '伯祖父', '叔祖父'],
+      nv: ['姑祖母']
     }
   },
   {
@@ -184,8 +184,8 @@ export const relative = [
       mei: null,
       fu: '曾祖父',
       qi: null,
-      zi: '祖父',
-      nv: null
+      zi: ['祖父', '伯祖父', '叔祖父'],
+      nv: ['姑祖母']
     }
   },
   {
@@ -205,8 +205,8 @@ export const relative = [
       mei: null,
       fu: null,
       qi: '外曾祖母',
-      zi: '外祖父',
-      nv: null
+      zi: ['外祖父', '叔祖父', '伯祖父'],
+      nv: ['姑祖母']
     }
   },
   {
@@ -226,8 +226,8 @@ export const relative = [
       mei: null,
       fu: '外曾祖父',
       qi: null,
-      zi: '外祖父',
-      nv: null
+      zi: ['外祖父', '叔祖父', '伯祖父'],
+      nv: ['姑祖母']
     }
   },
   {
@@ -289,8 +289,8 @@ export const relative = [
       mei: '姑祖母',
       fu: null,
       qi: '伯祖母',
-      zi: null,
-      nv: null
+      zi: ['堂伯父', '堂叔父'],
+      nv: '堂姑母'
     }
   },
 
@@ -316,8 +316,8 @@ export const relative = [
       mei: null,
       fu: '伯祖父',
       qi: null,
-      zi: null,
-      nv: null
+      zi: ['堂伯父', '堂叔父'],
+      nv: '堂姑母'
     }
   },
   {
@@ -337,8 +337,8 @@ export const relative = [
       mei: '姑祖母',
       fu: null,
       qi: '叔祖母',
-      zi: null,
-      nv: null
+      zi: ['堂伯父', '堂叔父'],
+      nv: '堂姑母'
     }
   },
   {
@@ -358,8 +358,108 @@ export const relative = [
       mei: null,
       fu: '叔祖父',
       qi: null,
-      zi: null,
-      nv: null
+      zi: ['堂伯父', '堂叔父'],
+      nv: '堂姑母'
+    }
+  },
+  {
+    name: '堂伯父',
+    words: [
+      {
+        word: '阿伯',
+        id: 13
+      }
+    ],
+    relations: {
+      fa: [
+        '伯祖父',
+        '叔祖父'
+      ],
+      mu: [
+        '伯祖母',
+        '叔祖母'
+      ],
+      xiong: '堂伯父',
+      di: ['堂伯父', '堂叔父'],
+      jie: ['堂姑母'],
+      mei: ['堂姑母'],
+      fu: null,
+      qi: '堂伯母',
+      zi: '堂兄弟',
+      nv: '堂姊妹'
+    }
+  },
+  {
+    name: '堂伯母',
+    words: [
+      {
+        word: '姆伯',
+        id: 4048
+      },
+      {
+        word: '阿姆',
+        id: null
+      }
+    ],
+    relations: {
+      fa: null,
+      mu: null,
+      xiong: null,
+      di: null,
+      jie: null,
+      mei: null,
+      fu: '堂伯父',
+      qi: null,
+      zi: '堂兄弟',
+      nv: '堂姊妹'
+    }
+  },
+  {
+    name: '堂叔父',
+    words: [
+      {
+        word: '阿叔',
+        id: 21
+      }
+    ],
+    relations: {
+      fa: [
+        '伯祖父',
+        '叔祖父'
+      ],
+      mu: [
+        '伯祖母',
+        '叔祖母'
+      ],
+      xiong: ['堂伯父', '堂叔父'],
+      di: '堂叔父',
+      jie: ['堂姑母'],
+      mei: ['堂姑母'],
+      fu: null,
+      qi: '堂叔母',
+      zi: '堂兄弟',
+      nv: '堂姊妹'
+    }
+  },
+  {
+    name: '堂叔母',
+    words: [
+      {
+        word: '阿婶',
+        id: 36
+      }
+    ],
+    relations: {
+      fa: null,
+      mu: null,
+      xiong: null,
+      di: null,
+      jie: null,
+      mei: null,
+      fu: '堂叔父',
+      qi: null,
+      zi: '堂兄弟',
+      nv: '堂姊妹'
     }
   },
   {
@@ -379,8 +479,8 @@ export const relative = [
       mei: '姑祖母',
       fu: '姑祖父',
       qi: null,
-      zi: null,
-      nv: null
+      zi: ['表叔父', '表伯父'],
+      nv: '表姑母'
     }
   },
   {
@@ -400,8 +500,8 @@ export const relative = [
       mei: null,
       fu: null,
       qi: '姑祖母',
-      zi: null,
-      nv: null
+      zi: ['表叔父', '表伯父'],
+      nv: '表姑母'
     }
   },
   {
@@ -413,16 +513,16 @@ export const relative = [
       }
     ],
     relations: {
-      fa: null,
-      mu: null,
+      fa: '曾外祖父',
+      mu: '曾外祖母',
       xiong: '舅祖父',
       di: '舅祖父',
       jie: ['祖母', '姨祖母'],
       mei: ['祖母', '姨祖母'],
       fu: null,
       qi: '舅祖母',
-      zi: null,
-      nv: null
+      zi: ['表叔父', '表伯父'],
+      nv: '表姑母'
     }
   },
   {
@@ -442,8 +542,8 @@ export const relative = [
       mei: null,
       fu: '舅祖父',
       qi: null,
-      zi: null,
-      nv: null
+      zi: ['表叔父', '表伯父'],
+      nv: '表姑母'
     }
   },
   {
@@ -455,16 +555,16 @@ export const relative = [
       }
     ],
     relations: {
-      fa: null,
-      mu: null,
+      fa: '曾外祖父',
+      mu: '曾外祖母',
       xiong: '舅祖父',
       di: '舅祖父',
       jie: ['祖母', '姨祖母'],
       mei: ['祖母', '姨祖母'],
       fu: '姨祖父',
       qi: null,
-      zi: null,
-      nv: null
+      zi: ['表叔父', '表伯父'],
+      nv: '表姑母'
     }
   },
   {
@@ -484,8 +584,8 @@ export const relative = [
       mei: null,
       fu: null,
       qi: '姨祖母',
-      zi: null,
-      nv: null
+      zi: ['表叔父', '表伯父'],
+      nv: '表姑母'
     }
   },
   {
@@ -499,10 +599,10 @@ export const relative = [
     relations: {
       fa: '外曾祖父',
       mu: '外曾祖母',
-      xiong: null,
-      di: null,
-      jie: null,
-      mei: null,
+      xiong: '伯外祖父',
+      di: '叔外祖父',
+      jie: '姑外祖母',
+      mei: '姑外祖母',
       fu: null,
       qi: '外祖母',
       zi: '舅父',
@@ -696,7 +796,7 @@ export const relative = [
     }
   },
   {
-    name: '婶母',
+    name: '叔母',
     words: [
       {
         word: '阿婶',
@@ -1187,7 +1287,7 @@ export const relative = [
       ],
       mu: [
         '伯母',
-        '婶婶'
+        '叔母'
       ],
       xiong: '堂兄弟',
       di: '堂兄弟',
@@ -1214,7 +1314,7 @@ export const relative = [
       ],
       mu: [
         '伯母',
-        '婶婶'
+        '叔母'
       ],
       xiong: '堂兄弟',
       di: '堂兄弟',
@@ -1240,8 +1340,8 @@ export const relative = [
         '姨丈'
       ],
       mu: [
-        '姑妈',
-        '姨妈'
+        '姑母',
+        '姨母'
       ],
       xiong: '表兄弟',
       di: '表兄弟',
@@ -1263,12 +1363,12 @@ export const relative = [
     ],
     relations: {
       fa: [
-        '姑丈',
-        '姨丈'
+        '姑父',
+        '姨父'
       ],
       mu: [
-        '姑妈',
-        '姨妈'
+        '姑母',
+        '姨母'
       ],
       xiong: '表兄弟',
       di: '表兄弟',
