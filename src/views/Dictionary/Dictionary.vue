@@ -3,8 +3,16 @@
     <template v-slot:title>
       <h1>音序查词</h1>
       <div style="color:gray">
-        <p>兴化语记作为在线工具同样提供词语查询功能。</p>
-        <p style="line-height: 1px">在输入框中输入词语，点击查询即可。</p>
+        <p>兴化语记作为在线工具同样提供音序查询功能。</p>
+        <p style="line-height: 1px">依次点击音序，即可返回该音序下的所有词语。</p>
+        <a-popover>
+          <template slot="content">
+            <p>第一步：点击音序选择表下的任意一个音序，在界面下方便将展示与该音序所匹配的词语。</p>
+            <p>第二步：辞典会自动筛选出，在所选条件下仍能选择的音序，继续点击。</p>
+            <p>第三步：点击词条卡片，进入词语详情页。</p>
+          </template>
+        <button icon="quesition">查看帮助</button>
+        </a-popover>
       </div>
     </template>
 
@@ -28,7 +36,9 @@
       <a-collapse defaultActiveKey="1">
         <a-collapse-panel header="音序选择表" key="1">
       <template v-for="list in nextNodeList">
-        <a-card :key="list[0]" >
+        <a-card
+          v-if="!prefix||list[0]===prefix"
+          :key="list[0]" >
           <a-row>
           <a-col style="margin-bottom: 5px">
           <a-tag color="blue" @click="prefix=list[0]" style="font-size: larger">
@@ -75,12 +85,6 @@ export default {
     }
   },
   computed: {
-    spinning () {
-      for (const key in this.loading) {
-        if (this.loading[key] === true) return true
-      }
-      return false
-    },
     /**
      * a-z 顺序返回可以继续选择的拼音
      * @returns {*[string,string[]]} 首字母和拼音列表
@@ -89,7 +93,7 @@ export default {
       const record = this.record
       const ans = {}
       for (const i in record) {
-        if (i === 'has_word') continue
+        if (i === 'word_count') continue
         if (i[0] in ans) {
           ans[i[0]] = [...ans[i[0]], i]
         } else {
