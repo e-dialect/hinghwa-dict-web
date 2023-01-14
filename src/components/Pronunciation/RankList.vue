@@ -1,4 +1,10 @@
 <template>
+  <div>
+  <a-alert type="warning" show-icon>
+    <template slot="message">
+      数据每15分钟更新一次，榜单内容可能存在延时
+    </template>
+  </a-alert>
   <a-card>
     <template slot="title">
       <h2>录音贡献排行榜</h2>
@@ -12,9 +18,9 @@
 <!--    榜单选择区-->
     <span>请选择榜单类型：</span>
     <a-radio-group button-style="solid">
-      <a-radio-button value="1" @click="weekRank">周榜</a-radio-button>
-      <a-radio-button value="2" @click="monthRank">月榜</a-radio-button>
-      <a-radio-button value="3" @click="allRank">总榜</a-radio-button>
+      <a-radio-button value="1" @click="changeRank(7)">周榜</a-radio-button>
+      <a-radio-button value="2" @click="changeRank(30)">月榜</a-radio-button>
+      <a-radio-button value="3" @click="changeRank(0)">总榜</a-radio-button>
     </a-radio-group>
 <!--    榜单展示区-->
     <a-row justify="center" type="flex">
@@ -45,6 +51,7 @@
       </a-col>
     </a-row>
   </a-card>
+  </div>
 </template>
 
 <script>
@@ -54,7 +61,6 @@ export default {
   name: 'RankList',
   data () {
     return {
-      days: '',
       rankList: [],
       columns: [
         {
@@ -79,24 +85,8 @@ export default {
     }
   },
   methods: {
-    weekRank () {
-      axios.get('/pronunciation/ranking', { params: { days: 7 } }).then(res => {
-        this.rankList = res.data.ranking
-        this.rankList.forEach((record, index) => {
-          record.key = index + 1
-        })
-      })
-    },
-    monthRank () {
-      axios.get('/pronunciation/ranking', { params: { days: 30 } }).then(res => {
-        this.rankList = res.data.ranking
-        this.rankList.forEach((record, index) => {
-          record.key = index + 1
-        })
-      })
-    },
-    allRank () {
-      axios.get('/pronunciation/ranking', { params: { days: 0 } }).then(res => {
+    changeRank (day) {
+      axios.get('/pronunciation/ranking', { params: { days: day } }).then(res => {
         this.rankList = res.data.ranking
         this.rankList.forEach((record, index) => {
           record.key = index + 1
