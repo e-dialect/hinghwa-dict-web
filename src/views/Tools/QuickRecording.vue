@@ -15,6 +15,11 @@
           style="width: 200px;margin:5px"
         />
       </h5>
+        <a-row>
+          <router-link :to="{name:'RankList'}">
+            <a-button icon="trophy" size="small">录音排行榜</a-button>
+          </router-link>
+        </a-row>
     </template>
     <recording
       :form="form"
