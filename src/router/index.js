@@ -112,6 +112,11 @@ const routes = [
     component: () => import('../views/Tools/QuickRecording.vue')
   },
   {
+    path: '/tools/QuickRecording/RecordRank',
+    name: 'RankList',
+    component: () => import('../components/Pronunciation/RankList')
+  },
+  {
     path: '/tools/characters',
     name: 'Characters',
     component: () => import('../views/Tools/Characters.vue')
