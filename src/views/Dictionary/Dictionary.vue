@@ -1,18 +1,18 @@
 <template :spinning="spinning">
   <a-card>
     <template v-slot:title>
-      <h1>音序查词</h1>
+      <span style="font-size: 2vw">音序查词</span>
+      <a-popover>
+        <template slot="content">
+          <p>第一步：点击音序选择表下的任意一个音序，在界面下方便将展示与该音序所匹配的词语。</p>
+          <p>第二步：辞典会自动筛选出，在所选条件下仍能选择的音序，继续点击。</p>
+          <p>第三步：点击词条卡片，进入词语详情页。</p>
+        </template>
+        <a-icon style="padding-left: 10px" type="question-circle"/>
+      </a-popover>
       <div style="color:gray">
         <p>兴化语记作为在线工具同样提供音序查询功能。</p>
         <p style="line-height: 1px">依次点击音序，即可返回该音序下的所有词语。</p>
-        <a-popover>
-          <template slot="content">
-            <p>第一步：点击音序选择表下的任意一个音序，在界面下方便将展示与该音序所匹配的词语。</p>
-            <p>第二步：辞典会自动筛选出，在所选条件下仍能选择的音序，继续点击。</p>
-            <p>第三步：点击词条卡片，进入词语详情页。</p>
-          </template>
-        <button icon="quesition">查看帮助</button>
-        </a-popover>
       </div>
     </template>
 
