@@ -1,11 +1,18 @@
-<template>
+<template :spinning="spinning">
   <a-card>
     <template v-slot:title>
-      <h1>音序查词</h1>
+      <span style="font-size: 2vw">音序查词</span>
+      <a-popover>
+        <template slot="content">
+          <p>第一步：点击音序选择表下的任意一个音序，在界面下方便将展示与该音序所匹配的词语。</p>
+          <p>第二步：辞典会自动筛选出，在所选条件下仍能选择的音序，继续点击。</p>
+          <p>第三步：点击词条卡片，进入词语详情页。</p>
+        </template>
+        <a-icon style="padding-left: 10px" type="question-circle"/>
+      </a-popover>
       <div style="color:gray">
-        <!--行间距小一点-->
-        <p>兴化语记作为在线工具同样提供词语查询功能。</p>
-        <p>在输入框中输入词语，点击查询即可。</p>
+        <p>兴化语记作为在线工具同样提供音序查询功能。</p>
+        <p style="line-height: 1px">依次点击音序，即可返回该音序下的所有词语。</p>
       </div>
     </template>
 
@@ -26,21 +33,33 @@
 
     <!--显示拼音区域-->
     <template>
+      <a-collapse defaultActiveKey="1">
+        <a-collapse-panel header="音序选择表" key="1">
       <template v-for="list in nextNodeList">
-        <a-card :key="list[0]" >
-          <a-tag color="blue" @click="prefix=list[0]">
+        <a-card
+          v-if="!prefix||list[0]===prefix"
+          :key="list[0]" >
+          <a-row>
+          <a-col style="margin-bottom: 5px">
+          <a-tag color="blue" @click="prefix=list[0]" style="font-size: larger">
             {{String(list[0]).toUpperCase()}}
           </a-tag>
+          </a-col>
+          </a-row>
           <template v-for="pinyin in list[1]">
+            <a-col span="2" :key="pinyin" style="margin-bottom: 3px">
             <a-tag
               :key="pinyin"
               @click="pushPinyin(pinyin)"
             >
               {{ pinyin }}
             </a-tag>
+            </a-col>
           </template>
         </a-card>
       </template>
+        </a-collapse-panel>
+        </a-collapse>
     </template>
     <a-divider v-show="nextNodeList.length && words.length"/>
 
@@ -74,7 +93,7 @@ export default {
       const record = this.record
       const ans = {}
       for (const i in record) {
-        if (i === 'has_word') continue
+        if (i === 'word_count') continue
         if (i[0] in ans) {
           ans[i[0]] = [...ans[i[0]], i]
         } else {
