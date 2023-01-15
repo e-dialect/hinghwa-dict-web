@@ -80,14 +80,6 @@ export default {
         this.$message.warning('功能正在开发中，请耐心等候')
       }
     }
-  },
-  computed: {
-    pagination: function () {
-      return {
-        pageSize: this.pageSize,
-        total: this.tools.length
-      }
-    }
   }
 }
 </script>

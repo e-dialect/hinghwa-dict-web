@@ -30,7 +30,7 @@
       style="padding-top:32px;padding-bottom:32px;padding-right:0;padding-left:0;"
       type="flex"
     >
-      <a-card hoverable style="height:376px;text-align: center">
+      <a-card hoverable style="text-align: center">
         <div style="text-align: right">
           <a-button
             icon="file-search"
