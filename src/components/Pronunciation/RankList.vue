@@ -17,7 +17,7 @@
     </template>
 <!--    榜单选择区-->
     <span>请选择榜单类型：</span>
-    <a-radio-group button-style="solid">
+    <a-radio-group default-value="1" button-style="solid">
       <a-radio-button value="1" @click="changeRank(7)">周榜</a-radio-button>
       <a-radio-button value="2" @click="changeRank(30)">月榜</a-radio-button>
       <a-radio-button value="3" @click="changeRank(0)">总榜</a-radio-button>
@@ -83,6 +83,9 @@ export default {
         }
       ]
     }
+  },
+  mounted () {
+    this.changeRank(7)
   },
   methods: {
     changeRank (day) {
