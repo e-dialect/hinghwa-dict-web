@@ -1,6 +1,6 @@
 <template>
 
-  <a-layout style="width: 1200px">
+  <a-layout>
     <a-layout-header style="background: white">
       <myHeader/>
     </a-layout-header>
@@ -29,14 +29,6 @@ export default {
     myFooter,
     MusicAffix
   },
-  methods: {
-    onResize () {
-      setTimeout(function () {
-        const width = document.documentElement.clientWidth
-        document.body.style.zoom = Number(width / 12).toString() + '%'
-      })
-    }
-  },
   async beforeCreate () {
     if (document.documentElement.clientHeight / document.documentElement.clientWidth > 4 / 3) {
       if (confirm('根据您的屏幕长宽比建议您访问移动版 m.hinghwa.cn ，是否立刻跳转？')) {
@@ -50,14 +42,7 @@ export default {
     if (window.localStorage.getItem('token')) {
       await refreshToken()
     }
-  },
-  mounted () {
-    window.addEventListener('resize', this.onResize)
-  },
-  beforeDestroy () {
-    window.removeEventListener('resize', this.onResize)
   }
-
 }
 </script>
 <style>
