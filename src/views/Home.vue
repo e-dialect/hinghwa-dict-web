@@ -30,7 +30,7 @@
       style="padding-top:32px;padding-bottom:32px;padding-right:0;padding-left:0;"
       type="flex"
     >
-      <a-card hoverable style="height:376px;text-align: center">
+      <a-card hoverable style="height:390px;text-align: center">
         <div style="text-align: right">
           <a-button
             icon="file-search"
@@ -56,7 +56,7 @@
           style="width:70%;"
           @search="search(searchContent)"
         />
-        <div style="padding-top: 24px;text-align: left;font-size: 8px;margin:24px 24px;line-height: 8px">
+        <div style="padding-top: 24px;text-align: left;font-size:90%;margin:24px 24px;line-height: 8px;color: #8b8b8b">
           <p>目前支持搜单字、搜词语、搜文章功能。</p>
           <p>搜单字：获取输入中每一个汉字的读音</p>
           <p>搜词语：检索与输入相关的词语</p>
