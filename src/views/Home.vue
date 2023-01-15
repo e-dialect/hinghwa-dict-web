@@ -1,6 +1,6 @@
 <template>
   <div class="body">
-    <a-alert type="warning" show-icon>
+    <a-alert type="info" show-icon>
       <template slot="message">
         网站移动版
         <a href="http://m.hinghwa.cn" target="_blank">m.hinghwa.cn</a>
@@ -10,12 +10,7 @@
         <i>兴化语记</i>
       </template>
     </a-alert>
-    <a-alert type="warning" show-icon>
-      <template slot="message">
-        由于微信小程序的限制，小程序中的录音功能可能会失效，若遇到该状况烦请通过网站贡献语音，谢谢您的支持。
-      </template>
-    </a-alert>
-    <a-alert type="warning" show-icon>
+    <a-alert type="info" show-icon>
       <template slot="message">
         若您使用过程中有任何疑问或宝贵想法，欢迎您通过
         <a href="https://support.qq.com/product/420021" target="_blank">兔小巢社区</a>
@@ -24,13 +19,18 @@
         向我们反馈
       </template>
     </a-alert>
+    <a-alert type="warning" show-icon>
+      <template slot="message">
+        由于微信小程序的限制，小程序中的录音功能可能会失效，若遇到该状况烦请通过网站贡献语音，谢谢您的支持。
+      </template>
+    </a-alert>
     <a-row
       align="middle"
       justify="center"
       style="padding-top:32px;padding-bottom:32px;padding-right:0;padding-left:0;"
       type="flex"
     >
-      <a-card hoverable style="text-align: center">
+      <a-card hoverable style="text-align: center;height: 390px;">
         <div style="text-align: right">
           <a-button
             icon="file-search"
@@ -56,7 +56,7 @@
           style="width:70%;"
           @search="search(searchContent)"
         />
-        <div style="padding-top: 24px;text-align: left;font-size: 8px;margin:24px 24px;line-height: 8px">
+        <div style="padding-top: 24px;text-align: left;font-size: 90%;margin:24px 24px;line-height: 8px;color: #8b8b8b">
           <p>目前支持搜单字、搜词语、搜文章功能。</p>
           <p>搜单字：获取输入中每一个汉字的读音</p>
           <p>搜词语：检索与输入相关的词语</p>
