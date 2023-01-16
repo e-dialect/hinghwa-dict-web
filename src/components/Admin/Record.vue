@@ -19,7 +19,9 @@
       <a-radio-group button-style="solid">
         <a-radio-button value="1" @click="getCurrentPage(1,true)">已审核</a-radio-button>
         <a-radio-button value="2" @click="getCurrentPage(1,false)">未审核</a-radio-button>
-        <a-radio-button value="3" @click="getCurrentPage(1)">reset</a-radio-button>
+        <a-radio-button value="3" @click="getCurrentPage(1,true,false)">不通过</a-radio-button>
+        <a-radio-button value="4" @click="getCurrentPage(1,true,true)">已通过</a-radio-button>
+        <a-radio-button value="5" @click="getCurrentPage(1)">重置</a-radio-button>
       </a-radio-group>
     </div>
     <a-table
@@ -263,7 +265,7 @@ export default {
     await this.getCurrentPage(1)
   },
   methods: {
-    async getCurrentPage (page, statusFilter) {
+    async getCurrentPage (page, statusFilter, passFilter) {
       this.tableLoading = true
       await axios
         .get('/pronunciation', {
@@ -271,7 +273,8 @@ export default {
             pageSize: this.pagination.pageSize,
             page: page,
             order: 1,
-            granted: statusFilter
+            granted: statusFilter,
+            visibility: passFilter
           }
         })
         .then((res) => {
