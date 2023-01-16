@@ -14,6 +14,16 @@
         <a-button icon="close" type="danger" @click="handleSubmit(toConfirm,false)"> 拒绝通过</a-button>
       </div>
     </a-modal>
+    <div>
+      <span>录音筛选：</span>
+      <a-radio-group button-style="solid">
+        <a-radio-button value="1" @click="getCurrentPage(1,true)">已审核</a-radio-button>
+        <a-radio-button value="2" @click="getCurrentPage(1,false)">未审核</a-radio-button>
+        <a-radio-button value="3" @click="getCurrentPage(1,true,false)">不通过</a-radio-button>
+        <a-radio-button value="4" @click="getCurrentPage(1,true,true)">已通过</a-radio-button>
+        <a-radio-button value="5" @click="getCurrentPage(1)">重置</a-radio-button>
+      </a-radio-group>
+    </div>
     <a-table
       :columns="columns"
       :data-source="recordList"
@@ -212,22 +222,7 @@ export default {
           key: 'recordStatus',
           scopedSlots: { customRender: 'recordStatus' },
           align: 'center',
-          width: 50,
-          filters: [
-            {
-              text: '未审核',
-              value: '未审核'
-            },
-            {
-              text: '已通过',
-              value: '已通过'
-            },
-            {
-              text: '不通过',
-              value: '不通过'
-            }
-          ],
-          onFilter: (value, record) => record.recordStatus.indexOf(value) === 0
+          width: 50
         },
         {
           title: '操作',
@@ -270,14 +265,16 @@ export default {
     await this.getCurrentPage(1)
   },
   methods: {
-    async getCurrentPage (page) {
+    async getCurrentPage (page, statusFilter, passFilter) {
       this.tableLoading = true
       await axios
         .get('/pronunciation', {
           params: {
             pageSize: this.pagination.pageSize,
             page: page,
-            order: 1
+            order: 1,
+            granted: statusFilter,
+            visibility: passFilter
           }
         })
         .then((res) => {
