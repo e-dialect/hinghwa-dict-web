@@ -122,8 +122,8 @@ export default {
       this.received = res.total
       this.notifications = res.notifications
     })
-    this.sent = (await searchNotificatons({ from: this.id })).total
-    this.unread = (await receiveNotificatons(this.id, true)).total
+    this.sent = this.$store.getters.notification.statistics.sent
+    this.unread = this.$store.getters.notification.statistics.unread
     this.dataLength = this.received
   },
 
@@ -153,6 +153,8 @@ export default {
     read (notifications) {
       readNotifications(notifications).then(async () => {
         await this.changePage(this.page, this.pageSize)
+        this.unread = (await receiveNotificatons(this.id, true)).total
+        this.$store.commit('setUnread', this.unread)
         this.$message.success('操作成功')
       }).catch(() => {
         this.$message.error('操作失败')
@@ -180,6 +182,7 @@ export default {
           this.current = this.notifications[i]
           if (!this.current.unread) return
           readNotifications([id])
+          this.unread -= 1
           this.notifications[i].unread = false
           break
         }

@@ -146,6 +146,9 @@ export default new Vuex.Store({
       }).finally(() => {
         state.commentsLoading = false
       })
+    },
+    setUnread (state, number) {
+      state.notification.statistics.unread = number
     }
   },
   actions: {
