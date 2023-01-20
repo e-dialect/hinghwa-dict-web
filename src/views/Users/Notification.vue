@@ -5,16 +5,16 @@
         <h2>邮箱（开发中）</h2>
         <a-descriptions :column="4">
           <a-descriptions-item label="消息数">
-            {{ notification.statistics.total }}
+            {{ total }}
           </a-descriptions-item>
           <a-descriptions-item label="已发送">
-            {{ notification.statistics.sent }}
+            {{ sent }}
           </a-descriptions-item>
           <a-descriptions-item label="收件箱">
-            {{ notification.statistics.received }}
+            {{ received }}
           </a-descriptions-item>
           <a-descriptions-item label="未读消息">
-            {{ notification.statistics.unread }}
+            {{ unread }}
           </a-descriptions-item>
         </a-descriptions>
       </template>
@@ -22,21 +22,29 @@
         <a-tab-pane tab="收件箱">
           <a-row justify="center" type="flex">
             <a-list
-              :data-source="notification.received"
+              :data-source="notifications"
               style="width: 80%"
             >
               <div slot="header">
                 <a-row :gutter="[64]">
                   <a-col :span="4">
                     <a-button style="width: 96px" type="primary"
-                              @click="selected=[...notification.received.map((item)=>{return item.id})]">全选
+                              @click="selected=[...notifications.map((item)=>{return item.id})]">全选
                     </a-button>
                   </a-col>
                   <a-col :span="4">
                     <a-button style="width: 96px" type="primary" @click="selected=[]">全不选</a-button>
                   </a-col>
-                  <a-col :span="6">
+                  <a-col :span="4">
                     <a-button @click="read(selected)">已读</a-button>
+                  </a-col>
+                  <a-col :span="4">
+                    <a-switch
+                      v-model="onlyUnread"
+                      checked-children="未读"
+                      un-checked-children="全部"
+                      @change="changePage(1,pageSize)"
+                    />
                   </a-col>
                 </a-row>
               </div>
@@ -57,11 +65,19 @@
                   </div>
                   <a-avatar
                     slot="avatar"
-                    src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                    :src="item.from.avatar"
                   />
                 </a-list-item-meta>
               </a-list-item>
-              <a-divider slot="footer" style="padding-top: 16px">我也是有底线嗒~</a-divider>
+              <template slot="footer" v-if="dataLength">
+                <a-pagination
+                  v-model="page"
+                  show-size-changer
+                  :total="dataLength"
+                  @showSizeChange="onShowSizeChange"
+                  @change="changePage"
+                />
+              </template>
             </a-list>
           </a-row>
         </a-tab-pane>
@@ -71,8 +87,8 @@
         :visible="currentId!==-1"
         cancelText="取消"
         okText="确认"
-        @cancel="onClose"
-        @ok="onClose"
+        @cancel="currentId=-1"
+        @ok="currentId=-1"
       >
         <p>时间：{{ current.time }}</p>
         <p>内容：{{ current.content }}</p>
@@ -82,34 +98,64 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { readNotifications, receiveNotificatons } from '@/services/website'
 
 export default {
   name: 'Notification',
   data () {
     return {
+      unread: 0,
+      sent: 0,
+      received: 1,
       selected: [],
       currentId: -1,
-      current: {}
+      current: {},
+      notifications: [],
+      page: 1,
+      pageSize: 10,
+      dataLength: 0,
+      onlyUnread: false
     }
   },
   async beforeMount () {
-    await this.$store.dispatch('userUpdate')
+    await receiveNotificatons(this.id).then(res => {
+      this.received = res.total
+      this.notifications = res.notifications
+    })
+    this.sent = this.$store.getters.notification.statistics.sent
+    this.unread = this.$store.getters.notification.statistics.unread
+    this.dataLength = this.received
   },
+
   computed: {
-    notification () {
-      return this.$store.getters.notification
+    id () {
+      return this.$store.getters.user.id
+    },
+    total () {
+      return this.received + this.sent
     }
   },
   methods: {
+    async changePage (page, pageSize) {
+      await receiveNotificatons(this.id, this.onlyUnread, page, pageSize).then(res => {
+        this.dataLength = res.total
+        this.notifications = res.notifications
+      })
+    },
+    async onShowSizeChange (current, size) {
+      this.page = 1
+      this.pageSize = size
+      await receiveNotificatons(this.id, this.onlyUnread, 1, size).then(res => {
+        this.dataLength = res.total
+        this.notifications = res.notifications
+      })
+    },
     read (notifications) {
-      axios.put('/website/notifications/unread', { notifications }).then(() => {
-        this.$store.dispatch('userUpdate').then(() => {
-          this.selected = []
-          this.$message.success('操作成功')
-        }).catch(() => {
-          this.$message.error('更新邮箱过程中遇到错误')
-        })
+      readNotifications(notifications).then(async () => {
+        await this.changePage(this.page, this.pageSize)
+        this.unread = (await receiveNotificatons(this.id, true)).total
+        this.$store.commit('setUnread', this.unread)
+        this.$message.success('操作成功')
       }).catch(() => {
         this.$message.error('操作失败')
       })
@@ -130,15 +176,17 @@ export default {
       }
     },
     open (id) {
-      axios.get(`/website/notifications/${id}`).then(res => {
-        this.current = res.data
-        this.currentId = id
-      })
-    },
-    onClose () {
-      this.$store.dispatch('userUpdate').then(() => {
-        this.currentId = -1
-      })
+      this.currentId = id
+      for (let i = 0; i < this.notifications.length; i++) {
+        if (this.notifications[i].id === id) {
+          this.current = this.notifications[i]
+          if (!this.current.unread) return
+          readNotifications([id])
+          this.unread -= 1
+          this.notifications[i].unread = false
+          break
+        }
+      }
     }
   }
 }

@@ -58,3 +58,35 @@ export function checkImageBeforeUpload (image) {
   }
   return isJpgOrPng && isLt2M
 }
+
+/**
+ * WS0804 检索通知
+ * @param config
+ * @returns {Promise | Promise<unknown>}
+ */
+export function searchNotificatons (config) {
+  return request.get('/website/notifications', config)
+}
+
+/**
+ * WS0804 检索通知（用户）
+ * @param to 用户id
+ * @param onlyUnread 未读消息
+ * @param page 页码，1开始
+ * @param pageSize 每页大小
+ * @returns {Promise | Promise<unknown>}
+ */
+export function receiveNotificatons (to, onlyUnread = false, page = 1, pageSize = 10) {
+  if (onlyUnread === false) {
+    return searchNotificatons({ to, page, pageSize })
+  } else return searchNotificatons({ to, page, pageSize, unread: true })
+}
+
+/**
+ * WS0803 批量已读通知
+ * @param ids 通知编号
+ * @returns {Promise | Promise<unknown>}
+ */
+export function readNotifications (ids) {
+  return request.put('/website/notifications/unread', { notifications: ids })
+}

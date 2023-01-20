@@ -7,9 +7,9 @@ import store from '@/store'
  * @returns {Promise<void>}
  */
 export async function refreshToken () {
-  await request.put('/login', {}).then(res => {
+  await request.put('/login', {}).then(async res => {
     localStorage.setItem('token', res.token)
-    store.dispatch('userLogin', res.id)
+    await store.dispatch('userLogin', res.id)
   }).catch(() => {
     message.error('登录已过期，请重新登录')
     store.commit('userLogout')

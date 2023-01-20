@@ -146,6 +146,9 @@ export default new Vuex.Store({
       }).finally(() => {
         state.commentsLoading = false
       })
+    },
+    setUnread (state, number) {
+      state.notification.statistics.unread = number
     }
   },
   actions: {
@@ -153,7 +156,7 @@ export default new Vuex.Store({
       state,
       dispatch
     }, id) {
-      if (state.user.id.toString() === id) return
+      if (state.user.id.toString() === id.toString()) return
       state.user.id = Number(id)
       localStorage.setItem('id', id)
       return dispatch('userUpdate')
