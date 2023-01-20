@@ -94,20 +94,20 @@ export default {
       toolList: [
         {
           id: 1,
-          cover: cdn + '拼音速查.png',
-          routerName: 'Characters',
+          cover: cdn + '音序查词.png',
+          routerName: 'Dictionary',
           disabled: false
         },
         {
           id: 2,
-          cover: cdn + '条件查字.png',
-          routerName: 'Conditions',
+          cover: cdn + '快速录制.png',
+          routerName: 'QuickRecording',
           disabled: false
         },
         {
           id: 3,
-          cover: cdn + '快速录制.png',
-          routerName: 'QuickRecording',
+          cover: cdn + '条件查字.png',
+          routerName: 'Conditions',
           disabled: false
         }
       ]
