@@ -78,8 +78,8 @@ export function searchNotificatons (config) {
  */
 export function receiveNotificatons (to, onlyUnread = false, page = 1, pageSize = 10) {
   if (onlyUnread === false) {
-    return request.get('/website/notifications', { to, page, pageSize })
-  } else return request.get('/website/notifications', { to, page, pageSize, unread: true })
+    return searchNotificatons({ to, page, pageSize })
+  } else return searchNotificatons({ to, page, pageSize, unread: true })
 }
 
 /**

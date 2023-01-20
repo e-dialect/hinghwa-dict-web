@@ -41,7 +41,7 @@
                   <a-col :span="4">
                     <a-switch
                       v-model="onlyUnread"
-                      checked-children="仅未读"
+                      checked-children="未读"
                       un-checked-children="全部"
                       @change="changePage(1,pageSize)"
                     />
@@ -98,7 +98,7 @@
 </template>
 
 <script>
-import { readNotifications, receiveNotificatons, searchNotificatons } from '@/services/website'
+import { readNotifications, receiveNotificatons } from '@/services/website'
 
 export default {
   name: 'Notification',
