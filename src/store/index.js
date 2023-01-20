@@ -153,7 +153,7 @@ export default new Vuex.Store({
       state,
       dispatch
     }, id) {
-      if (state.user.id.toString() === id) return
+      if (state.user.id.toString() === id.toString()) return
       state.user.id = Number(id)
       localStorage.setItem('id', id)
       return dispatch('userUpdate')
