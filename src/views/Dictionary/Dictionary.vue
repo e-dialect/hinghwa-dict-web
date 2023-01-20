@@ -1,19 +1,25 @@
 <template :spinning="spinning">
   <a-card>
     <template v-slot:title>
-      <span style="font-size: 2vw">音序查词</span>
+
+      <h2>音序查词</h2>
+
+      <div style="color:gray">
+        <p>兴化语记作为在线工具同样提供音序查询功能。</p>
+        <p style="line-height: 1px">依次点击音序，即可返回该音序下的所有词语。</p>
+      </div>
+    </template>
+    <template v-slot:extra>
       <a-popover>
         <template slot="content">
           <p>第一步：点击音序选择表下的任意一个音序，在界面下方便将展示与该音序所匹配的词语。</p>
           <p>第二步：辞典会自动筛选出，在所选条件下仍能选择的音序，继续点击。</p>
           <p>第三步：点击词条卡片，进入词语详情页。</p>
         </template>
-        <a-icon style="padding-left: 10px" type="question-circle"/>
+        <a-button icon="question-circle" type="dashed">
+          使用帮助
+        </a-button>
       </a-popover>
-      <div style="color:gray">
-        <p>兴化语记作为在线工具同样提供音序查询功能。</p>
-        <p style="line-height: 1px">依次点击音序，即可返回该音序下的所有词语。</p>
-      </div>
     </template>
 
     <!--选择拼音区域-->
@@ -25,7 +31,7 @@
       </a-col>
       <a-col key="prefix" v-if="prefix">
         <a-tag closable @close="prefix=''" color="blue">
-          {{prefix.toUpperCase()}}
+          {{ prefix.toUpperCase() }}
         </a-tag>
       </a-col>
     </a-row>
@@ -35,31 +41,31 @@
     <template>
       <a-collapse defaultActiveKey="1">
         <a-collapse-panel header="音序选择表" key="1">
-      <template v-for="list in nextNodeList">
-        <a-card
-          v-if="!prefix||list[0]===prefix"
-          :key="list[0]" >
-          <a-row>
-          <a-col style="margin-bottom: 5px">
-          <a-tag color="blue" @click="prefix=list[0]" style="font-size: larger">
-            {{String(list[0]).toUpperCase()}}
-          </a-tag>
-          </a-col>
-          </a-row>
-          <template v-for="pinyin in list[1]">
-            <a-col span="2" :key="pinyin" style="margin-bottom: 3px">
-            <a-tag
-              :key="pinyin"
-              @click="pushPinyin(pinyin)"
-            >
-              {{ pinyin }}
-            </a-tag>
-            </a-col>
+          <template v-for="list in nextNodeList">
+            <a-card
+              v-if="!prefix||list[0]===prefix"
+              :key="list[0]">
+              <a-row>
+                <a-col style="margin-bottom: 5px">
+                  <a-tag color="blue" @click="prefix=list[0]" style="font-size: larger">
+                    {{ String(list[0]).toUpperCase() }}
+                  </a-tag>
+                </a-col>
+              </a-row>
+              <template v-for="pinyin in list[1]">
+                <a-col span="2" :key="pinyin" style="margin-bottom: 3px">
+                  <a-tag
+                    :key="pinyin"
+                    @click="pushPinyin(pinyin)"
+                  >
+                    {{ pinyin }}
+                  </a-tag>
+                </a-col>
+              </template>
+            </a-card>
           </template>
-        </a-card>
-      </template>
         </a-collapse-panel>
-        </a-collapse>
+      </a-collapse>
     </template>
     <a-divider v-show="nextNodeList.length && words.length"/>
 
