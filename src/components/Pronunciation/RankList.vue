@@ -21,7 +21,10 @@
       <a-radio-button value="1" @click="changeRank(7)">周榜</a-radio-button>
       <a-radio-button value="2" @click="changeRank(30)">月榜</a-radio-button>
       <a-radio-button value="3" @click="changeRank(0)">总榜</a-radio-button>
-    </a-radio-group>
+    </a-radio-group><br>
+    <!--    我的排名-->
+    <span>我的排名：{{myRank.rank}}</span><br>
+    <span>我贡献的语音数：{{myRank.amount}}</span>
 <!--    榜单展示区-->
     <a-row justify="center" type="flex">
       <a-col :span="22">
@@ -62,6 +65,10 @@ export default {
   data () {
     return {
       rankList: [],
+      myRank: {
+        amount: '',
+        rank: ''
+      },
       columns: [
         {
           title: '排名',
@@ -91,6 +98,7 @@ export default {
     changeRank (day) {
       axios.get('/pronunciation/ranking', { params: { days: day } }).then(res => {
         this.rankList = res.data.ranking
+        this.myRank = res.data.me
         this.rankList.forEach((record, index) => {
           record.key = index + 1
         })
