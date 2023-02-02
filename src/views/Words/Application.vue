@@ -53,7 +53,7 @@
         <a-form-model-item label="相关文章">
           <SelectArticle v-model="application.content.related_articles" :default-value="related_articles"/>
         </a-form-model-item>
-        <a-form-model-item label="百科">
+        <a-form-model-item label="附注">
           <MarkdownEditor v-model="application.content.annotation"/>
         </a-form-model-item>
         <a-form-model-item label="理由说明">
