@@ -41,7 +41,7 @@
       <template v-slot:renderItem="item">
         <a-list-item>
           <a-comment
-            :author="item.user.username"
+            :author="item.user.nickname"
             :content="item.content"
             :datetime="item.time">
             <template v-slot:avatar>
