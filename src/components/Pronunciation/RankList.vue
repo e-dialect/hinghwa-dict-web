@@ -23,8 +23,10 @@
       <a-radio-button value="3" @click="changeRank(0)">总榜</a-radio-button>
     </a-radio-group><br>
 <!--    我的排名-->
+    <div v-show="this.$store.getters.loginStatus">
     <span>我的排名：{{myRank.rank}}</span><br>
     <span>我贡献的语音量：{{myRank.amount}}</span>
+    </div>
 <!--    榜单展示区-->
     <a-row justify="center" type="flex">
       <a-col :span="22">
@@ -94,9 +96,6 @@ export default {
   mounted () {
     this.changeRank(7)
   },
-  created () {
-    this.hasLogin()
-  },
   methods: {
     changeRank (day) {
       axios.get('/pronunciation/ranking', { params: { days: day } }).then(res => {
@@ -106,11 +105,6 @@ export default {
           record.key = index + 1
         })
       })
-    },
-    hasLogin () {
-      if (!this.$store.getters.loginStatus) {
-        this.$message.info('请先登录才能查看准确的我的排名和语音贡献量哦')
-      }
     }
   }
 }
