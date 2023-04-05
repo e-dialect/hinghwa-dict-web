@@ -17,11 +17,11 @@
     <div>
       <span>录音筛选：</span>
       <a-radio-group button-style="solid">
-        <a-radio-button value="1" @click="getCurrentPage(1,true)">已审核</a-radio-button>
-        <a-radio-button value="2" @click="getCurrentPage(1,false)">未审核</a-radio-button>
-        <a-radio-button value="3" @click="getCurrentPage(1,true,false)">不通过</a-radio-button>
-        <a-radio-button value="4" @click="getCurrentPage(1,true,true)">已通过</a-radio-button>
-        <a-radio-button value="5" @click="getCurrentPage(1)">重置</a-radio-button>
+        <a-radio-button value="1" @click="reviewed()">已审核</a-radio-button>
+        <a-radio-button value="2" @click="unReviewed()">未审核</a-radio-button>
+        <a-radio-button value="3" @click="unPassed()">不通过</a-radio-button>
+        <a-radio-button value="4" @click="passed()">已通过</a-radio-button>
+        <a-radio-button value="5" @click="reset()">重置</a-radio-button>
       </a-radio-group>
     </div>
     <a-table
@@ -237,7 +237,8 @@ export default {
       confirmLoading: false,
       result: false,
       reason: '',
-      current: 1
+      current: 1,
+      filterStatus: ''
     }
   },
   computed: {
@@ -259,7 +260,6 @@ export default {
         total: this.total
       }
     }
-
   },
   async created () {
     await this.getCurrentPage(1)
@@ -314,7 +314,7 @@ export default {
       this.confirmLoading = true
       axios.put(`/pronunciation/${id}/examine`, obj)
         .then(async () => {
-          await this.getCurrentPage(this.current)
+          await this.filter()
           this.$message.success('已审核')
           this.toConfirm = -1
         }).finally(() => {
@@ -345,6 +345,40 @@ export default {
         await this.getCurrentPage(this.current)
         this.$message.success('删除成功！')
       })
+    },
+    // 过滤
+    // 已审核
+    reviewed () {
+      this.getCurrentPage(1, true)
+      this.filterStatus = 1
+    },
+    // 未审核
+    unReviewed () {
+      this.getCurrentPage(1, false)
+      this.filterStatus = 2
+    },
+    // 已通过
+    passed () {
+      this.getCurrentPage(1, true, true)
+      this.filterStatus = 3
+    },
+    // 不通过
+    unPassed () {
+      this.getCurrentPage(1, true, false)
+      this.filterStatus = 4
+    },
+    // 重置
+    reset () {
+      this.getCurrentPage(1)
+      this.filterStatus = 5
+    },
+    // 过滤函数
+    filter () {
+      if (this.filterStatus === 1) this.reviewed()
+      else if (this.filterStatus === 2) this.unReviewed()
+      else if (this.filterStatus === 3) this.passed()
+      else if (this.filterStatus === 4) this.unPassed()
+      else if (this.filterStatus === 5) this.reset()
     }
   }
 }
