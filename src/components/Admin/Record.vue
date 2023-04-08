@@ -257,7 +257,8 @@ export default {
         },
         pageSize: 20,
         simple: true,
-        total: this.total
+        total: this.total,
+        current: this.current
       }
     }
   },
@@ -351,26 +352,31 @@ export default {
     reviewed () {
       this.getCurrentPage(1, true)
       this.filterStatus = 1
+      this.current = 1
     },
     // 未审核
     unReviewed () {
       this.getCurrentPage(1, false)
       this.filterStatus = 2
+      this.current = 1
     },
     // 已通过
     passed () {
       this.getCurrentPage(1, true, true)
       this.filterStatus = 3
+      this.current = 1
     },
     // 不通过
     unPassed () {
       this.getCurrentPage(1, true, false)
       this.filterStatus = 4
+      this.current = 1
     },
     // 重置
     reset () {
       this.getCurrentPage(1)
       this.filterStatus = 5
+      this.current = 1
     },
     // 过滤函数
     filter () {
