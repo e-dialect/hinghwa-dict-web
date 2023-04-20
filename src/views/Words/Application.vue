@@ -162,12 +162,10 @@ export default {
         const word = await axios.put(`/words/applications/${this.id}`, {
           reason: this.reason,
           result: result
+        }).then(res => {
+          this.application.word = res.data.word
         })
-        if (result && this.application.word !== 0) {
-          await axios.put(`words/${this.application.word}`, { word: this.submit })
-        } else if (result && this.application.word === 0) {
-          await axios.post('/words', { word: this.submit })
-        }
+        await axios.put(`words/${this.application.word}`, { word: this.submit })
         if (result && this.application.word !== 0) {
           this.$message.success(`提交审核结果成功，词条（${this.application.content.word}）${word}已修改`)
         } else if (result && this.application.word === 0) {
