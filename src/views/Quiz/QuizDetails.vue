@@ -113,7 +113,9 @@ export default {
       this.isShow = false
       await getRandomQuiz().then(res => {
         this.quiz = res.quiz
-        this.$router.push('/PuxianExam/' + this.quiz.id)
+        this.$router.replace({
+          path: '/PuxianExam/' + this.quiz.id
+        })
       })
     },
     playSound (url) {
