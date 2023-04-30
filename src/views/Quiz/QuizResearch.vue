@@ -9,7 +9,7 @@
       <router-link
         :to="{name:'QuizDetails',params:{id:item.id.toString()}}"
         style="color:black"
-      >
+      replace>
         {{ item.id }}.{{item.question}}
       </router-link>
     </a-card>
@@ -31,7 +31,6 @@ export default {
   methods: {
     async search (content) {
       if (content) {
-        console.log(content)
         await searchQuiz(content).then(res => {
           this.result = res.result
         })
