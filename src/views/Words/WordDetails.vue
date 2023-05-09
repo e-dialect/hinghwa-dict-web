@@ -280,8 +280,12 @@ export default {
         this.$message.error('请先登录后再贡献录音哦~')
         return
       }
-      this.form.county = this.$store.getters.user.county
-      this.form.town = this.$store.getters.user.town
+      if (this.$store.getters.user.county !== '' && this.$store.getters.user.town !== '') {
+        this.form.county = this.$store.getters.user.county
+        this.form.town = this.$store.getters.user.town
+      } else {
+        this.$message.info('您还未设置账号的城乡地址，请尽快设置哦~')
+      }
       this.visible = true
     }
   }
