@@ -35,10 +35,10 @@
           <a-button
             icon="file-search"
             type="dashed"
-            @click="$router.push({name:'Dictionary'})"
+            @click="$router.push({name:'Translation'})"
             style="margin-right: 8px"
           >
-            进入辞典
+            语音翻译
           </a-button>
           <a-button
             icon="more"

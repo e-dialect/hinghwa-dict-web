@@ -16,6 +16,7 @@ const defaultUser = {
 export default new Vuex.Store({
   state: {
     tab: [],
+    tab1: [],
     drawerVisibility: false,
     drawerLoading: false,
     user: Object.create(defaultUser),
@@ -69,6 +70,9 @@ export default new Vuex.Store({
     tab (state) {
       return state.tab
     },
+    tab1 (state) {
+      return state.tab1
+    },
     drawerVisibility (state) {
       return state.drawerVisibility
     },
@@ -110,6 +114,14 @@ export default new Vuex.Store({
         state.tab = Object.assign([], value)
       } else {
         state.tab = []
+      }
+    },
+    tab1 (state, value) {
+      const list = ['ptx', 'xtp']
+      if (list.indexOf(value[0]) >= 0) {
+        state.tab1 = Object.assign([], value)
+      } else {
+        state.tab1 = []
       }
     },
     drawerVisibility (state, value) {
