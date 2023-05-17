@@ -1,6 +1,6 @@
 <template>
 <a-card>
-  <h1>语音翻译</h1>
+  <h1>语音识别</h1>
   <a-layout>
     <a-layout-header style="background: white">
   <translation-header/>

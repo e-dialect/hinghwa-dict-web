@@ -38,7 +38,7 @@
             @click="$router.push({name:'Translation'})"
             style="margin-right: 8px"
           >
-            语音翻译
+            语音识别
           </a-button>
           <a-button
             icon="more"

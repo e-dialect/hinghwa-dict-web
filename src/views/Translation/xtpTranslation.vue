@@ -1,56 +1,35 @@
 <template>
   <a-card>
     <!--    翻译区-->
-    <div>
-<!--      <h1>录制莆仙话</h1>-->
-      <a-form-model>
-      <a-form-model-item label="录音">
-        <a-row align="middle" justify="center" type="flex">
-          <a-col :span="4">
-            <a-button
-              v-if="!recording"
-              icon="audio"
-              shape="circle"
-              size="large"
-              style="width: 50px;height: 50px "
-              @click="startRecording"
-            />
-            <a-button
-              v-else
-              icon="pause"
-              shape="circle"
-              style="width: 50px;height: 50px "
-              @click="stopRecording"
-            />
+    <a-card>
+      <div>
+        <p>点击按钮开始录制莆仙话</p>
+        <a-row>
+          <a-col :span="14">
+            <a-input :value="this.word"></a-input>
           </a-col>
-          <a-col :span="4">
-            {{
-              recording ? '停止录音' :
-                (recordSourceURL ? '重新录音' : '开始录音')
-            }}
+          <a-col :span="10">
+            <a-button icon="audio" @click="startRecording">开始</a-button>
+            <a-button icon="pause" @click="stopRecording">停止</a-button>
+            <a-button icon="sound" @click="translation()">翻译</a-button>
+            <a-button icon="search" @click="search(word)">搜索</a-button>
           </a-col>
         </a-row>
-      </a-form-model-item>
-      <a-form-model-item v-show="recordSourceURL">
         <div
-          style="text-align: center">
+          v-if="recordSourceURL"
+          style="text-align: center;padding-top: 20px">
           <audio
             :src="recordSourceURL"
             controls
           />
         </div>
-      </a-form-model-item>
-      </a-form-model>
-<!--      翻译结果-->
-      <a-button @click="translation(recordSourceURL)">翻译</a-button>
-      <span v-if="trans">{{this.word}}</span>
-    </div>
+      </div>
+    </a-card>
   </a-card>
 </template>
 
 <script>
-
-import { xtpTranslation } from '@/services/translation'
+import axios from 'axios'
 
 export default {
   name: 'ptxTranslation',
@@ -66,10 +45,33 @@ export default {
     }
   },
   methods: {
-    async translation (url) {
-      await xtpTranslation(url).then(res => {
-        this.word = res.word
+    async translation () {
+      const formdata = new FormData()
+      formdata.append('file', this.recordSource, Date.now().toString() + '.mp3')
+      // // 先上传文件
+      await axios({
+        url: '/website/files',
+        method: 'post',
+        data: formdata,
+        headers: { 'Content-Type': 'multipart/form-data' }
+      }).then((ress) => {
+        this.recordSourceURL = ress.data.url
       })
+      // 再调用接口
+      try {
+        await axios({
+          url: '/pronunciation/translate',
+          method: 'post',
+          data: formdata,
+          headers: { 'Content-Type': 'multipart/form-data' }
+        }).then(res => {
+          console.log(res.data.word)
+          this.word = res.data.word
+        })
+      } catch (e) {
+        this.$message.warning('抱歉，该语音暂时无法识别出哦')
+      }
+
       this.trans = true
     },
     startRecording () {
@@ -100,7 +102,6 @@ export default {
 
               // 录音器已经完全准备好
               this.recorderReady = true
-
               this.mediaRecorder.start()
               this.recording = true
             },
@@ -119,6 +120,16 @@ export default {
     stopRecording () {
       this.mediaRecorder.stop()
       this.recording = false
+    },
+    search (content) {
+      if (content) {
+        this.$router.push({
+          name: 'Search',
+          query: { key: content }
+        })
+      } else {
+        this.$message.warning('请先输入搜索内容哦~')
+      }
     }
   }
 }
