@@ -1,17 +1,15 @@
 <template>
-  <a-card>
     <!--    翻译区-->
     <a-card>
       <div>
         <p>点击按钮开始录制莆仙话</p>
         <a-row>
-          <a-col :span="14">
+          <a-col :span="16">
             <a-input :value="this.word"></a-input>
           </a-col>
-          <a-col :span="10">
+          <a-col :span="8">
             <a-button icon="audio" @click="startRecording">开始</a-button>
             <a-button icon="pause" @click="stopRecording">停止</a-button>
-            <a-button icon="sound" @click="translation()">翻译</a-button>
             <a-button icon="search" @click="search(word)">搜索</a-button>
           </a-col>
         </a-row>
@@ -25,7 +23,6 @@
         </div>
       </div>
     </a-card>
-  </a-card>
 </template>
 
 <script>
@@ -45,35 +42,6 @@ export default {
     }
   },
   methods: {
-    async translation () {
-      const formdata = new FormData()
-      formdata.append('file', this.recordSource, Date.now().toString() + '.mp3')
-      // // 先上传文件
-      await axios({
-        url: '/website/files',
-        method: 'post',
-        data: formdata,
-        headers: { 'Content-Type': 'multipart/form-data' }
-      }).then((ress) => {
-        this.recordSourceURL = ress.data.url
-      })
-      // 再调用接口
-      try {
-        await axios({
-          url: '/pronunciation/translate',
-          method: 'post',
-          data: formdata,
-          headers: { 'Content-Type': 'multipart/form-data' }
-        }).then(res => {
-          console.log(res.data.word)
-          this.word = res.data.word
-        })
-      } catch (e) {
-        this.$message.warning('抱歉，该语音暂时无法识别出哦')
-      }
-
-      this.trans = true
-    },
     startRecording () {
       // 如果还没有准备好录音器
       if (this.recorderReady === false) {
@@ -117,9 +85,27 @@ export default {
         this.recording = true
       }
     },
-    stopRecording () {
+    async stopRecording () {
       this.mediaRecorder.stop()
       this.recording = false
+      // 调用接口
+      try {
+        const formdata = new FormData()
+        formdata.append('file', this.recordSource, Date.now().toString() + '.mp3')
+        await axios({
+          url: '/pronunciation/translate',
+          method: 'post',
+          data: formdata,
+          headers: { 'Content-Type': 'multipart/form-data' }
+        }).then(res => {
+          console.log(res.data.word)
+          this.word = res.data.word
+        })
+      } catch (e) {
+        this.$message.warning('抱歉，该语音暂时无法识别出哦')
+      }
+
+      this.trans = true
     },
     search (content) {
       if (content) {
