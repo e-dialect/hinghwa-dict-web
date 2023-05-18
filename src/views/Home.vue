@@ -33,14 +33,6 @@
       <a-card hoverable style="text-align: center;height: 390px;">
         <div style="text-align: right">
           <a-button
-            icon="file-search"
-            type="dashed"
-            @click="$router.push({name:'xtpTranslation'})"
-            style="margin-right: 8px"
-          >
-            语音识别
-          </a-button>
-          <a-button
             icon="more"
             type="dashed"
             @click="$router.push({name:'WordDetails',params:{id:Math.ceil(Math.random()*3500)}})"
