@@ -35,7 +35,7 @@
           <a-button
             icon="file-search"
             type="dashed"
-            @click="$router.push({name:'Translation'})"
+            @click="$router.push({name:'xtpTranslation'})"
             style="margin-right: 8px"
           >
             语音识别

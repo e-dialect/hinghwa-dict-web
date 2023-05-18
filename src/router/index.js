@@ -244,6 +244,7 @@ export default router
 
 router.beforeEach(async (to, from, next) => {
   store.commit('tab', [to.name])
+  store.commit('tab1', [to.name])
   store.commit('drawerVisibility', false)
   next()
 })

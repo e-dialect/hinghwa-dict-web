@@ -4,13 +4,13 @@
       <div>
         <p>点击按钮开始录制莆仙话</p>
         <a-row>
-          <a-col :span="16">
-            <a-input :value="this.word"></a-input>
+          <a-col :span="17">
+            <a-input v-model="this.word"></a-input>
           </a-col>
-          <a-col :span="8">
-            <a-button icon="audio" @click="startRecording">开始</a-button>
-            <a-button icon="pause" @click="stopRecording">停止</a-button>
-            <a-button icon="search" @click="search(word)">搜索</a-button>
+          <a-col :span="7">
+            <a-button v-if="!recording" icon="audio" @click="startRecording">开始录制</a-button>
+            <a-button v-else icon="pause" @click="stopRecording">停止录制</a-button>
+            <a-button icon="search" @click="search(word)">搜索更多</a-button>
           </a-col>
         </a-row>
         <div
@@ -22,14 +22,22 @@
           />
         </div>
       </div>
+      <a-divider v-if="word.length"></a-divider>
+<!--      结果-->
+      <PinyinList
+        v-if="word.length"
+        :key-words="word"
+      />
     </a-card>
 </template>
 
 <script>
 import axios from 'axios'
+import PinyinList from '../../components/Tools/PinyinList'
 
 export default {
   name: 'ptxTranslation',
+  components: { PinyinList },
   data () {
     return {
       recorderReady: false,
@@ -37,8 +45,13 @@ export default {
       recordSourceURL: '',
       recordSource: null,
       recording: false,
-      word: '',
+      word: '请录制莆仙话语音',
       trans: false
+    }
+  },
+  computed: {
+    chinese () {
+      return this.word.toString().replaceAll(/[^\u4e00-\u9fa5]/ig, '')
     }
   },
   methods: {
@@ -114,7 +127,7 @@ export default {
           query: { key: content }
         })
       } else {
-        this.$message.warning('请先输入搜索内容哦~')
+        this.$message.warning('请先录入搜索内容哦~')
       }
     }
   }

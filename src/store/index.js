@@ -117,7 +117,7 @@ export default new Vuex.Store({
       }
     },
     tab1 (state, value) {
-      const list = ['ptx', 'xtp']
+      const list = ['ptxTranslation', 'xtpTranslation']
       if (list.indexOf(value[0]) >= 0) {
         state.tab1 = Object.assign([], value)
       } else {

@@ -1,14 +1,14 @@
 <template>
   <div>
   <a-menu v-model="tab1" mode="horizontal">
-    <a-menu-item key="ptx">
-      <router-link replace :to="{name:'ptxTranslation'}">
-        普通话识别
-      </router-link>
-    </a-menu-item>
-    <a-menu-item key="xtp">
+    <a-menu-item key="xtpTranslation">
       <router-link replace :to="{name:'xtpTranslation'}">
         莆仙话识别
+      </router-link>
+    </a-menu-item>
+    <a-menu-item key="ptxTranslation">
+      <router-link replace :to="{name:'ptxTranslation'}">
+        普通话识别
       </router-link>
     </a-menu-item>
   </a-menu>
