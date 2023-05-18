@@ -98,14 +98,14 @@ export default {
         this.recording = true
       }
     },
-    async stopRecording () {
+    stopRecording () {
       this.mediaRecorder.stop()
       this.recording = false
       // 调用接口
       try {
         const formdata = new FormData()
         formdata.append('file', this.recordSource, Date.now().toString() + '.mp3')
-        await axios({
+        axios({
           url: '/pronunciation/translate',
           method: 'post',
           data: formdata,
