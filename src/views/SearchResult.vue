@@ -15,7 +15,7 @@
         />
       </template>
       <div v-if="Chinese.length">
-        <h1>听句子（约等于不能听版）</h1>
+        <h1>听句子</h1>
         <a-button icon="sound" @click="playWords()" style="margin-left:100px">
           我已保护好耳朵，坚持试听一下
         </a-button>

@@ -77,6 +77,24 @@ export default {
           alt: '日常用语：英语、普通话、莆仙方言正字与拼音共同对照',
           routerName: 'DailyExpressions',
           disabled: false
+        },
+        {
+          cover: cdn + '语音识别.png',
+          alt: '对莆仙方言和普通话语音进行识别',
+          routerName: 'xtpTranslation',
+          disabled: false
+        },
+        {
+          cover: cdn + '排行榜单.png',
+          alt: '兴化语记用户贡献情况排名',
+          routerName: 'RankList',
+          disabled: false
+        },
+        {
+          cover: cdn + '敬请期待.png',
+          alt: '更多功能正在开发中',
+          routerName: 'tools',
+          disabled: true
         }
       ]
     }

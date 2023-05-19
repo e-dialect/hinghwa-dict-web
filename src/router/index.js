@@ -210,6 +210,27 @@ const routes = [
     name: 'Dictionary',
     props: true,
     component: () => import('../views/Dictionary/Dictionary.vue')
+  },
+  // 翻译区
+  {
+    path: '/Translation',
+    name: 'Translation',
+    props: true,
+    component: () => import('../views/Translation/translation.vue'),
+    children: [
+      {
+        path: '/ptxTranslation',
+        name: 'ptxTranslation',
+        props: true,
+        component: () => import('../views/Translation/ptxTranslation.vue')
+      },
+      {
+        path: '/xtpTranslation',
+        name: 'xtpTranslation',
+        props: true,
+        component: () => import('../views/Translation/xtpTranslation.vue')
+      }
+    ]
   }
 ]
 
@@ -223,6 +244,7 @@ export default router
 
 router.beforeEach(async (to, from, next) => {
   store.commit('tab', [to.name])
+  store.commit('tab1', [to.name])
   store.commit('drawerVisibility', false)
   next()
 })
