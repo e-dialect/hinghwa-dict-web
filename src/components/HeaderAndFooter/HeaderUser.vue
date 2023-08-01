@@ -40,6 +40,7 @@
       width="700"
       @close="$store.commit('drawerVisibility',false)"
     >
+
       <template v-slot:title>
         <a-row algin="middle" type="flex">
           <a-col :span="10"></a-col>

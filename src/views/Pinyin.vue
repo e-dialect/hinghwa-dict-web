@@ -1,54 +1,62 @@
 <template>
   <SelectSearch>
-  <div style="background: white;padding: 24px">
-    <h1>拼音方案</h1>
-    <div>
-      <p>
-        本拼音方案基于莆仙话爱好者圈子使用的“国际音标转写”改造而成，为方便大众了解和学习，本拼音在声母上做了贴近普通话拼音的处理。韵母在之前的基础上，做了一些调整，使拼写更加简洁，不同口音中的近似音视作同一个音位，标法一致。同时增加了表示声调的符号。本拼音定名为“莆仙话拼音”。
-      </p>
-      <p>
-        莆仙话拼音可运用在学习、记录莆仙话词句，科普莆仙话正字，朗读古诗时体现韵脚，做莆仙话表情包，以及使用莆仙话输入方案。如今用普通话谐音字记录莆仙话的行为十分泛滥，谐音字不仅不雅观，还歪曲了莆仙话的发音，外地人依照“夸电喜”这样的发音，也无法学习到“看电视”（kuā-dèng-sĭ）准确的莆仙话发音，而了解了莆仙话拼音，有助力于掌握莆仙话整体发音。
-      </p>
-      <p>
-        下面介绍的拼音方案为莆田城里口音。想要了解更多其他口音的介绍请关注微信公众号「莆仙乡音社」(微信号：PhouSengUa)搜索“拼音教程”，或者
-        <a href="https://www.bilibili.com/video/BV1RJ411q7yW/" target="_blank">点击观看b站拼音教程视频</a>。
-      </p>
+  <div style="background: white;padding: 24px;margin: 0 150px">
+    <div class="pin-yin-span">
+      <h1>拼音方案</h1>
+      <div class="para">
+        <p>
+          本拼音方案基于莆仙话爱好者圈子使用的“国际音标转写”改造而成，为方便大众了解和学习，本拼音在声母上做了贴近普通话拼音的处理。韵母在之前的基础上，做了一些调整，使拼写更加简洁，不同口音中的近似音视作同一个音位，标法一致。同时增加了表示声调的符号。本拼音定名为“莆仙话拼音”。
+        </p>
+        <p>
+          莆仙话拼音可运用在学习、记录莆仙话词句，科普莆仙话正字，朗读古诗时体现韵脚，做莆仙话表情包，以及使用莆仙话输入方案。如今用普通话谐音字记录莆仙话的行为十分泛滥，谐音字不仅不雅观，还歪曲了莆仙话的发音，外地人依照“夸电喜”这样的发音，也无法学习到“看电视”（kuā-dèng-sĭ）准确的莆仙话发音，而了解了莆仙话拼音，有助力于掌握莆仙话整体发音。
+        </p>
+        <p>
+          下面介绍的拼音方案为莆田城里口音。想要了解更多其他口音的介绍请关注微信公众号「莆仙乡音社」(微信号：PhouSengUa)搜索“拼音教程”，或者
+          <a href="https://www.bilibili.com/video/BV1RJ411q7yW/" target="_blank">点击观看b站拼音教程视频</a>。
+        </p>
+      </div>
+      <iframe
+        :allowfullscreen="true"
+        border="0"
+        framespacing="0"
+        height="500px"
+        src="https://player.bilibili.com/player.html?aid=77966786&bvid=BV1RJ411q7yW&cid=133662582&page=1"
+        width="76%"
+        style="margin: auto;display: block"
+      >
+      </iframe>
     </div>
-    <iframe
-      :allowfullscreen="true"
-      :scrolling="true"
-      border="0"
-      framespacing="0"
-      height="500px"
-      src="https://player.bilibili.com/player.html?aid=77966786&bvid=BV1RJ411q7yW&cid=133662582&page=1"
-      width="100%"
-    >
-    </iframe>
 
-    <h2>声母</h2>
-    <pinyin-table :columns="columns" :pinyin="shengmu"/>
+    <div class="pin-yin-span">
+      <h2>声母</h2>
+      <pinyin-table :columns="columns" :pinyin="shengmu"/>
+    </div>
 
-    <h2>韵母</h2>
-    <a-tabs default-active-key="1">
-      <a-tab-pane key="1" tab="开尾韵">
+    <div class="pin-yin-span">
+      <h2>韵母</h2>
+      <a-tabs default-active-key="1" style="margin: 0 25px">
+        <a-tab-pane key="1" tab="开尾韵">
+          <pinyin-table :columns="columns" :pinyin="kai"/>
+        </a-tab-pane>
+        <a-tab-pane key="2" tab="鼻尾韵">
+          <pinyin-table :columns="columns" :pinyin="bi"/>
+        </a-tab-pane>
+        <a-tab-pane key="3" tab="塞尾韵">
+          <pinyin-table :columns="columns" :pinyin="se"/>
+        </a-tab-pane>
+      </a-tabs>
+    </div>
 
-        <pinyin-table :columns="columns" :pinyin="kai"/>
-      </a-tab-pane>
-      <a-tab-pane key="2" tab="鼻尾韵">
-        <pinyin-table :columns="columns" :pinyin="bi"/>
-      </a-tab-pane>
-      <a-tab-pane key="3" tab="塞尾韵">
-        <pinyin-table :columns="columns" :pinyin="se"/>
-      </a-tab-pane>
-    </a-tabs>
-
-    <h2>声调</h2>
-    <p>
-      声调可以采用调符和调号两种方法表示。调符是使用符号表示每种声调的起伏，调号则是以数字表示对应的调类。
-      调值是语言学上常用的标记，「五度标记法」，1到5个数字表示声调的相对音高，1是最低，5是最高，可以用音阶的do re mi fa sol来理解。
-      另外莆仙话还有一个用在代词的声调，并且伴有喉塞音，这里把它标记成第三调，如「我」guoh3/guôh，「这」zeh3/zêh。
-    </p>
-    <pinyin-table :columns="columns2" :pinyin="tone"/>
+    <div class="pin-yin-span">
+      <h2>声调</h2>
+      <p class="para">
+        声调可以采用调符和调号两种方法表示。调符是使用符号表示每种声调的起伏，调号则是以数字表示对应的调类。
+        调值是语言学上常用的标记，「五度标记法」，1到5个数字表示声调的相对音高，1是最低，5是最高，可以用音阶的do re mi fa
+        sol来理解。
+        另外莆仙话还有一个用在代词的声调，并且伴有喉塞音，这里把它标记成第三调，如「我」guoh3/guôh，「这」zeh3/zêh。
+      </p>
+      <pinyin-table :columns="columns2" :pinyin="tone"/>
+    </div>
   </div>
   </SelectSearch>
 </template>
@@ -458,5 +466,11 @@ export default {
 </script>
 
 <style scoped>
-
+.para {
+  text-indent: 2em;
+  margin: 0 25px;
+}
+.pin-yin-span{
+  margin-bottom: 80px;
+}
 </style>

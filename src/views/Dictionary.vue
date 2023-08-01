@@ -1,6 +1,6 @@
 <template :spinning="spinning">
-  <a-card>
-    <template v-slot:title>
+  <a-card style="padding: 24px;margin: 0 150px">
+    <template #title>
 
       <h2>音序查词</h2>
 
@@ -9,7 +9,7 @@
         <p style="line-height: 1px">依次点击音序，即可返回该音序下的所有词语。</p>
       </div>
     </template>
-    <template v-slot:extra>
+    <template #extra>
       <a-popover>
         <template slot="content">
           <p>第一步：点击音序选择表下的任意一个音序，在界面下方便将展示与该音序所匹配的词语。</p>

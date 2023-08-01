@@ -21,9 +21,11 @@
           <a-menu-item key="Articles">
             <router-link :to="{name:'Articles'}">文章</router-link>
           </a-menu-item>
-
           <a-menu-item key="Tools">
             <router-link :to="{name:'Tools'}">工具</router-link>
+          </a-menu-item>
+          <a-menu-item key="Rewards">
+            <router-link :to="{name:'Rewards'}">商城</router-link>
           </a-menu-item>
         </a-menu>
       </a-col>

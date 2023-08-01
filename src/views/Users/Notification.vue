@@ -98,7 +98,7 @@
 </template>
 
 <script>
-import { readNotifications, receiveNotificatons } from '@/services/website'
+import { readNotifications, receiveNotifications } from '@/services/website'
 
 export default {
   name: 'Notification',
@@ -118,7 +118,7 @@ export default {
     }
   },
   async beforeMount () {
-    await receiveNotificatons(this.id).then(res => {
+    await receiveNotifications(this.id).then(res => {
       this.received = res.total
       this.notifications = res.notifications
     })
@@ -137,7 +137,7 @@ export default {
   },
   methods: {
     async changePage (page, pageSize) {
-      await receiveNotificatons(this.id, this.onlyUnread, page, pageSize).then(res => {
+      await receiveNotifications(this.id, this.onlyUnread, page, pageSize).then(res => {
         this.dataLength = res.total
         this.notifications = res.notifications
       })
@@ -145,7 +145,7 @@ export default {
     async onShowSizeChange (current, size) {
       this.page = 1
       this.pageSize = size
-      await receiveNotificatons(this.id, this.onlyUnread, 1, size).then(res => {
+      await receiveNotifications(this.id, this.onlyUnread, 1, size).then(res => {
         this.dataLength = res.total
         this.notifications = res.notifications
       })
@@ -153,7 +153,7 @@ export default {
     read (notifications) {
       readNotifications(notifications).then(async () => {
         await this.changePage(this.page, this.pageSize)
-        this.unread = (await receiveNotificatons(this.id, true)).total
+        this.unread = (await receiveNotifications(this.id, true)).total
         this.$store.commit('setUnread', this.unread)
         this.$message.success('操作成功')
       }).catch(() => {

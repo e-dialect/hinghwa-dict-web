@@ -11,7 +11,9 @@ const defaultUser = {
   username: 'username',
   nickname: 'nickname',
   email: 'pxm@edialect.top',
-  avatar: 'https://cos.edialect.top/website/默认头像.jpg'
+  avatar: 'https://cos.edialect.top/website/默认头像.jpg',
+  points_now: 0,
+  points_sum: 0
 }
 export default new Vuex.Store({
   state: {
@@ -105,11 +107,17 @@ export default new Vuex.Store({
     },
     notification (state) {
       return state.notification
+    },
+    pointsNow (state) {
+      return state.user.points_now
+    },
+    pointsSum (state) {
+      return state.user.points_sum
     }
   },
   mutations: {
     tab (state, value) {
-      const list = ['Home', 'Articles', 'Tools', 'Pinyin', 'Dictionary']
+      const list = ['Home', 'Articles', 'Tools', 'Pinyin', 'Dictionary', 'Rewards']
       if (list.indexOf(value[0]) >= 0) {
         state.tab = Object.assign([], value)
       } else {
@@ -185,7 +193,7 @@ export default new Vuex.Store({
         state.like_articles = res.data.like_articles
         state.contribution = res.data.contribution
         state.notification = res.data.notification
-      }).catch(async () => {
+      }).catch(async (state) => {
         await this.commit('userLogout')
       }).finally(() => {
         state.drawerLoading = false

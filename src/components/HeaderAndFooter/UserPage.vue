@@ -1,16 +1,13 @@
 <template>
   <a-spin :spinning="drawerLoading">
 
-    <a-descriptions layout="vertical">
+    <a-descriptions>
       <template v-slot:title>
         <h3>
           <router-link :to="{name:'UserDetails',params:{id:user.id.toString()}}">
             个人信息
           </router-link>
         </h3>
-        <a-button style="float: right;" type="dashed">
-          <router-link :to="{ name: 'UserSettings'}">修改</router-link>
-        </a-button>
       </template>
       <a-descriptions-item label="用户名">
         {{ user.username }}
@@ -18,8 +15,8 @@
       <a-descriptions-item label="昵称">
         {{ user.nickname }}
       </a-descriptions-item>
-      <a-descriptions-item label="身份">
-        <user-tag :type="user.is_admin"></user-tag>
+      <a-descriptions-item label="等级">
+        <user-tag :points_sum="user.points_sum" :type="user.is_admin"></user-tag>
       </a-descriptions-item>
       <a-descriptions-item label="邮箱">
         {{ user.email }}
@@ -71,16 +68,34 @@
           <router-link :to="{name:'ArticleCreate'}">创建新文章</router-link>
         </a-button>
       </a-col>
+
       <a-descriptions style="margin-top: 14px">
-      <a-descriptions-item label="题库">
-        <router-link :to="{name:'UserDetails',params:{id:user.id.toString()}}">
-          {{ publish_articles.length }}
-        </router-link>
-      </a-descriptions-item>
+        <a-descriptions-item label="题库">
+          <router-link :to="{name:'UserDetails',params:{id:user.id.toString()}}">
+            {{ publish_articles.length }}
+          </router-link>
+        </a-descriptions-item>
+        <a-descriptions-item label="剩余积分">
+          {{ user.points_now }}
+        </a-descriptions-item>
+        <a-descriptions-item label="积分总数">
+          {{ user.points_sum }}
+        </a-descriptions-item>
       </a-descriptions>
-      <a-col :span="24" >
+
+      <a-col :span="8" >
         <a-button type="dashed">
           <router-link :to="{name:'QuizCreate'}">贡献新题库</router-link>
+        </a-button>
+      </a-col>
+      <a-col :span="8">
+        <a-button type="dashed">
+          <router-link :to="{name:'Rewards'}">积分商城</router-link>
+        </a-button>
+      </a-col>
+      <a-col :span="8">
+        <a-button type="dashed">
+          <router-link :to="{name:'RewardsTransactions'}">积分变动历史</router-link>
         </a-button>
       </a-col>
     </a-row>
@@ -99,7 +114,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import UserTag from '../User/UserTag'
-
 export default {
   name: 'UserPage',
   components: {
