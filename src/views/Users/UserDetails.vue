@@ -21,6 +21,9 @@
         <a-descriptions-item label="等级">
           <UserTag :points_sum="user.points_sum" :type="user.is_admin"></UserTag>
         </a-descriptions-item>
+        <a-descriptions-item label="称号">
+          <Title :title="user.title"></Title>
+        </a-descriptions-item>
         <a-descriptions-item label="头像">
           <a-avatar :size="64" :src="user.avatar" shape="circle"/>
         </a-descriptions-item>
@@ -67,6 +70,7 @@ import ArticleList from '../../components/Articles/ArticleList'
 import axios from 'axios'
 import UserTag from '../../components/User/UserTag'
 import UserPinyin from '../../components/Pronunciation/UserPinyin'
+import Title from '../../components/User/Title'
 
 export default {
   name: 'UserDetails',
@@ -76,7 +80,8 @@ export default {
   components: {
     UserPinyin,
     UserTag,
-    ArticleList
+    ArticleList,
+    Title
   },
   data () {
     return {
@@ -95,7 +100,8 @@ export default {
         town: '',
         is_admin: false,
         level: 1,
-        points_sum: 0
+        points_sum: 0,
+        title: {}
       },
       publish_articles: [],
       like_articles: []

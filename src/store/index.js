@@ -113,6 +113,9 @@ export default new Vuex.Store({
     },
     pointsSum (state) {
       return state.user.points_sum
+    },
+    title (state) {
+      return state.user.title
     }
   },
   mutations: {
@@ -193,7 +196,7 @@ export default new Vuex.Store({
         state.like_articles = res.data.like_articles
         state.contribution = res.data.contribution
         state.notification = res.data.notification
-      }).catch(async (state) => {
+      }).catch(async () => {
         await this.commit('userLogout')
       }).finally(() => {
         state.drawerLoading = false

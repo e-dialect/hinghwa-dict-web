@@ -27,6 +27,9 @@
       <a-descriptions-item label="乡镇">
         {{ user.county }}-{{ user.town }}
       </a-descriptions-item>
+      <a-descriptions-item label="称号">
+        <Title :title="user.title"></Title>
+      </a-descriptions-item>
     </a-descriptions>
 
     <a-divider></a-divider>
@@ -114,9 +117,11 @@
 <script>
 import { mapGetters } from 'vuex'
 import UserTag from '../User/UserTag'
+import Title from '@/components/User/Title.vue'
 export default {
   name: 'UserPage',
   components: {
+    Title,
     UserTag
   },
   computed: {

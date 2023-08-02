@@ -51,7 +51,7 @@ export default {
   },
   created () {
     axios.get('/products/' + this.$route.params.id).then(res => {
-      this.goods = res.data
+      this.goods = res.data.products
     })
   }
 }
