@@ -36,7 +36,7 @@ export default {
         <span style="color: #8c8c8c;position: relative;left: 8px;font-size: xx-small">剩余{{ detail.quantity }}件</span>
       </a-row>
       <a-row class="points">
-        <img src="@/assets/rewards.svg" alt=""/>
+        <img src="../../../assets/rewards.svg" alt=""/>
         <span>{{ detail.points }}</span>
       </a-row>
     </a-row>
