@@ -7,11 +7,9 @@ export default {
     return {
       orderInfo: {
         address: '',
-        fullName: '',
-        id: '',
-        notes: '',
-        phone: '',
-        userId: ''
+        full_name: '',
+        comment: '',
+        telephone: ''
       },
       confirmLoading: false,
       diaVisible: false,
@@ -29,24 +27,21 @@ export default {
       }
     },
     async sendExchangeInfo () {
-      // this.orderInfo.userId = this.$store.state.user.id
-      // this.orderInfo.id = this.$route.params.id
-      // if (this.orderInfo.address === '' || this.orderInfo.fullName === '' || this.orderInfo.phone === '') {
-      //   this.$message.error('请填写完整信息')
-      //   return
-      // }
-      // console.log(this.orderInfo)
-      // this.confirmLoading = true
-      // // 发送表单信息
-      // // await
-      // setTimeout(() => {
-      //   this.diaVisible = false
-      //   this.$store.state.points -= this.detail.points
-      //   this.$message.success('兑换成功')
-      //   setTimeout(() => {
-      //     this.$router.push({ name: 'Rewards' })
-      //   }, 1000)
-      // }, 1000)
+      if (this.orderInfo.address === '' || this.orderInfo.fullName === '' || this.orderInfo.phone === '') {
+        this.$message.error('请填写完整信息')
+        return
+      }
+      this.confirmLoading = true
+      axios.post('/orders' + '?products_id=' + this.$route.params.id, this.orderInfo).then(() => {
+        this.confirmLoading = false
+        this.$message.success('兑换成功')
+        setTimeout(() => {
+          this.$router.push({ name: 'Rewards' })
+        }, 1000)
+      }).catch(() => {
+        this.confirmLoading = false
+        this.$message.error('兑换失败')
+      })
     }
   },
   created () {
@@ -78,13 +73,13 @@ export default {
           <a-input placeholder="地址" v-model="orderInfo.address" />
         </a-form-item>
         <a-form-item class="form-item" label="姓名" name="fullName" required>
-          <a-input placeholder="姓名" v-model="orderInfo.fullName" />
+          <a-input placeholder="姓名" v-model="orderInfo.full_name" />
         </a-form-item>
         <a-form-item class="form-item" label="电话" name="phone" required>
-          <a-input placeholder="电话" v-model="orderInfo.phone" />
+          <a-input placeholder="电话" v-model="orderInfo.telephone" />
         </a-form-item>
         <a-form-item class="form-item" label="备注" name="notes">
-          <a-textarea placeholder="备注" v-model="orderInfo.notes" />
+          <a-textarea placeholder="备注" v-model="orderInfo.comment" />
         </a-form-item>
       </a-form>
     </a-modal>
