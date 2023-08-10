@@ -20,7 +20,7 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: () => import('../views/About.vue')
   },
   {
     path: '/music',
@@ -89,6 +89,28 @@ const routes = [
     path: '/notification',
     name: 'Notification',
     component: () => import('../views/Users/Notification.vue')
+  },
+  // 积分
+  {
+    path: '/rewards',
+    name: 'Rewards',
+    component: () => import('../views/Rewards/Rewards.vue')
+  },
+  {
+    path: '/rewards/detail/:id',
+    name: 'RewardsDetails',
+    component: () => import('../views/Rewards/Detail.vue'),
+    props: true
+  },
+  {
+    path: '/admin/rewards',
+    name: 'AdminRewards',
+    component: () => import('../views/admin/Rewards/Index.vue')
+  },
+  {
+    path: '/rewards/transactions',
+    name: 'RewardsTransactions',
+    component: () => import('../views/Rewards/Transactions.vue')
   },
   // Tools区
   {
@@ -209,7 +231,7 @@ const routes = [
     path: '/Dictionary',
     name: 'Dictionary',
     props: true,
-    component: () => import('../views/Dictionary/Dictionary.vue')
+    component: () => import('../views/Dictionary.vue')
   },
   // 翻译区
   {

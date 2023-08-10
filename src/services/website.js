@@ -64,7 +64,7 @@ export function checkImageBeforeUpload (image) {
  * @param config
  * @returns {Promise | Promise<unknown>}
  */
-export function searchNotificatons (config) {
+export function searchNotifications (config) {
   return request.get('/website/notifications', config)
 }
 
@@ -76,10 +76,10 @@ export function searchNotificatons (config) {
  * @param pageSize 每页大小
  * @returns {Promise | Promise<unknown>}
  */
-export function receiveNotificatons (to, onlyUnread = false, page = 1, pageSize = 10) {
+export function receiveNotifications (to, onlyUnread = false, page = 1, pageSize = 10) {
   if (onlyUnread === false) {
-    return searchNotificatons({ to, page, pageSize })
-  } else return searchNotificatons({ to, page, pageSize, unread: true })
+    return searchNotifications({ to, page, pageSize })
+  } else return searchNotifications({ to, page, pageSize, unread: true })
 }
 
 /**

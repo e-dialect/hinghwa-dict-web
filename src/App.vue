@@ -1,10 +1,10 @@
 <template>
 
   <a-layout>
-    <a-layout-header style="background: white">
+    <a-layout-header style="background: white;position:fixed;width: 100%;z-index: 3">
       <myHeader/>
     </a-layout-header>
-    <a-layout-content>
+    <a-layout-content style="margin-top: 74px">
       <div class="body">
         <router-view/>
       </div>
@@ -30,15 +30,9 @@ export default {
     MusicAffix
   },
   async beforeCreate () {
-    if (document.documentElement.clientHeight / document.documentElement.clientWidth > 4 / 3) {
-      if (confirm('根据您的屏幕长宽比建议您访问移动版 m.hinghwa.cn ，是否立刻跳转？')) {
-        window.open('https://m.hinghwa.cn', '_self')
-      }
+    if (navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)) {
+      window.open('https://m.hinghwa.cn', '_self')
     }
-    document.addEventListener('DOMContentLoaded', () => {
-      const width = document.documentElement.clientWidth
-      document.body.style.zoom = Number(width / 12).toString() + '%'
-    })
     if (window.localStorage.getItem('token')) {
       await refreshToken()
     }
@@ -49,5 +43,6 @@ export default {
 .body {
   margin: 0 auto;
   width: 80%;
+  min-height: 100vh;
 }
 </style>

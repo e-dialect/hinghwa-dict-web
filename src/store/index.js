@@ -11,7 +11,9 @@ const defaultUser = {
   username: 'username',
   nickname: 'nickname',
   email: 'pxm@edialect.top',
-  avatar: 'https://cos.edialect.top/website/默认头像.jpg'
+  avatar: 'https://cos.edialect.top/website/默认头像.jpg',
+  points_now: 0,
+  points_sum: 0
 }
 export default new Vuex.Store({
   state: {
@@ -105,11 +107,20 @@ export default new Vuex.Store({
     },
     notification (state) {
       return state.notification
+    },
+    pointsNow (state) {
+      return state.user.points_now
+    },
+    pointsSum (state) {
+      return state.user.points_sum
+    },
+    title (state) {
+      return state.user.title
     }
   },
   mutations: {
     tab (state, value) {
-      const list = ['Home', 'Articles', 'Tools', 'Pinyin', 'Dictionary']
+      const list = ['Home', 'Articles', 'Tools', 'Pinyin', 'Dictionary', 'Rewards']
       if (list.indexOf(value[0]) >= 0) {
         state.tab = Object.assign([], value)
       } else {
@@ -160,7 +171,9 @@ export default new Vuex.Store({
       })
     },
     setUnread (state, number) {
-      state.notification.statistics.unread = number
+      if (number >= 0) {
+        state.notification.statistics.unread = number
+      }
     }
   },
   actions: {
