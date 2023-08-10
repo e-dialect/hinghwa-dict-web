@@ -73,7 +73,7 @@ axios.interceptors.response.use(function (response) {
       break
     }
     default: {
-      message.error(error.toString())
+      // message.error(error.toString())
       console.log(error.response)
       break
     }

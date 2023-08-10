@@ -171,7 +171,9 @@ export default new Vuex.Store({
       })
     },
     setUnread (state, number) {
-      state.notification.statistics.unread = number
+      if (number >= 0) {
+        state.notification.statistics.unread = number
+      }
     }
   },
   actions: {
