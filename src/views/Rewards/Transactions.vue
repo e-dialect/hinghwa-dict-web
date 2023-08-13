@@ -56,7 +56,7 @@ export default {
       return axios.get('/transactions', {
         params: {
           page: this.thisPage,
-          action: this.action,
+          action: this.action === '' ? undefined : this.action,
           pageSize: 10
         }
       }).then(res => {
