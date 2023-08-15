@@ -18,6 +18,9 @@
           <a-menu-item key="Dictionary">
             <router-link :to="{name:'Dictionary'}">词典</router-link>
           </a-menu-item>
+          <a-menu-item key="WordList">
+            <router-link :to="{name:'WordList'}">词单</router-link>
+          </a-menu-item>
           <a-menu-item key="Articles">
             <router-link :to="{name:'Articles'}">文章</router-link>
           </a-menu-item>
@@ -25,7 +28,7 @@
             <router-link :to="{name:'Tools'}">工具</router-link>
           </a-menu-item>
           <a-menu-item key="Rewards">
-            <router-link :to="{name:'Rewards'}">商城</router-link>
+            <router-link :to="{name:'Rewards'}">积分</router-link>
           </a-menu-item>
         </a-menu>
       </a-col>
