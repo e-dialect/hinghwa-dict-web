@@ -112,6 +112,18 @@ const routes = [
     name: 'RewardsTransactions',
     component: () => import('../views/Rewards/Transactions.vue')
   },
+  // 词单
+  {
+    path: '/wordlist',
+    name: 'WordList',
+    component: () => import('../views/Words/WordList/WordList.vue')
+  },
+  {
+    path: '/wordlist/:id',
+    name: 'WordListDetails',
+    props: true,
+    component: () => import('../views/Words/WordList/WordListDetail.vue')
+  },
   // Tools区
   {
     path: '/pinyin',
