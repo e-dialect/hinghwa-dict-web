@@ -34,6 +34,11 @@ export default {
       }
     }
   },
+  computed: {
+    isMine () {
+      return this.list.author.id === this.$store.state.user.id
+    }
+  },
   async beforeMount () {
     await axios.get(`/lists/${this.$route.params.id}`).then(res => {
       this.list = res.data
@@ -63,6 +68,9 @@ export default {
         <a-descriptions :column="1">
           <a-descriptions-item label="描述">{{list.description}}</a-descriptions-item>
           <a-descriptions-item label="词语数量">{{list.length}}</a-descriptions-item>
+          <a-descriptions-item>
+            <a-button type="primary" @click="$router.push(`/wordlist/editor?id=${list.id}`)" v-if="isMine">编辑</a-button>
+          </a-descriptions-item>
         </a-descriptions>
       </a-col>
     </a-row>

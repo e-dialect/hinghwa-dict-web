@@ -88,9 +88,10 @@ export default {
 <template>
   <div class="body">
     <a-page-header style="border: 1px solid rgb(235, 237, 240)" title="词单"/>
-    <a-row>
-      <a-input placeholder="搜索词单" style="width: 200px; margin: 20px auto 10px 20px" v-model="searchValue" @change="search"/>
-      <a-button type="primary" style="margin: 20px 20px 10px 10px" v-if="onSearch" @click="onSearch=false;searchValue=''">取消</a-button>
+    <a-row style="margin: 20px auto 10px auto">
+      <a-input-search placeholder="搜索词单" style="width: 200px;margin-left: 25px" v-model="searchValue" @change="search"/>
+      <a-button type="primary" style="margin-left: 15px" v-if="onSearch" @click="onSearch=false;searchValue=''">取消</a-button>
+      <a-button type="primary" style="float:right;margin-right: 40px" @click="$router.push({name: 'WordListEditor'})">创建词单</a-button>
     </a-row>
     <a-row>
       <a-table
