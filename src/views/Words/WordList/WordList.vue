@@ -41,7 +41,10 @@ export default {
           width: '10%'
         }
       ],
-      list: []
+      list: [],
+      searchList: [],
+      onSearch: false,
+      searchValue: ''
     }
   },
   methods: {
@@ -52,13 +55,27 @@ export default {
         this.$message.error('拉取词单列表失败')
       })
     },
-    customRow (record, index) {
+    customRow (record) {
       return {
         on: {
           click: () => {
             this.$router.push(`/wordlist/${record.id}`)
           }
         }
+      }
+    },
+    search () {
+      if (this.searchValue === '') {
+        this.onSearch = false
+      } else {
+        this.onSearch = true
+        const tempList = []
+        this.list.forEach(item => {
+          if (item.name.includes(this.searchValue) ||
+            item.description.includes(this.searchValue) ||
+            item.author.nickname.includes(this.searchValue)) tempList.push(item)
+        })
+        this.searchList = tempList
       }
     }
   },
@@ -71,15 +88,30 @@ export default {
 <template>
   <div class="body">
     <a-page-header style="border: 1px solid rgb(235, 237, 240)" title="词单"/>
-    <a-table
-      :columns="columns"
-      :dataSource="list"
-      style="margin: 10px 20px"
-      :pagination="false"
-      :rowKey="res => res.name"
-      :customRow="customRow"
-    >
-    </a-table>
+    <a-row>
+      <a-input placeholder="搜索词单" style="width: 200px; margin: 20px auto 10px 20px" v-model="searchValue" @change="search"/>
+      <a-button type="primary" style="margin: 20px 20px 10px 10px" v-if="onSearch" @click="onSearch=false;searchValue=''">取消</a-button>
+    </a-row>
+    <a-row>
+      <a-table
+        :columns="columns"
+        :dataSource="list"
+        style="margin: 10px 20px"
+        :pagination="false"
+        :rowKey="res => res.name"
+        :customRow="customRow"
+        v-if="!onSearch"
+      />
+      <a-table
+        :columns="columns"
+        :dataSource="searchList"
+        style="margin: 10px 20px"
+        :pagination="false"
+        :rowKey="res => res.name"
+        :customRow="customRow"
+        v-else
+      />
+    </a-row>
   </div>
 </template>
 
