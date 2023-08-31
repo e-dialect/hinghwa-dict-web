@@ -1,9 +1,10 @@
 <script>
-import { debounce } from '@/services/functions'
 import axios from 'axios'
+import SelectWord from '@/components/Word/SelectWord.vue'
 
 export default {
   name: 'WordListEditor',
+  components: { SelectWord },
   async beforeCreate () {
     if (this.$route.query.id) {
       await this.$axios.get('/lists/' + this.$route.query.id).then(res => {
@@ -11,8 +12,8 @@ export default {
         this.listInfo.description = res.data.description
         res.data.words.forEach(word => {
           this.existWords.push({
-            id: word.id,
-            word: word.word
+            key: word.id,
+            label: word.word
           })
         })
       }).catch(() => {
@@ -27,61 +28,17 @@ export default {
         description: '',
         words: []
       },
-      existWords: [],
-      searchId: '',
-      searchedWord: {
-        id: '',
-        word: ''
-      },
-      popoverShow: false
+      existWords: []
     }
   },
   methods: {
-    async getWords () {
-      this.searchedWord = {
-        id: '',
-        word: ''
-      }
-      debounce(async () => {
-        if (this.searchId === '') return
-        await this.$axios.get(`/words/${this.searchId}`).then(res => {
-          this.searchedWord = {
-            id: res.data.word.id,
-            word: res.data.word.word
-          }
-        }).catch(() => {
-          this.$message.error('拉取词汇失败')
-        })
-      }, 100)
-    },
-    addWords () {
-      // filter
-      if (this.existWords.find(item => item.id === this.searchedWord.id)) {
-        this.$message.error('词汇已存在')
-        return
-      }
-      if (this.searchedWord.id === '') {
-        this.$message.error('词汇不存在')
-        return
-      }
-      this.existWords.push(this.searchedWord)
-      this.searchId = ''
-      this.searchedWord = {
-        id: '',
-        word: ''
-      }
-    },
     async submitList () {
-      if (this.listInfo.name === '') {
-        this.$message.error('词单名称不能为空')
-        return
-      }
-      if (this.listInfo.description === '') {
-        this.$message.error('词单描述不能为空')
+      if (this.listInfo.name === '' || this.listInfo.description === '') {
+        this.$message.error('信息不足')
         return
       }
       await this.existWords.forEach(item => {
-        this.listInfo.words.push(item.id)
+        this.listInfo.words.push(item.key)
       })
       function afterSubmit (that, prom) {
         prom.then(() => {
@@ -114,21 +71,7 @@ export default {
                     placeholder="词单描述"/>
       </a-form-item>
       <a-form-item label="词单词汇">
-        <a-popover placement="topLeft" trigger="click">
-          <template #content>
-            <template v-if="searchId===''">
-              输入id查询词语
-            </template>
-            <template v-else-if="searchedWord.word===''">
-              查询中...
-            </template>
-            <template v-else>
-              <span style="font-weight: bold">{{ searchedWord.word }}</span>
-            </template>
-          </template>
-          <a-input-search placeholder="输入词汇id" style="width: 200px" enter-button="添加" v-model="searchId"
-                          @change="getWords" @search="addWords"/>
-        </a-popover>
+        <SelectWord style="width: 600px" v-model="existWords"/>
         <div>
           <template v-for="(item, index) in existWords">
             <a-tag :key="index" :closable="true" @close="existWords.splice(index, 1);">
