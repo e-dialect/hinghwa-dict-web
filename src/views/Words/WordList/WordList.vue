@@ -22,12 +22,18 @@ export default {
         {
           title: '创建时间',
           dataIndex: 'createTime',
-          key: 'createTime'
+          key: 'createTime',
+          customRender: (text) => {
+            return new Date(text).toLocaleDateString()
+          }
         },
         {
           title: '修改时间',
           dataIndex: 'updateTime',
-          key: 'updateTime'
+          key: 'updateTime',
+          customRender: (text) => {
+            return new Date(text).toLocaleDateString()
+          }
         },
         {
           title: '描述',

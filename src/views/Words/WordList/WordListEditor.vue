@@ -10,12 +10,14 @@ export default {
       await this.$axios.get('/lists/' + this.$route.query.id).then(res => {
         this.listInfo.name = res.data.name
         this.listInfo.description = res.data.description
+        const tempList = []
         res.data.words.forEach(word => {
-          this.existWords.push({
-            key: word.id,
-            label: word.word
+          tempList.push({
+            id: word.id,
+            word: word.word
           })
         })
+        this.defaultValue = tempList
       }).catch(() => {
         this.$message.error('拉取词单信息失败')
       })
@@ -28,7 +30,8 @@ export default {
         description: '',
         words: []
       },
-      existWords: []
+      existWords: [],
+      defaultValue: []
     }
   },
   methods: {
@@ -71,14 +74,7 @@ export default {
                     placeholder="词单描述"/>
       </a-form-item>
       <a-form-item label="词单词汇">
-        <SelectWord style="width: 600px" v-model="existWords"/>
-        <div>
-          <template v-for="(item, index) in existWords">
-            <a-tag :key="index" :closable="true" @close="existWords.splice(index, 1);">
-              {{ item.word }}
-            </a-tag>
-          </template>
-        </div>
+        <SelectWord style="width: 600px" v-model="existWords" :default-value="defaultValue"/>
       </a-form-item>
       <a-form-item>
         <a-button type="primary" style="margin-left: 40px" @click="submitList">提交</a-button>

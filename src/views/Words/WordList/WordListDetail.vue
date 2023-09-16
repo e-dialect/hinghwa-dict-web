@@ -68,8 +68,8 @@ export default {
               {{list.author.nickname}}
             </router-link>
           </a-descriptions-item>
-          <a-descriptions-item label="创建时间">{{list.createTime}}</a-descriptions-item>
-          <a-descriptions-item label="更新时间">{{list.updateTime}}</a-descriptions-item>
+          <a-descriptions-item label="创建时间">{{new Date(list.createTime).toLocaleString()}}</a-descriptions-item>
+          <a-descriptions-item label="更新时间">{{new Date(list.updateTime).toLocaleString()}}</a-descriptions-item>
         </a-descriptions>
       </a-col>
       <a-col :span="12">
