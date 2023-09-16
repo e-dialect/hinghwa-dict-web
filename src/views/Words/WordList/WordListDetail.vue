@@ -13,7 +13,7 @@ export default {
         author: {
           nickname: '',
           avatar: '',
-          id: 0
+          id: -1
         },
         createTime: '',
         updateTime: '',
@@ -34,10 +34,23 @@ export default {
       }
     }
   },
+  computed: {
+    isMine () {
+      return this.list.author.id === this.$store.state.user.id
+    }
+  },
   async beforeMount () {
     await axios.get(`/lists/${this.$route.params.id}`).then(res => {
       this.list = res.data
     })
+  },
+  methods: {
+    async delList () {
+      await axios.delete(`/lists/${this.$route.params.id}`).then(() => {
+        this.$message.success('删除成功')
+        this.$router.push({ name: 'WordList' })
+      })
+    }
   }
 }
 </script>
@@ -55,14 +68,18 @@ export default {
               {{list.author.nickname}}
             </router-link>
           </a-descriptions-item>
-          <a-descriptions-item label="创建时间">{{list.createTime}}</a-descriptions-item>
-          <a-descriptions-item label="更新时间">{{list.updateTime}}</a-descriptions-item>
+          <a-descriptions-item label="创建时间">{{new Date(list.createTime).toLocaleString()}}</a-descriptions-item>
+          <a-descriptions-item label="更新时间">{{new Date(list.updateTime).toLocaleString()}}</a-descriptions-item>
         </a-descriptions>
       </a-col>
       <a-col :span="12">
         <a-descriptions :column="1">
           <a-descriptions-item label="描述">{{list.description}}</a-descriptions-item>
           <a-descriptions-item label="词语数量">{{list.length}}</a-descriptions-item>
+          <a-descriptions-item v-if="isMine">
+            <a-button type="primary" @click="$router.push(`/wordlist/editor?id=${list.id}`)">编辑</a-button>
+            <a-button type="danger" @click="delList" style="margin-left: 16px">删除</a-button>
+          </a-descriptions-item>
         </a-descriptions>
       </a-col>
     </a-row>

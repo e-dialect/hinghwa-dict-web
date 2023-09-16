@@ -119,6 +119,12 @@ const routes = [
     component: () => import('../views/Words/WordList/WordList.vue')
   },
   {
+    path: '/wordlist/editor',
+    name: 'WordListEditor',
+    component: () => import('../views/Words/WordList/WordListEditor.vue'),
+    props: true
+  },
+  {
     path: '/wordlist/:id',
     name: 'WordListDetails',
     props: true,
