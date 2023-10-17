@@ -38,7 +38,7 @@ export default {
     <span style="line-height: 32px;margin-right: 10px;font-size: 1.1em">隐藏所有普通话释义</span>
     <a-button type="primary" @click="hideAll">隐藏</a-button>
     <a-row class="single-word" v-for="(item, index) in list" :key="index">
-      <a-col :span="2" style="font-weight: bold;color: #000;font-size: 1.2em">
+      <a-col :span="4" style="font-weight: bold;color: #000;font-size: 1.2em">
         {{item.word}}
       </a-col>
       <a-col :span="7">
@@ -51,7 +51,7 @@ export default {
         </span>
         <span v-else>***<EyeOutlined class="eye-outlined" @click="showTarget(index)"/></span>
       </a-col>
-      <a-col :span="12">
+      <a-col :span="10">
         <span style="color: #000">发音：</span>
         <span style="color: #222;margin-right: 10px">{{item.standard_pinyin}}</span>
         <span style="color: rgb(155,155,155)">/{{item.standard_ipa}}/</span>
