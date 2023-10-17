@@ -1,6 +1,7 @@
 <script>
 import PlaySoundButton from '@/components/Tools/PlaySoundButton.vue'
 import EyeOutlined from '@ant-design/icons-vue/lib/icons/EyeOutlined'
+import { splitDefinition } from '@/components/Word/Definition'
 export default {
   name: 'MultiWordsMode',
   components: { PlaySoundButton, EyeOutlined },
@@ -28,30 +29,31 @@ export default {
     },
     showTarget (target) {
       this.$set(this.hideList, target, false)
-    }
+    },
+    splitDefinition
   }
 }
 </script>
 
 <template>
   <div style="margin: auto 20px">
-    <span style="line-height: 32px;margin-right: 10px;font-size: 1.1em">隐藏所有普通话释义</span>
+    <span style="line-height: 32px;margin-right: 10px;font-size: 1.1em">隐藏所有释义</span>
     <a-button type="primary" @click="hideAll">隐藏</a-button>
     <a-row class="single-word" v-for="(item, index) in list" :key="index">
-      <a-col :span="2" style="font-weight: bold;color: #000;font-size: 1.2em">
+      <a-col :span="4" style="font-weight: bold;color: #000;font-size: 1.2em">
         {{item.word}}
       </a-col>
       <a-col :span="7">
         <span v-if="!hideList[index]">
-          <span style="color: #000">普通话：</span>
-          <span v-for="(mandarin, index) in item.mandarin" :key="index">
+          <span style="color: #000">释义：</span>
+          <span v-for="(definition, index) in splitDefinition(item.definition)" :key="index">
             <span v-if="index > 0">、</span>
-            <span>{{mandarin}}</span>
+            <span>{{definition.content}}</span>
           </span>
         </span>
         <span v-else>***<EyeOutlined class="eye-outlined" @click="showTarget(index)"/></span>
       </a-col>
-      <a-col :span="12">
+      <a-col :span="10">
         <span style="color: #000">发音：</span>
         <span style="color: #222;margin-right: 10px">{{item.standard_pinyin}}</span>
         <span style="color: rgb(155,155,155)">/{{item.standard_ipa}}/</span>

@@ -1,10 +1,12 @@
 <script>
 import axios from 'axios'
 import PlaySoundButton from '@/components/Tools/PlaySoundButton.vue'
+import Definition from '@/components/Word/DefinitionShow.vue'
+import MarkdownViewer from '@/components/Articles/MarkdownViewer.vue'
 
 export default {
   name: 'SingleWordMode',
-  components: { PlaySoundButton },
+  components: { MarkdownViewer, Definition, PlaySoundButton },
   props: {
     list: {
       type: Array,
@@ -53,15 +55,19 @@ export default {
         <a-row style="color: #222;font-size: 1.3em">{{thisPage.standard_pinyin}}</a-row>
         <a-row style="color: rgb(155,155,155)">/{{thisPage.standard_ipa}}/</a-row>
       </a-row>
-      <a-row style="margin-top: 20px">
-        <a-col :span="2" class="card-tip">释义:</a-col>
-        <a-col :span="22" style="color: #000">{{thisPage.definition}}</a-col>
+      <a-row style="margin-top: 20px" v-if="thisPage.definition.length">
+        <a-row :span="2" class="card-tip">释义:</a-row>
+        <a-row :span="22" style="color: #000">
+          <Definition :definition="thisPage.definition"/>
+        </a-row>
       </a-row>
-      <a-row style="margin-top: 20px">
-        <a-col :span="2" class="card-tip">附注:</a-col>
-        <a-col :span="22" style="color: #000">{{thisPage.annotation}}</a-col>
+      <a-row style="margin-top: 20px" v-if="thisPage.annotation.length">
+        <a-row :span="2" class="card-tip">附注:</a-row>
+        <a-row :span="22" style="color: #000">
+          <MarkdownViewer :text="thisPage.annotation"/>
+        </a-row>
       </a-row>
-      <a-row style="margin-top: 20px">
+      <a-row style="margin-top: 20px" v-if="thisPage.mandarin.length">
         <a-col :span="2" class="card-tip">普通话:</a-col>
         <a-col :span="22" style="color: #000">
           <a-tag v-for="(item, index) in thisPage.mandarin" :key="index">
@@ -87,7 +93,7 @@ export default {
       <a-button type="primary" style="margin: 20px auto 20px 20px" @click="index = (index - 1 + list.length) % list.length;updatePageInfo()">上一个</a-button>
       <a-button type="primary" style="margin: 20px auto 20px 20px" @click="index = (index + 1) % list.length;updatePageInfo()">下一个</a-button>
     </a-row>
-    </div>
+  </div>
 </template>
 
 <style scoped>
