@@ -194,6 +194,13 @@ export default {
           width: 100
         },
         {
+          title: '所属县区乡镇',
+          key: 'region',
+          dataIndex: 'region',
+          align: 'center',
+          width: 100
+        },
+        {
           title: '拼音',
           dataIndex: 'pinyin',
           key: 'pinyin',
@@ -281,6 +288,7 @@ export default {
         .then((res) => {
           this.recordList = res.data.pronunciation
           this.recordList.forEach(item => {
+            this.$set(item, 'region', item.pronunciation.county + item.pronunciation.town)
             this.$set(item, 'recordStatus', '未审核')
             if (item.pronunciation.visibility === false && item.pronunciation.granted === true) {
               item.recordStatus = '不通过'
