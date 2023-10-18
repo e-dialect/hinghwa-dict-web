@@ -2,6 +2,11 @@
 export default {
   name: 'WordList',
   data () {
+    function dateFormat (text) {
+      const time = new Date(text)
+      return `${time.getFullYear()}年${time.getMonth() + 1}月${time.getDate()}日`
+    }
+
     return {
       columns: [
         {
@@ -23,8 +28,8 @@ export default {
           title: '创建时间',
           dataIndex: 'createTime',
           key: 'createTime',
-          customRender: (text) => {
-            return new Date(text).toLocaleDateString()
+          customRender (text) {
+            return dateFormat(text)
           }
         },
         {
@@ -32,7 +37,7 @@ export default {
           dataIndex: 'updateTime',
           key: 'updateTime',
           customRender: (text) => {
-            return new Date(text).toLocaleDateString()
+            return dateFormat(text)
           }
         },
         {
