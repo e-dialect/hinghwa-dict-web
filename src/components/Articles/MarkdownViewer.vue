@@ -8,6 +8,7 @@
     defaultOpen="preview"
     style="z-index: auto"
     :xssOptions="xss"
+    :boxShadow="false"
   >
   </mavon-editor>
 </template>
