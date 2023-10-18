@@ -37,6 +37,12 @@ export default {
   computed: {
     isMine () {
       return this.list.author.id === this.$store.state.user.id
+    },
+    getCreateTime () {
+      return this.getTime(this.list.createTime)
+    },
+    getUpdateTime () {
+      return this.getTime(this.list.updateTime)
     }
   },
   async beforeMount () {
@@ -45,6 +51,10 @@ export default {
     })
   },
   methods: {
+    getTime (time) {
+      const date = new Date(time)
+      return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日 ${date.getHours()}:${date.getMinutes() >= 10 ? '' : '0'}${date.getMinutes()}`
+    },
     async delList () {
       await axios.delete(`/lists/${this.$route.params.id}`).then(() => {
         this.$message.success('删除成功')
@@ -68,8 +78,8 @@ export default {
               {{list.author.nickname}}
             </router-link>
           </a-descriptions-item>
-          <a-descriptions-item label="创建时间">{{new Date(list.createTime).toLocaleString()}}</a-descriptions-item>
-          <a-descriptions-item label="更新时间">{{new Date(list.updateTime).toLocaleString()}}</a-descriptions-item>
+          <a-descriptions-item label="创建时间">{{getCreateTime}}</a-descriptions-item>
+          <a-descriptions-item label="更新时间">{{getUpdateTime}}</a-descriptions-item>
         </a-descriptions>
       </a-col>
       <a-col :span="12">
