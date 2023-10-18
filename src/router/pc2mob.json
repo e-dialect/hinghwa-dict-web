@@ -1,0 +1,18 @@
+{
+  "Home": "/",
+  "Search": "/pages/search",
+  "ArticleDetails": "/pages/articles/details",
+  "ArticleCreate": "/pages/articles/edit",
+  "ArticleEdit": "/pages/articles/edit",
+  "Forget": "/pages/login/forget",
+  "Login": "/pages/login/login",
+  "Register": "/pages/login/register",
+  "QuizResearch": "/pages/quizzes/search",
+  "PuxianExam": "/pages/quizzes/random",
+  "QuizDetails": "/pages/quizzes/details",
+  "UserDetails": "/pages/users/details",
+  "UserSettings": "/pages/users/settings/information",
+  "WordDetails": "/pages/words/details",
+  "QuickRecording": "/pages/words/pronunciations/upload",
+  "RankList": "/pages/words/pronunciations/ranking"
+}
