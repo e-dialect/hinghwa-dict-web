@@ -159,7 +159,7 @@ export default {
         return
       }
       try {
-        const word = await axios.put(`/words/applications/${this.id}`, {
+        await axios.put(`/words/applications/${this.id}`, {
           reason: this.reason,
           result: result
         }).then(res => {
@@ -167,9 +167,9 @@ export default {
         })
         await axios.put(`words/${this.application.word}`, { word: this.submit })
         if (result && this.application.word !== 0) {
-          this.$message.success(`提交审核结果成功，词条（${this.application.content.word}）${word}已修改`)
+          this.$message.success(`提交审核结果成功，词条（${this.application.content.word}）已修改`)
         } else if (result && this.application.word === 0) {
-          this.$message.success(`提交审核结果成功，词条（${this.application.content.word}）${word}已创建`)
+          this.$message.success(`提交审核结果成功，词条（${this.application.content.word}）已创建`)
         } else if (result === false && this.application.word !== 0) {
           this.$message.success('提交审核结果成功，词条修改不通过')
         } else {
