@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--新提交的评论-->
-    <a-comment v-show="replyTo===parent">
+    <a-comment v-show="replyTo===parent" v-if="user.id !== 0">
       <template v-slot:avatar>
         <a-avatar
           v-if="$store.getters.loginStatus"
