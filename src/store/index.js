@@ -54,7 +54,9 @@ export default new Vuex.Store({
         },
         content: 'content',
         time: '2000-01-01 00:00:00',
-        parent: 123
+        parent: 123,
+        article: 0,
+        likes: 0
       }
     ]
   },
