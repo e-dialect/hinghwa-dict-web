@@ -75,6 +75,12 @@ const routes = [
   },
   // Users区
   {
+    path: '/users/certificate/:id',
+    name: 'Certificate',
+    props: true,
+    component: () => import('../views/Users/Certificate.vue')
+  },
+  {
     path: '/users/:id',
     name: 'UserDetails',
     props: true,
