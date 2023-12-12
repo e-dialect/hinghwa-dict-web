@@ -59,6 +59,19 @@
         </router-link>
       </div>
 
+      <div slot="region" slot-scope="text,record,index">
+        <span
+          v-if="!record.editable"
+        >
+          {{ recordList[index].county }}-{{ recordList[index].town }}
+        </span>
+        <AreaCascader
+          v-else
+          :county.sync="recordList[index].county"
+          :town.sync="recordList[index].town"
+        />
+      </div>
+
       <div slot="pinyin" slot-scope="text,record,index">
         <span
           v-if="!record.editable"
@@ -89,14 +102,14 @@
         <audio :src="record.source" controls preload="none" style="max-width: 128px"></audio>
       </div>
 
-<!--      审核情况列-->
+      <!--审核情况列-->
       <div slot="recordStatus" slot-scope="text"
            style="width: 70px"
            :class="{pass:text.recordStatus==='已通过',fail:text.recordStatus==='不通过',unreviewed:text.recordStatus==='未审核'}">
         <div>{{ text.recordStatus}}</div>
       </div>
 
-<!--      操作列-->
+      <!--操作列-->
       <div slot="action" slot-scope="text,record,index">
         <a-button v-if="!text.granted" @click="toConfirm=text.id;reason=''">
           审核
@@ -162,9 +175,10 @@
 <script>
 import axios from 'axios'
 import { BASE_URL } from '@/consts/urls'
-
+import AreaCascader from '@/components/User/AreaCascader.vue'
 export default {
   name: 'Record',
+  components: { AreaCascader },
   data () {
     return {
       BASE_URL: BASE_URL,
@@ -190,6 +204,14 @@ export default {
           title: '词条',
           key: 'word_word',
           scopedSlots: { customRender: 'word' },
+          align: 'center',
+          width: 100
+        },
+        {
+          title: '所属地区',
+          key: 'region',
+          dataIndex: 'region',
+          scopedSlots: { customRender: 'region' },
           align: 'center',
           width: 100
         },
