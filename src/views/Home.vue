@@ -106,14 +106,20 @@ export default {
   },
   methods: {
     search (content) {
-      if (content) {
-        this.$router.push({
-          name: 'Search',
-          query: { key: content }
-        })
-      } else {
+      if (!content) {
         this.$message.warning('请先输入搜索内容哦~')
+        return
       }
+      if (content.substring(0, 4) === 'PLPT') {
+        this.$router.push({
+          path: `/users/certificate/${content}`
+        })
+        return
+      }
+      this.$router.push({
+        name: 'Search',
+        query: { key: content }
+      })
     }
   }
 }
