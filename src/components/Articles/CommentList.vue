@@ -65,6 +65,11 @@
                 回复评论
               </span>
               <span
+                v-if="$store.getters.loginStatus" @click="like(item);"
+              >
+                <LikeOutlined style="margin-right: 6px" :style="{color: doLikeHaveMe(item.id) ? '#000' : '#0f0'}"/>{{item.likes}}点赞
+              </span>
+              <span
                 v-if="replyTo===item.id"
                 @click="$store.commit('changeReplyTo',0)"
               >
@@ -83,10 +88,12 @@
 <script>
 import axios from 'axios'
 import { mapGetters } from 'vuex'
+import { LikeOutlined } from '@ant-design/icons-vue'
 
 export default {
   name: 'CommentList',
   props: ['parent', 'pageSize', 'id'],
+  components: { LikeOutlined },
   data () {
     return {
       btnCommentSubmitting: false,
@@ -148,6 +155,33 @@ export default {
         await this.$store.commit('updateComments', this.id)
         this.commentsLoading = false
       })
+    },
+    like (item) {
+      if (!this.$store.getters.loginStatus) {
+        this.$message.info('请先登录')
+      }
+      this.doLikeHaveMe(item.id).then(res => {
+        if (!res) {
+          item.likes += 1
+          axios.post(`/articles/comments/${item.id}/like`).then(() => {
+            this.$message.success('点赞成功')
+          })
+        } else {
+          item.likes -= 1
+          axios.delete(`/articles/comments/${item.id}/like`).then(() => {
+            this.$message.success('取消点赞成功')
+          })
+        }
+      })
+    },
+    async doLikeHaveMe (id) {
+      let likeUsers = []
+      await axios.get(`/articles/comments/${id}`).then(res => {
+        likeUsers = res.data.comment.like_users
+      })
+      return likeUsers.find(item => {
+        return item.id === this.user.id
+      }) !== undefined
     }
   }
 }
