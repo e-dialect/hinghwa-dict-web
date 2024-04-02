@@ -65,7 +65,15 @@
         </a-select>
       </a-col>
     </a-row>
-
+    <a-row style="margin-top: 5px">
+      <a-input-search
+        v-model="searchContent"
+        enter-button
+        placeholder="请输入拼音"
+        size="large"
+        @search="search(searchContent)"
+      />
+    </a-row>
     <!--   分割线  -->
     <a-divider style="margin:30px 0 30px 0"/>
 
@@ -363,6 +371,7 @@ export default {
         yunmu: ['all'],
         shengdiao: 'all'
       },
+      searchContent: '',
       activeKeys: []
     }
   },
@@ -415,6 +424,58 @@ export default {
       setTimeout(() => {
         this.loading = false
       }, 1000)
+    },
+    search (value) {
+      // 有声调
+      if (value.slice(-1).match(/[1-7]/)) {
+        this.conditions.shengdiao = value.slice(-1)
+        value = value.slice(0, -1)
+      } else {
+        this.conditions.shengdiao = 'all'
+      }
+      // 有韵母
+      if (value.length !== 0) {
+        let find = false
+        for (let i = 0; i <= 2; ++i) {
+          if (find || value.length < i) break
+          const subS = value.slice(i, value.length)
+          this.yunmu.forEach(item1 => {
+            if (!item1.children || find) return
+            item1.children.forEach(item2 => {
+              if (find) return
+              if (item2.value === subS) {
+                this.conditions.yunmu = [item1.value, item2.value]
+                find = true
+              }
+            })
+          })
+        }
+        if (!find) {
+          this.$message.error('未找到对应韵母！韵母是必选项！')
+          return
+        }
+        value = value.slice(0, value.length - this.conditions.yunmu[1].length)
+      } else {
+        this.conditions.yunmu = ['all']
+      }
+      // 有声母
+      if (value.length !== 0) {
+        let find = false
+        for (const key in this.shengmu) {
+          if (find) break
+          if (key === value) {
+            this.conditions.shengmu = key
+            find = true
+          }
+        }
+        if (!find) {
+          this.$message.error('未找到对应声母！')
+          return
+        }
+      } else {
+        this.conditions.shengmu = 'all'
+      }
+      this.getCharacters()
     }
   }
 }
