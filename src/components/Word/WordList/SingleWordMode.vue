@@ -3,10 +3,11 @@ import axios from 'axios'
 import PlaySoundButton from '@/components/Tools/PlaySoundButton.vue'
 import Definition from '@/components/Word/DefinitionShow.vue'
 import MarkdownViewer from '@/components/Articles/MarkdownViewer.vue'
+import WordTag from '@/components/Word/WordTag.vue'
 
 export default {
   name: 'SingleWordMode',
-  components: { MarkdownViewer, Definition, PlaySoundButton },
+  components: { WordTag, MarkdownViewer, Definition, PlaySoundButton },
   props: {
     list: {
       type: Array,
@@ -54,6 +55,7 @@ export default {
         <a-row style="font-size: 1.3em;color: #000;margin-bottom: 5px">发音<PlaySoundButton/></a-row>
         <a-row style="color: #222;font-size: 1.3em">{{thisPage.standard_pinyin}}</a-row>
         <a-row style="color: rgb(155,155,155)">/{{thisPage.standard_ipa}}/</a-row>
+        <word-tag :tags="thisPage.tags" style="margin-top: 10px"/>
       </a-row>
       <a-row style="margin-top: 20px" v-if="thisPage.definition.length">
         <a-row :span="2" class="card-tip">释义:</a-row>

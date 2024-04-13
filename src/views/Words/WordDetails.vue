@@ -8,7 +8,8 @@
             {{ word.word }}
           </strong>
         </h1>
-        <span style="font-size: 100%;padding-left: 50px">
+        <word-tag :tags="word.tags" style="margin-left: 30px;margin-bottom: 10px"/>
+        <span style="font-size: 100%;padding-left: 30px">
           {{ word.standard_pinyin }}
         </span>
         <span style="font-size: 100%;color: rgb(155,155,155);padding-left: 18px">
@@ -138,11 +139,13 @@ import DefinitionShow from '../../components/Word/DefinitionShow'
 import PlaySoundButton from '../../components/Tools/PlaySoundButton'
 import MarkdownViewer from '../../components/Articles/MarkdownViewer'
 import { getWordDetails } from '@/services/words'
+import WordTag from '@/components/Word/WordTag.vue'
 
 export default {
   name: 'WordDetails',
   props: ['id'],
   components: {
+    WordTag,
     MarkdownViewer,
     PlaySoundButton,
     Definition: DefinitionShow,
