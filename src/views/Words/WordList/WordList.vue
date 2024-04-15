@@ -1,4 +1,6 @@
 <script>
+import axios from 'axios'
+
 export default {
   name: 'WordList',
   data () {
@@ -60,7 +62,7 @@ export default {
   },
   methods: {
     async getList () {
-      await this.$axios.get('/lists').then(res => {
+      await axios.get('/lists').then(res => {
         this.list = res.data.lists
       }).catch(() => {
         this.$message.error('拉取词单列表失败')
