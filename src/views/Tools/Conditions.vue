@@ -10,16 +10,7 @@
       ok-text="继续"
       @cancel="visible=false;loading = false"
       @confirm="confirmShowing"
-    >
-      <a-button
-        :loading="btnLoading"
-        style="margin-left:32px"
-        type="primary"
-        v-on:click="getCharacters()"
-      >
-        按条件检索
-      </a-button>
-    </a-popconfirm>
+    ></a-popconfirm>
 
     <h2>依次选择声母、韵母、声调，即可搜索所有符合要求的汉字</h2>
 
@@ -32,6 +23,7 @@
           :showSearch="true"
           option-filter-prop="children"
           style="width: 100%"
+          @change="updateSelect"
         >
           <a-select-option v-for="(value,key) in shengmu" :key="key">
             {{ value }}
@@ -48,6 +40,7 @@
           :showSearch="true"
           placeholder="（选择韵母）"
           style="width:100%"
+          @change="updateSelect"
         />
       </a-col>
       <a-col span="8">
@@ -58,6 +51,7 @@
           :showSearch="true"
           option-filter-prop="children"
           style="width: 100%"
+          @change="updateSelect"
         >
           <a-select-option v-for="(value,key) in shengdiao" :key="key">
             {{ value }}
@@ -69,9 +63,10 @@
       <a-input-search
         v-model="searchContent"
         enter-button
-        placeholder="请输入拼音"
+        placeholder="请输入拼音，?代表缺省"
         size="large"
-        @search="search(searchContent)"
+        @search="search()"
+        @change="updateInput(searchContent)"
       />
     </a-row>
     <!--   分割线  -->
@@ -389,7 +384,6 @@ export default {
     },
     getCharacters () {
       this.btnLoading = true
-
       const data = Object.assign({}, this.conditions)
       if (data.sheng === 'Ǿ') data.sheng = ''
       data.yunmu = data.yunmu[data.yunmu.length - 1]
@@ -425,16 +419,22 @@ export default {
         this.loading = false
       }, 1000)
     },
-    search (value) {
-      // 有声调
+    search () {
+      this.getCharacters()
+    },
+    updateInput (value) {
+      this.conditions.shengdiao = 'all'
+      this.conditions.yunmu = ['all']
+      this.conditions.shengmu = 'all'
+      // 声调
       if (value.slice(-1).match(/[1-7]/)) {
         this.conditions.shengdiao = value.slice(-1)
         value = value.slice(0, -1)
-      } else {
-        this.conditions.shengdiao = 'all'
+      } else if (value.slice(-1) === '?') {
+        value = value.slice(0, -1)
       }
-      // 有韵母
-      if (value.length !== 0) {
+      // 韵母
+      if (value.length !== 0 && value.slice(-1) !== '?') {
         let find = false
         for (let i = 0; i <= 2; ++i) {
           if (find || value.length < i) break
@@ -450,16 +450,12 @@ export default {
             })
           })
         }
-        if (!find) {
-          this.$message.error('未找到对应韵母！韵母是必选项！')
-          return
-        }
-        value = value.slice(0, value.length - this.conditions.yunmu[1].length)
-      } else {
-        this.conditions.yunmu = ['all']
+        if (find) value = value.slice(0, value.length - this.conditions.yunmu[1].length)
+      } else if (value.slice(-1) === '?') {
+        value = value.slice(0, -1)
       }
-      // 有声母
-      if (value.length !== 0) {
+      // 声母
+      if (value.length !== 0 && value.slice(-1) !== '?') {
         let find = false
         for (const key in this.shengmu) {
           if (find) break
@@ -468,13 +464,20 @@ export default {
             find = true
           }
         }
-        if (!find) {
-          this.$message.error('未找到对应声母！')
-          return
-        }
-      } else {
-        this.conditions.shengmu = 'all'
       }
+    },
+    updateSelect () {
+      let inner = ''
+      inner += this.conditions.shengmu === 'all' ? '' : this.conditions.shengmu
+      inner += this.conditions.yunmu[0] === 'all' ? '' : this.conditions.yunmu[1]
+      inner += this.conditions.shengdiao === 'all' ? '' : this.conditions.shengdiao
+      this.searchContent = inner
+    }
+  },
+  mounted () {
+    if (this.$route.query.pinyin) {
+      this.searchContent = this.$route.query.pinyin
+      this.updateInput(this.searchContent)
       this.getCharacters()
     }
   }
