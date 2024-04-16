@@ -51,6 +51,9 @@
             </template>
 
             <template slot="actions">
+              <span @click="commentLike(item.id, item.me.like)">
+                <LikeOutlined :style="{color: item.me.like ? 'red' : '#8c8c8c'}"/> {{item.likes}}
+              </span>
               <span
                 v-if="item.user.id===user.id"
                 :disabled="btnCommentSubmitting"
@@ -73,7 +76,7 @@
             </template>
             <comment-list
               :id="id" :comments="comments" :pageSize="3" :parent="item.id"/>
-          </a-comment>
+            </a-comment>
         </a-list-item>
       </template>
     </a-list>
@@ -83,9 +86,11 @@
 <script>
 import axios from 'axios'
 import { mapGetters } from 'vuex'
+import { LikeOutlined } from '@ant-design/icons-vue'
 
 export default {
   name: 'CommentList',
+  components: { LikeOutlined },
   props: ['parent', 'pageSize', 'id'],
   data () {
     return {
@@ -104,6 +109,7 @@ export default {
       const result = []
       this.comments.forEach(item => {
         if (item.parent === this.parent) {
+          item.liked = this.doLikeHaveMe(item.id)
           result.push(item)
         }
       })
@@ -147,6 +153,20 @@ export default {
         this.$message.success('成功删除评论')
         await this.$store.commit('updateComments', this.id)
         this.commentsLoading = false
+      })
+    },
+    /**
+     * 点赞评论
+     */
+    commentLike (id, liked) {
+      if (liked) {
+        axios.delete('/articles/comments/' + id + '/like').then(async (res) => {
+          this.$message.success('取消点赞成功')
+        })
+        return
+      }
+      axios.post('/articles/comments/' + id + '/like').then(async (res) => {
+        this.$message.success('点赞成功')
       })
     }
   }
