@@ -20,16 +20,25 @@
           我已保护好耳朵，坚持试听一下
         </a-button>
         <a-divider></a-divider>
-      </div>
-      <div v-if="Chinese.length">
-        <h1>查单字</h1>
+        </div>
+        <div v-if="Chinese.length">
+          <h1>查单字</h1>
+          <a-row justify="space-around" type="flex">
+            <PinyinList
+              :key-words="Chinese"
+              style="width: 80%"
+            />
+          </a-row>
+          <a-divider></a-divider>
+        </div>
+      <div v-if="pinyin2Words" style="margin-bottom: 40px">
+        <h1>拼音查字</h1>
         <a-row justify="space-around" type="flex">
-          <PinyinList
-            :key-words="Chinese"
+          <Pinyin2WordList
+            :characters="pinyin2Words"
             style="width: 80%"
           />
         </a-row>
-        <a-divider></a-divider>
       </div>
       <h1>查词语</h1>
       <a-row justify="space-around" type="flex">
@@ -56,10 +65,12 @@ import PinyinList from '../components/Tools/PinyinList'
 import WordList from '../components/Tools/WordList'
 import ArticleList from '../components/Articles/ArticleList'
 import axios from 'axios'
+import Pinyin2WordList from '@/components/Tools/Pinyin2WordList.vue'
 
 export default {
   name: 'SearchResult',
   components: {
+    Pinyin2WordList,
     ArticleList,
     WordList,
     PinyinList
@@ -82,8 +93,11 @@ export default {
     return {
       loading: {
         articles: false,
-        words: false
+        words: false,
+        characters: false
       },
+      pinyin2Words: [
+      ],
       articles: [],
       words: [],
       searchContent: '',
@@ -109,6 +123,11 @@ export default {
       for (const i in this.loading) {
         this.loading[i] = true
       }
+      axios.get('/characters/search', { params: { search: this.keyWords } }).then(res => {
+        this.pinyin2Words = res.data.result
+      }).finally(() => {
+        this.loading.characters = false
+      })
       axios.get('/articles', { params: { search: this.keyWords } }).then(res => {
         this.articles = res.data.articles
       }).finally(() => {
