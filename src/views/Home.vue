@@ -49,9 +49,9 @@
         />
         <div style="padding-top: 24px;text-align: left;font-size: 90%;margin:24px 24px;line-height: 8px;color: #8b8b8b">
           <p style="color: #414141">目前支持搜单字、搜词语、搜文章功能。</p>
-          <p><span class="show-span">搜单字</span>获取输入中每一个汉字的读音</p>
-          <p><span class="show-span">搜词语</span>检索与输入相关的词语</p>
-          <p><span class="show-span">搜文章</span>检索与输入相关的文章</p>
+          <p><span class="show-span">普通查询</span>查单字 搜词语 搜文章</p>
+          <p><span class="show-span">查询证书</span>输入开头为PLPT的证书编号</p>
+          <p><span class="show-span">拼音查字典</span>pinyin:(你要搜的拼音)</p>
         </div>
       </a-card>
     </a-row>
@@ -106,14 +106,26 @@ export default {
   },
   methods: {
     search (content) {
-      if (content) {
-        this.$router.push({
-          name: 'Search',
-          query: { key: content }
-        })
-      } else {
+      if (!content) {
         this.$message.warning('请先输入搜索内容哦~')
+        return
       }
+      if (content.substring(0, 4) === 'PLPT') {
+        this.$router.push({
+          path: `/users/certificate/${content}`
+        })
+        return
+      }
+      if (content.substring(0, 6) === 'pinyin') {
+        this.$router.push({
+          path: '/tools/conditions?pinyin=' + content.substring(7)
+        })
+        return
+      }
+      this.$router.push({
+        name: 'Search',
+        query: { key: content }
+      })
     }
   }
 }

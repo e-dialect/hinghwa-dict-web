@@ -335,7 +335,7 @@ export default {
       }
       if (this.reason) obj.reason = this.reason
       this.confirmLoading = true
-      axios.put(`/pronunciation/${id}/examine`, obj)
+      axios.post(`/pronunciation/${id}/examine`, obj)
         .then(async () => {
           await this.filter()
           this.$message.success('已审核')

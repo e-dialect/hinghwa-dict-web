@@ -16,6 +16,9 @@
         <a-form-model-item label="IPA">
           <a-input v-model="word.standard_ipa" placeholder="词条的IPA（实际发音），实在不会可以留空找管理员帮忙"/>
         </a-form-model-item>
+        <a-form-model-item label="标签">
+          <LineTags v-model="word.tags" tips="词条标签"/>
+        </a-form-model-item>
         <a-form-model-item label="释义">
           <DefinitionEdit v-model="word.definition"/>
         </a-form-model-item>

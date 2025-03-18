@@ -60,6 +60,9 @@
         <a-tab-pane key="3" tab="ta发布的语音">
           <UserPinyin :id="id"/>
         </a-tab-pane>
+        <a-tab-pane key="4" tab="ta的证书">
+          <CertificatePane :id="id"/>
+        </a-tab-pane>
       </a-tabs>
     </a-card>
   </a-spin>
@@ -71,6 +74,7 @@ import axios from 'axios'
 import UserTag from '../../components/User/UserTag'
 import UserPinyin from '../../components/Pronunciation/UserPinyin'
 import Title from '../../components/User/Title'
+import CertificatePane from '@/components/User/CertificatePane.vue'
 
 export default {
   name: 'UserDetails',
@@ -78,6 +82,7 @@ export default {
     id: String
   },
   components: {
+    CertificatePane,
     UserPinyin,
     UserTag,
     ArticleList,

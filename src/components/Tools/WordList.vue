@@ -25,6 +25,7 @@
             <span style="font-size: 80%;color: rgb(155,155,155);padding-left: 10px">
                 / {{ item.word.standard_ipa }}/
               </span>
+            <word-tag :tags="item.word.tags" style="margin-left: 10px"/>
             <PlaySoundButton
               :url="item.pronunciation.url"
               :ipa="item.word.standard_ipa"
@@ -48,10 +49,11 @@
 <script>
 import axios from 'axios'
 import PlaySoundButton from './PlaySoundButton'
+import WordTag from '@/components/Word/WordTag.vue'
 
 export default {
   name: 'WordList',
-  components: { PlaySoundButton },
+  components: { WordTag, PlaySoundButton },
   data () {
     return {
       listSource: null,
