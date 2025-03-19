@@ -1,6 +1,7 @@
 services:
   hinghwa-dict-web:
-    image: "edalect/${SERVICE_NAME}"
+    image: "${SERVICE_NAME}"
+    build: .
     container_name: "${SERVICE_NAME}"
     environment: 
       VITE_BACKEND_URL: "${BACKEND_URL}"
