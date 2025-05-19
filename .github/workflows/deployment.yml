@@ -49,3 +49,4 @@ jobs:
               issue_number: issue_number,
               body: 'This PR is deployed at ${{ steps.builddeploy.outputs.static_web_app_url }}'
             });
+
