@@ -1,6 +1,7 @@
 <template>
   <div style="z-index: 1000;padding-left:30px">
-    <a-affix :offset-bottom="offset">
+
+    <a-affix :offset-bottom="offset" style="width: 40px">
 
       <a-popover
         v-model="visible"
