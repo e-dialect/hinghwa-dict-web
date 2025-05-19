@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: "Download Artifact"
         uses: actions/download-artifact@v4
+        with:
+          name: pr
 
       - name: "Save PR number to env.number"
         run: echo "number=$(cat ./pr/NR)" >> $GITHUB_ENV
