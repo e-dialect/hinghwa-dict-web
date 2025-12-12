@@ -32,7 +32,7 @@ export default {
   async created () {
     // 等待认证初始化完成
     await waitForAuthInitialization(this.$store)
-    
+
     await this.$store.dispatch('userUpdate')
     if (!this.$store.getters.user.is_admin) {
       this.$message.error('仅管理员有权访问该模块！或请重新登录！')
