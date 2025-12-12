@@ -160,17 +160,20 @@ export default {
       }
     },
     checkFallback () {
+      // Common conditions for fetching fallback
+      const shouldFetchFallback = (!this.url || this.url === 'null') &&
+          !this.pendingRequests.ipa && !this.pendingRequests.pinyin &&
+          this.wordId
+      
+      if (!shouldFetchFallback) return
+      
       // Fetch fallback if IPA was requested but no exact match found
       // This allows IPA button to fall back to first available pronunciation
-      if ((!this.url || this.url === 'null') &&
-          !this.pendingRequests.ipa && !this.pendingRequests.pinyin &&
-          this.ipa && !this.ipa_url && this.wordId) {
+      if (this.ipa && !this.ipa_url) {
         this.fetchFallback()
       }
       // Also fetch fallback if neither ipa nor pinyin provided
-      else if ((!this.url || this.url === 'null') &&
-          !this.pendingRequests.ipa && !this.pendingRequests.pinyin &&
-          !this.ipa && !this.pinyin && this.wordId) {
+      else if (!this.ipa && !this.pinyin) {
         this.fetchFallback()
       }
     },
