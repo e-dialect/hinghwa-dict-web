@@ -1,6 +1,7 @@
 <script>
 import OrderManage from '@/components/Admin/Reward/OrderManage.vue'
 import GoodsManage from '@/components/Admin/Reward/GoodsManage.vue'
+import { waitForAuthInitialization } from '@/utils/auth'
 export default {
   name: 'Rewards',
   components: { OrderManage, GoodsManage },
@@ -21,6 +22,9 @@ export default {
   },
   async created () {
     // 管理员身份验证
+    // 等待认证初始化完成
+    await waitForAuthInitialization(this.$store)
+
     await this.$store.dispatch('userUpdate')
     if (!this.$store.getters.user.is_admin) {
       this.$message.error('仅管理员有权访问该模块！或请重新登录！')
