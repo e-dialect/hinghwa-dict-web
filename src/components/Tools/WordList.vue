@@ -30,6 +30,7 @@
               :url="item.pronunciation.url"
               :ipa="item.word.standard_ipa"
               :pinyin="item.word.standard_pinyin"
+              :word-id="item.word.id"
             />
           </template>
         </a-card-meta>

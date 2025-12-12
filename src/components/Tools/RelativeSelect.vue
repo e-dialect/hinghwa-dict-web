@@ -64,6 +64,7 @@
                   :ipa="item.word.standard_ipa"
                   :pinyin="item.word.standard_pinyin"
                   :url="item.word.source"
+                  :word-id="item.word.id"
                 />
               </template>
             </a-card-meta>

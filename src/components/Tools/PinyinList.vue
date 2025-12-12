@@ -22,7 +22,7 @@
             <span v-for="(ktem,index3) in jtem.characters" :key="index3.toString()" style="padding-right: 16px">
               <span v-if="ktem.word===null">{{ ktem.pinyin }}</span>
               <router-link v-else :to="{name:'WordDetails',params:{id:ktem.word}}">{{ ktem.pinyin }}</router-link>
-              <PlaySoundButton :url="ktem.source" :pinyin="ktem.pinyin"/>
+              <PlaySoundButton :url="ktem.source" :pinyin="ktem.pinyin" :word-id="ktem.word"/>
             </span>
           </div>
         </a-collapse-panel>
