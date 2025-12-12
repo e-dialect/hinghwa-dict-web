@@ -165,6 +165,7 @@ export default {
       this.fallbackPromise = null
     },
     playSound (url, type) {
+      if (!url || type === 'none') return
       if (type === 'fallback') {
         const ipaInfo = this.fallback_ipa ? `（IPA: ${this.fallback_ipa}）` : ''
         this.$message.warning(`该词条没有与标准IPA完全匹配的录音，当前播放的是其他已有录音${ipaInfo}`)
