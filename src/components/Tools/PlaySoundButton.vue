@@ -164,16 +164,15 @@ export default {
       const shouldFetchFallback = (!this.url || this.url === 'null') &&
           !this.pendingRequests.ipa && !this.pendingRequests.pinyin &&
           this.wordId
-      
+
       if (!shouldFetchFallback) return
-      
+
       // Fetch fallback if IPA was requested but no exact match found
       // This allows IPA button to fall back to first available pronunciation
       if (this.ipa && !this.ipa_url) {
         this.fetchFallback()
-      }
-      // Also fetch fallback if neither ipa nor pinyin provided
-      else if (!this.ipa && !this.pinyin) {
+      } else if (!this.ipa && !this.pinyin) {
+        // Also fetch fallback if neither ipa nor pinyin provided
         this.fetchFallback()
       }
     },
@@ -212,17 +211,16 @@ export default {
     },
     playSound (url, type) {
       if (!url) return
-      
+
       // Check if playing fallback audio
       if (url === this.fallback_url) {
         const ipaInfo = this.fallback_ipa ? `（IPA: ${this.fallback_ipa}）` : ''
         this.$message.warning(`该词条没有与标准IPA完全匹配的录音，当前播放的是其他已有录音${ipaInfo}`)
-      }
-      // Check if this is generated audio (not direct url)
-      else if (url !== this.url && type !== 'url') {
+      } else if (url !== this.url && type !== 'url') {
+        // Check if this is generated audio (not direct url)
         this.$message.warning(`该语音由程序根据${type}生成，仅供参考！（可能存在错误）`)
       }
-      
+
       new Audio(url).play()
     }
   }
