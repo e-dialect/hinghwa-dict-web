@@ -55,7 +55,11 @@ export default {
       ipa_url: '',
       fallback_url: '',
       fallback_ipa: '',
-      fallbackFetched: false
+      fallbackPromise: null,
+      pendingRequests: {
+        ipa: false,
+        pinyin: false
+      }
     }
   },
   computed: {
@@ -68,82 +72,104 @@ export default {
     }
   },
   created () {
-    this.pinyin_url = ''
-    this.ipa_url = ''
-    this.fallback_url = ''
-    this.fallback_ipa = ''
-    if (this.ipa) {
-      axios.get('pronunciation/combine', { params: { ipas: this.ipa } }).then(res => {
-        this.ipa_url = res.data.url
-      }).catch(() => {
-        this.$message.destroy()
-        this.fetchFallback()
-      })
-    }
-    if (this.pinyin) {
-      axios.get('pronunciation/combine', { params: { pinyins: this.pinyin } }).then(res => {
-        this.pinyin_url = res.data.url
-      }).catch(() => {
-        this.$message.destroy()
-        if (!this.ipa) {
-          this.fetchFallback()
-        }
-      })
-    }
-    // If neither ipa nor pinyin is provided but wordId exists, try fetching fallback
-    if (!this.ipa && !this.pinyin && this.wordId) {
-      this.fetchFallback()
-    }
+    this.loadPronunciations()
   },
   watch: {
     pinyin () {
       this.pinyin_url = ''
-      if (this.pinyin) {
-        axios.get('pronunciation/combine', { params: { pinyins: this.pinyin } }).then(res => {
-          this.pinyin_url = res.data.url
-        }).catch(() => {
-          this.$message.destroy()
-          if (!this.ipa) {
-            this.fetchFallback()
-          }
-        })
-      }
+      this.loadPronunciations()
     },
     ipa () {
       this.ipa_url = ''
-      if (this.ipa) {
-        axios.get('pronunciation/combine', { params: { ipas: this.ipa } }).then(res => {
-          this.ipa_url = res.data.url
-        }).catch(() => {
-          this.$message.destroy()
-          this.fetchFallback()
-        })
-      }
+      this.loadPronunciations()
     },
     wordId () {
-      this.fallbackFetched = false
-      if (this.wordId && !this.ipa_url && !this.pinyin_url) {
-        this.fetchFallback()
-      }
+      this.resetFallback()
+      this.loadPronunciations()
     }
   },
   methods: {
+    loadPronunciations () {
+      // Load IPA pronunciation
+      if (this.ipa) {
+        this.pendingRequests.ipa = true
+        axios.get('pronunciation/combine', { params: { ipas: this.ipa } })
+          .then(res => {
+            this.ipa_url = res.data.url
+          })
+          .catch(() => {
+            this.$message.destroy()
+          })
+          .finally(() => {
+            this.pendingRequests.ipa = false
+            this.checkFallback()
+          })
+      } else {
+        this.pendingRequests.ipa = false
+      }
+
+      // Load Pinyin pronunciation
+      if (this.pinyin) {
+        this.pendingRequests.pinyin = true
+        axios.get('pronunciation/combine', { params: { pinyins: this.pinyin } })
+          .then(res => {
+            this.pinyin_url = res.data.url
+          })
+          .catch(() => {
+            this.$message.destroy()
+          })
+          .finally(() => {
+            this.pendingRequests.pinyin = false
+            this.checkFallback()
+          })
+      } else {
+        this.pendingRequests.pinyin = false
+      }
+
+      // If neither ipa nor pinyin provided, check fallback immediately
+      if (!this.ipa && !this.pinyin) {
+        this.checkFallback()
+      }
+    },
+    checkFallback () {
+      // Only fetch fallback if no exact matches found and no requests pending
+      if (!this.pendingRequests.ipa && !this.pendingRequests.pinyin &&
+          !this.ipa_url && !this.pinyin_url && this.wordId) {
+        this.fetchFallback()
+      }
+    },
     fetchFallback () {
-      if (!this.wordId || this.fallbackFetched) return
-      
-      this.fallbackFetched = true
-      // Fetch all pronunciations for this word
-      axios.get('/pronunciation', { params: { word: this.wordId } }).then(res => {
-        const pronunciations = res.data.pronunciation
-        if (pronunciations && pronunciations.length > 0) {
-          // Get the first available pronunciation
-          const firstPronunciation = pronunciations[0]
-          this.fallback_url = firstPronunciation.pronunciation.source
-          this.fallback_ipa = firstPronunciation.pronunciation.ipa
-        }
-      }).catch(() => {
-        this.$message.destroy()
-      })
+      // Return existing promise if fetch already in progress
+      if (this.fallbackPromise) return this.fallbackPromise
+
+      if (!this.wordId) return Promise.resolve()
+
+      // Create new promise and store it to prevent duplicate calls
+      this.fallbackPromise = axios.get('/pronunciation', { params: { word: this.wordId } })
+        .then(res => {
+          const pronunciations = res.data.pronunciation
+          if (pronunciations && pronunciations.length > 0) {
+            const firstPronunciation = pronunciations[0]
+            // Add null checks for nested properties
+            if (firstPronunciation && firstPronunciation.pronunciation) {
+              this.fallback_url = firstPronunciation.pronunciation.source || ''
+              this.fallback_ipa = firstPronunciation.pronunciation.ipa || ''
+            }
+          }
+        })
+        .catch(() => {
+          this.$message.destroy()
+        })
+        .finally(() => {
+          this.fallbackPromise = null
+        })
+
+      return this.fallbackPromise
+    },
+    resetFallback () {
+      this.fallback_url = ''
+      this.fallback_ipa = ''
+      this.fallbackPromise = null
     },
     playSound (url, word) {
       if (url === this.fallback_url) {
