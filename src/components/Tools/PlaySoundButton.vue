@@ -60,7 +60,7 @@ export default {
       if (this.ipa_url) return 'IPA'
       if (this.pinyin_url) return '拼音'
       if (this.fallback_url) return 'fallback'
-      return 'url'
+      return 'none'
     }
   },
   created () {
@@ -168,7 +168,7 @@ export default {
       if (type === 'fallback') {
         const ipaInfo = this.fallback_ipa ? `（IPA: ${this.fallback_ipa}）` : ''
         this.$message.warning(`该词条没有与标准IPA完全匹配的录音，当前播放的是其他已有录音${ipaInfo}`)
-      } else if (type !== 'url' && url !== this.url) {
+      } else if (type !== 'url' && type !== 'none') {
         this.$message.warning(`该语音由程序根据${type}生成，仅供参考！（可能存在错误）`)
       }
       new Audio(url).play()
