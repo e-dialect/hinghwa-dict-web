@@ -15,7 +15,7 @@
       @click="playSound(ipa_url,'IPA')"
     />
     <a-button
-      v-if="source===url||!source"
+      v-if="!pinyin_url && !ipa_url"
       :disabled="!source"
       icon="sound"
       size="small"
@@ -132,8 +132,9 @@ export default {
       }
     },
     checkFallback () {
-      // Only fetch fallback if no exact matches found and no requests pending
-      if (!this.pendingRequests.ipa && !this.pendingRequests.pinyin &&
+      // Only fetch fallback if no exact matches found, no requests pending, and no direct url provided
+      if ((!this.url || this.url === 'null') &&
+          !this.pendingRequests.ipa && !this.pendingRequests.pinyin &&
           !this.ipa_url && !this.pinyin_url && this.wordId) {
         this.fetchFallback()
       }
@@ -173,7 +174,8 @@ export default {
     },
     playSound (url, word) {
       if (url === this.fallback_url) {
-        this.$message.warning(`该词条没有与标准IPA完全匹配的录音，当前播放的是其他已有录音（IPA: ${this.fallback_ipa}）`)
+        const ipaInfo = this.fallback_ipa ? `（IPA: ${this.fallback_ipa}）` : ''
+        this.$message.warning(`该词条没有与标准IPA完全匹配的录音，当前播放的是其他已有录音${ipaInfo}`)
       } else if (url !== this.url) {
         this.$message.warning(`该语音由程序根据${word}生成，仅供参考！（可能存在错误）`)
       }
