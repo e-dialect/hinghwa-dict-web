@@ -57,7 +57,7 @@ export default {
         <span style="color: #000">发音：</span>
         <span style="color: #222;margin-right: 10px">{{item.standard_pinyin}}</span>
         <span style="color: rgb(155,155,155)">/{{item.standard_ipa}}/</span>
-        <PlaySoundButton/>
+        <PlaySoundButton :ipa="item.standard_ipa" :pinyin="item.standard_pinyin" :word-id="item.id"/>
       </a-col>
       <a-col :span="3">
         <a-button type="link" @click="$router.push(`/words/${item.id}`)">

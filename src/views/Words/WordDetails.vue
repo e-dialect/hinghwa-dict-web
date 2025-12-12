@@ -15,7 +15,7 @@
         <span style="font-size: 100%;color: rgb(155,155,155);padding-left: 18px">
           / {{ word.standard_ipa }}/
         </span>
-        <PlaySoundButton :url="word.source" :pinyin="word.standard_pinyin" :ipa="word.standard_ipa"/>
+        <PlaySoundButton :url="word.source" :pinyin="word.standard_pinyin" :ipa="word.standard_ipa" :word-id="word.id"/>
       </template>
 
       <template v-slot:extra>
