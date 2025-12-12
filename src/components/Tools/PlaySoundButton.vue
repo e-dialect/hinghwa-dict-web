@@ -1,26 +1,11 @@
 <template>
   <span>
     <a-button
-      v-if="source&&source!==url&&pinyin_url"
-      icon="sound"
-      size="small"
-      type="link"
-      @click="playSound(pinyin_url,'拼音')"
-    />
-    <a-button
-      v-if="source&&source!==url&&ipa_url"
-      icon="sound"
-      size="small"
-      type="link"
-      @click="playSound(ipa_url,'IPA')"
-    />
-    <a-button
-      v-if="!pinyin_url && !ipa_url"
       :disabled="!source"
       icon="sound"
       size="small"
       type="link"
-      @click="playSound(source,'url')"
+      @click="playSound(source, currentType)"
     />
   </span>
 </template>
@@ -69,6 +54,13 @@ export default {
       if (this.pinyin_url) return this.pinyin_url
       if (this.fallback_url) return this.fallback_url
       return ''
+    },
+    currentType () {
+      if (this.url && this.url !== 'null') return 'url'
+      if (this.ipa_url) return 'IPA'
+      if (this.pinyin_url) return '拼音'
+      if (this.fallback_url) return 'fallback'
+      return 'url'
     }
   },
   created () {
@@ -172,12 +164,12 @@ export default {
       this.fallback_ipa = ''
       this.fallbackPromise = null
     },
-    playSound (url, word) {
-      if (url === this.fallback_url) {
+    playSound (url, type) {
+      if (type === 'fallback') {
         const ipaInfo = this.fallback_ipa ? `（IPA: ${this.fallback_ipa}）` : ''
         this.$message.warning(`该词条没有与标准IPA完全匹配的录音，当前播放的是其他已有录音${ipaInfo}`)
-      } else if (url !== this.url) {
-        this.$message.warning(`该语音由程序根据${word}生成，仅供参考！（可能存在错误）`)
+      } else if (type !== 'url' && url !== this.url) {
+        this.$message.warning(`该语音由程序根据${type}生成，仅供参考！（可能存在错误）`)
       }
       new Audio(url).play()
     }
