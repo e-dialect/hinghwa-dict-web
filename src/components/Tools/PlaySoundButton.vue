@@ -83,7 +83,7 @@ export default {
     },
     // Source for Pinyin button: exact pinyin match only
     pinyinSource () {
-      return this.pinyin_url
+      return this.pinyin_url || ''
     },
     // Show only one button if both would play the same audio
     showBothButtons () {
@@ -207,13 +207,8 @@ export default {
     playSound (url, type) {
       if (!url) return
       
-      // Check if IPA button is playing fallback audio
-      if (type === 'IPA' && url === this.fallback_url) {
-        const ipaInfo = this.fallback_ipa ? `（IPA: ${this.fallback_ipa}）` : ''
-        this.$message.warning(`该词条没有与标准IPA完全匹配的录音，当前播放的是其他已有录音${ipaInfo}`)
-      }
-      // Check if this is a fallback for other cases
-      else if (url === this.fallback_url) {
+      // Check if playing fallback audio
+      if (url === this.fallback_url) {
         const ipaInfo = this.fallback_ipa ? `（IPA: ${this.fallback_ipa}）` : ''
         this.$message.warning(`该词条没有与标准IPA完全匹配的录音，当前播放的是其他已有录音${ipaInfo}`)
       }
