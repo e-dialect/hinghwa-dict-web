@@ -79,6 +79,16 @@ export default {
     }
   },
   async created () {
+    // 如果有token，等待App.vue中的refreshToken完成
+    if (localStorage.getItem('token')) {
+      // 等待用户ID被设置（表示refreshToken已完成）
+      let retries = 0
+      while (this.$store.getters.user.id === 0 && retries < 50) {
+        await new Promise(resolve => setTimeout(resolve, 100))
+        retries++
+      }
+    }
+    
     await this.$store.dispatch('userUpdate')
     if (this.$store.getters.user.is_admin === false) {
       this.$message.error('仅管理员有权访问该模块！或请重新登录！')
