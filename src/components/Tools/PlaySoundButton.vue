@@ -54,7 +54,8 @@ export default {
       pinyin_url: '',
       ipa_url: '',
       fallback_url: '',
-      fallback_ipa: ''
+      fallback_ipa: '',
+      fallbackFetched: false
     }
   },
   computed: {
@@ -120,6 +121,7 @@ export default {
       }
     },
     wordId () {
+      this.fallbackFetched = false
       if (this.wordId && !this.ipa_url && !this.pinyin_url) {
         this.fetchFallback()
       }
@@ -127,8 +129,9 @@ export default {
   },
   methods: {
     fetchFallback () {
-      if (!this.wordId) return
+      if (!this.wordId || this.fallbackFetched) return
       
+      this.fallbackFetched = true
       // Fetch all pronunciations for this word
       axios.get('/pronunciation', { params: { word: this.wordId } }).then(res => {
         const pronunciations = res.data.pronunciation
