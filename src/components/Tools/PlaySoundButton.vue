@@ -1,24 +1,24 @@
 <template>
   <span>
-    <!-- Pinyin button: show if pinyin provided and (showBothButtons or no ipa) -->
+    <!-- Pinyin button: plays pinyin-generated audio -->
     <a-button
-      v-if="pinyin && (!ipa || showBothButtons)"
+      v-if="shouldShowPinyinButton"
       :disabled="!pinyinSource"
       icon="sound"
       size="small"
       type="link"
       @click="playSound(pinyinSource,'拼音')"
     />
-    <!-- IPA button: show if ipa provided -->
+    <!-- IPA button: plays IPA-generated audio or fallback -->
     <a-button
-      v-if="ipa"
+      v-if="shouldShowIpaButton"
       :disabled="!ipaSource"
       icon="sound"
       size="small"
       type="link"
       @click="playSound(ipaSource,'IPA')"
     />
-    <!-- Fallback button: show only when neither ipa nor pinyin provided, but url or fallback exists -->
+    <!-- Fallback button: shows when neither ipa nor pinyin provided -->
     <a-button
       v-if="!ipa && !pinyin"
       :disabled="!source"
@@ -75,25 +75,28 @@ export default {
       if (this.fallback_url) return this.fallback_url
       return ''
     },
-    // Source for IPA button: exact IPA match or fallback
+    // Source for IPA button: exact IPA match or fallback (only if IPA was requested)
     ipaSource () {
       if (this.ipa_url) return this.ipa_url
-      if (this.fallback_url) return this.fallback_url
+      // Only use fallback if IPA was actually provided
+      if (this.ipa && this.fallback_url) return this.fallback_url
       return ''
     },
     // Source for Pinyin button: exact pinyin match only
     pinyinSource () {
       return this.pinyin_url || ''
     },
-    // Show only one button if both would play the same audio
-    showBothButtons () {
-      // If no pinyin provided, only show IPA button
-      if (!this.pinyin) return false
-      // If no ipa provided, only show Pinyin button  
-      if (!this.ipa) return false
-      // If both sources are the same, show only one
+    // Check if Pinyin button should be shown
+    shouldShowPinyinButton () {
+      if (!this.pinyin) return false // No pinyin provided
+      if (!this.ipa) return true // Only pinyin provided, always show
+      // Both provided: hide if they play the same audio
       if (this.pinyinSource && this.ipaSource && this.pinyinSource === this.ipaSource) return false
-      return true
+      return true // Different sources, show both
+    },
+    // Check if IPA button should be shown
+    shouldShowIpaButton () {
+      return !!this.ipa // Show if IPA provided
     }
   },
   created () {
