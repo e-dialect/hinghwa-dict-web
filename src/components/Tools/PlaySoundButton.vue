@@ -1,11 +1,31 @@
 <template>
   <span>
+    <!-- Pinyin button: show if pinyin provided and (showBothButtons or no ipa) -->
     <a-button
+      v-if="pinyin && (!ipa || showBothButtons)"
+      :disabled="!pinyinSource"
+      icon="sound"
+      size="small"
+      type="link"
+      @click="playSound(pinyinSource,'拼音')"
+    />
+    <!-- IPA button: show if ipa provided -->
+    <a-button
+      v-if="ipa"
+      :disabled="!ipaSource"
+      icon="sound"
+      size="small"
+      type="link"
+      @click="playSound(ipaSource,'IPA')"
+    />
+    <!-- Fallback button: show only when neither ipa nor pinyin provided, but url or fallback exists -->
+    <a-button
+      v-if="!ipa && !pinyin"
       :disabled="!source"
       icon="sound"
       size="small"
       type="link"
-      @click="playSound(source, currentType)"
+      @click="playSound(source,'url')"
     />
   </span>
 </template>
@@ -55,12 +75,25 @@ export default {
       if (this.fallback_url) return this.fallback_url
       return ''
     },
-    currentType () {
-      if (this.url && this.url !== 'null') return 'url'
-      if (this.ipa_url) return 'IPA'
-      if (this.pinyin_url) return '拼音'
-      if (this.fallback_url) return 'fallback'
-      return 'none'
+    // Source for IPA button: exact IPA match or fallback
+    ipaSource () {
+      if (this.ipa_url) return this.ipa_url
+      if (this.fallback_url) return this.fallback_url
+      return ''
+    },
+    // Source for Pinyin button: exact pinyin match only
+    pinyinSource () {
+      return this.pinyin_url
+    },
+    // Show only one button if both would play the same audio
+    showBothButtons () {
+      // If no pinyin provided, only show IPA button
+      if (!this.pinyin) return false
+      // If no ipa provided, only show Pinyin button  
+      if (!this.ipa) return false
+      // If both sources are the same, show only one
+      if (this.pinyinSource && this.ipaSource && this.pinyinSource === this.ipaSource) return false
+      return true
     }
   },
   created () {
@@ -124,10 +157,17 @@ export default {
       }
     },
     checkFallback () {
-      // Only fetch fallback if no exact matches found, no requests pending, and no direct url provided
+      // Fetch fallback if IPA was requested but no exact match found
+      // This allows IPA button to fall back to first available pronunciation
       if ((!this.url || this.url === 'null') &&
           !this.pendingRequests.ipa && !this.pendingRequests.pinyin &&
-          !this.ipa_url && !this.pinyin_url && this.wordId) {
+          this.ipa && !this.ipa_url && this.wordId) {
+        this.fetchFallback()
+      }
+      // Also fetch fallback if neither ipa nor pinyin provided
+      else if ((!this.url || this.url === 'null') &&
+          !this.pendingRequests.ipa && !this.pendingRequests.pinyin &&
+          !this.ipa && !this.pinyin && this.wordId) {
         this.fetchFallback()
       }
     },
@@ -165,13 +205,23 @@ export default {
       this.fallbackPromise = null
     },
     playSound (url, type) {
-      if (!url || type === 'none') return
-      if (type === 'fallback') {
+      if (!url) return
+      
+      // Check if IPA button is playing fallback audio
+      if (type === 'IPA' && url === this.fallback_url) {
         const ipaInfo = this.fallback_ipa ? `（IPA: ${this.fallback_ipa}）` : ''
         this.$message.warning(`该词条没有与标准IPA完全匹配的录音，当前播放的是其他已有录音${ipaInfo}`)
-      } else if (type !== 'url' && type !== 'none') {
+      }
+      // Check if this is a fallback for other cases
+      else if (url === this.fallback_url) {
+        const ipaInfo = this.fallback_ipa ? `（IPA: ${this.fallback_ipa}）` : ''
+        this.$message.warning(`该词条没有与标准IPA完全匹配的录音，当前播放的是其他已有录音${ipaInfo}`)
+      }
+      // Check if this is generated audio (not direct url)
+      else if (url !== this.url && type !== 'url') {
         this.$message.warning(`该语音由程序根据${type}生成，仅供参考！（可能存在错误）`)
       }
+      
       new Audio(url).play()
     }
   }
