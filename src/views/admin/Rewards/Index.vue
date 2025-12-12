@@ -1,6 +1,7 @@
 <script>
 import OrderManage from '@/components/Admin/Reward/OrderManage.vue'
 import GoodsManage from '@/components/Admin/Reward/GoodsManage.vue'
+import { waitForAuthInitialization } from '@/utils/auth'
 export default {
   name: 'Rewards',
   components: { OrderManage, GoodsManage },
@@ -21,15 +22,8 @@ export default {
   },
   async created () {
     // 管理员身份验证
-    // 如果有token，等待App.vue中的refreshToken完成
-    if (localStorage.getItem('token')) {
-      // 等待用户ID被设置（表示refreshToken已完成）
-      let retries = 0
-      while (this.$store.getters.user.id === 0 && retries < 50) {
-        await new Promise(resolve => setTimeout(resolve, 100))
-        retries++
-      }
-    }
+    // 等待认证初始化完成
+    await waitForAuthInitialization(this.$store)
     
     await this.$store.dispatch('userUpdate')
     if (!this.$store.getters.user.is_admin) {
