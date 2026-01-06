@@ -41,4 +41,4 @@
 
 2. 系统会记住您的选择，之后访问时不会再自动跳转
 
-3. 如需恢复自动跳转，清除浏览器的 localStorage 即可
+3. 如需恢复自动跳转，只需清除本网站在浏览器 localStorage 中保存的该偏好设置（键名为 `preferDesktopSite`）即可，无需清空全部 localStorage

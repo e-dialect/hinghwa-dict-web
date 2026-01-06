@@ -32,7 +32,7 @@ export default {
   },
   data () {
     return {
-      desktopPreferenceChecked: false
+      viewportWidth: window.innerWidth
     }
   },
   async beforeCreate () {
@@ -43,6 +43,12 @@ export default {
   created () {
     // Check URL parameter once on component creation
     this.checkDesktopPreference()
+    // Listen for viewport changes
+    window.addEventListener('resize', this.handleResize)
+  },
+  beforeDestroy () {
+    // Clean up resize listener
+    window.removeEventListener('resize', this.handleResize)
   },
   computed: {
     routeName () {
@@ -54,17 +60,25 @@ export default {
     isNarrowViewport () {
       // Check if viewport is narrow (mobile-like)
       // Using 768px as common breakpoint between mobile and tablet/desktop
-      return window.innerWidth <= 768
+      return this.viewportWidth <= 768
     },
     shouldRedirectToMobile () {
       // Check if user has explicitly opted out of redirects
-      if (localStorage.getItem('preferDesktopSite') === 'true') {
-        return false
+      try {
+        if (localStorage.getItem('preferDesktopSite') === 'true') {
+          return false
+        }
+      } catch (e) {
+        // Ignore storage access errors (e.g., in strict privacy modes)
       }
       
       // Check if we've already attempted redirect in this session to prevent loops
-      if (sessionStorage.getItem('redirectAttempted') === 'true') {
-        return false
+      try {
+        if (sessionStorage.getItem('redirectAttempted') === 'true') {
+          return false
+        }
+      } catch (e) {
+        // Ignore storage access errors (e.g., in strict privacy modes)
       }
       
       // Only redirect if BOTH conditions are true:
@@ -74,15 +88,19 @@ export default {
     }
   },
   methods: {
+    handleResize () {
+      this.viewportWidth = window.innerWidth
+    },
     checkDesktopPreference () {
-      // Check if URL has desktop parameter to force desktop version (only once)
-      if (!this.desktopPreferenceChecked) {
-        const urlParams = new URLSearchParams(window.location.search)
-        if (urlParams.get('desktop') === '1') {
-          // Store preference when explicitly requested via URL
+      // Check if URL has desktop parameter to force desktop version
+      const urlParams = new URLSearchParams(window.location.search)
+      if (urlParams.get('desktop') === '1') {
+        // Store preference when explicitly requested via URL
+        try {
           localStorage.setItem('preferDesktopSite', 'true')
+        } catch (e) {
+          // Ignore storage access errors (e.g., in strict privacy modes)
         }
-        this.desktopPreferenceChecked = true
       }
     }
   },
@@ -91,7 +109,11 @@ export default {
       if (!this.shouldRedirectToMobile) return
       
       // Mark that we've attempted a redirect in this session
-      sessionStorage.setItem('redirectAttempted', 'true')
+      try {
+        sessionStorage.setItem('redirectAttempted', 'true')
+      } catch (e) {
+        // Ignore storage access errors (e.g., in strict privacy modes)
+      }
       
       const routeConfig = pc2mob[val]
       
