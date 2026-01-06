@@ -47,12 +47,19 @@ export default {
     routeName (val) {
       if (!this.isMobile) return
       const path = pc2mob[val]
-      const query = Object.keys(this.$route.params).length ? `?${Object.keys(this.$route.params)[0]}=${Object.values(this.$route.params)[0]}` : ''
-      if (path) {
-        window.open(`https://m.hinghwa.cn${path}${query}`, '_self')
-      } else {
-        window.open('https://m.hinghwa.cn', '_self')
+      if (!path) {
+        // If no mapping exists, redirect to mobile home page
+        window.open('https://m.hinghwa.cn/pages/index', '_self')
+        return
       }
+      
+      // Build query string from route params and query
+      const queryParams = { ...this.$route.params, ...this.$route.query }
+      const queryString = Object.keys(queryParams).length 
+        ? '?' + Object.entries(queryParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&')
+        : ''
+      
+      window.open(`https://m.hinghwa.cn${path}${queryString}`, '_self')
     }
   }
 }
