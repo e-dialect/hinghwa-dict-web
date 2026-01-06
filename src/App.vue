@@ -61,7 +61,7 @@ export default {
       let queryParams = { ...this.$route.params, ...this.$route.query }
       
       // Apply parameter name mapping if specified
-      if (typeof routeConfig === 'object' && routeConfig.paramMap) {
+      if (typeof routeConfig === 'object' && routeConfig !== null && routeConfig.paramMap) {
         const transformedParams = {}
         for (const [key, value] of Object.entries(queryParams)) {
           // Use mapped name if it exists, otherwise use original name
@@ -72,7 +72,10 @@ export default {
       }
       
       const queryString = Object.keys(queryParams).length 
-        ? '?' + Object.entries(queryParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&')
+        ? '?' + Object.entries(queryParams)
+            .filter(([key, value]) => value != null)
+            .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+            .join('&')
         : ''
       
       window.open(`https://m.hinghwa.cn${path}${queryString}`, '_self')
