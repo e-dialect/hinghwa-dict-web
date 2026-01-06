@@ -46,13 +46,39 @@ export default {
   watch: {
     routeName (val) {
       if (!this.isMobile) return
-      const path = pc2mob[val]
-      const query = Object.keys(this.$route.params).length ? `?${Object.keys(this.$route.params)[0]}=${Object.values(this.$route.params)[0]}` : ''
-      if (path) {
-        window.open(`https://m.hinghwa.cn${path}${query}`, '_self')
-      } else {
-        window.open('https://m.hinghwa.cn', '_self')
+      const routeConfig = pc2mob[val]
+      
+      // Handle both old string format and new object format
+      const path = typeof routeConfig === 'string' ? routeConfig : routeConfig?.path
+      
+      if (!path) {
+        // If no mapping exists, redirect to mobile home page
+        window.open('https://m.hinghwa.cn/pages/index', '_self')
+        return
       }
+      
+      // Build query params, applying parameter name transformations if specified
+      let queryParams = { ...this.$route.params, ...this.$route.query }
+      
+      // Apply parameter name mapping if specified
+      if (typeof routeConfig === 'object' && routeConfig !== null && routeConfig.paramMap) {
+        const transformedParams = {}
+        for (const [key, value] of Object.entries(queryParams)) {
+          // Use mapped name if it exists, otherwise use original name
+          const mappedKey = routeConfig.paramMap[key] || key
+          transformedParams[mappedKey] = value
+        }
+        queryParams = transformedParams
+      }
+      
+      const queryString = Object.keys(queryParams).length 
+        ? '?' + Object.entries(queryParams)
+            .filter(([key, value]) => value != null) // Filters both null and undefined
+            .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+            .join('&')
+        : ''
+      
+      window.open(`https://m.hinghwa.cn${path}${queryString}`, '_self')
     }
   }
 }
