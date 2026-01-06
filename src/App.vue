@@ -39,13 +39,46 @@ export default {
     routeName () {
       return this.$route.name
     },
-    isMobile () {
+    isMobileDevice () {
       return navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)
+    },
+    isNarrowViewport () {
+      // Check if viewport is narrow (mobile-like)
+      // Using 768px as common breakpoint between mobile and tablet/desktop
+      return window.innerWidth <= 768
+    },
+    shouldRedirectToMobile () {
+      // Check if URL has desktop parameter to force desktop version
+      const urlParams = new URLSearchParams(window.location.search)
+      if (urlParams.get('desktop') === '1') {
+        // Store preference when explicitly requested via URL
+        localStorage.setItem('preferDesktopSite', 'true')
+        return false
+      }
+      
+      // Check if user has explicitly opted out of redirects
+      if (localStorage.getItem('preferDesktopSite') === 'true') {
+        return false
+      }
+      
+      // Check if we've already attempted redirect in this session to prevent loops
+      if (sessionStorage.getItem('redirectAttempted') === 'true') {
+        return false
+      }
+      
+      // Only redirect if BOTH conditions are true:
+      // 1. Device identifies as mobile (User-Agent)
+      // 2. Viewport is actually narrow (not desktop mode)
+      return this.isMobileDevice && this.isNarrowViewport
     }
   },
   watch: {
     routeName (val) {
-      if (!this.isMobile) return
+      if (!this.shouldRedirectToMobile) return
+      
+      // Mark that we've attempted a redirect in this session
+      sessionStorage.setItem('redirectAttempted', 'true')
+      
       const routeConfig = pc2mob[val]
       
       // Handle both old string format and new object format
