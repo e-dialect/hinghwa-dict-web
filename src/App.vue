@@ -73,7 +73,7 @@ export default {
       
       const queryString = Object.keys(queryParams).length 
         ? '?' + Object.entries(queryParams)
-            .filter(([key, value]) => value != null)
+            .filter(([key, value]) => value != null) // Filters both null and undefined
             .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
             .join('&')
         : ''
