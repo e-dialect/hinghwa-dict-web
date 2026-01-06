@@ -1,46 +1,137 @@
 {
-  "Home": "/pages/index",
-  "Search": "/pages/search",
-  "Articles": "/pages/articles/index",
-  "ArticleDetails": "/pages/articles/details",
-  "ArticleCreate": "/pages/articles/edit",
-  "ArticleEdit": "/pages/articles/edit",
-  "Forget": "/pages/login/forget",
-  "Login": "/pages/login/login",
-  "Register": "/pages/login/register",
-  "QuizResearch": "/pages/quizzes/search",
-  "PuxianExam": "/pages/quizzes/random",
-  "QuizDetails": "/pages/quizzes/details",
-  "QuizCreate": "/pages/quizzes/index",
-  "UserDetails": "/pages/users/details",
-  "UserSettings": "/pages/users/settings/information",
-  "Certificate": "/pages/users/details",
-  "Notification": "/pages/mails/index",
-  "Rewards": "/pages/index",
-  "RewardsDetails": "/pages/index",
-  "AdminRewards": "/pages/index",
-  "RewardsTransactions": "/pages/index",
-  "WordList": "/pages/lists/index",
-  "WordListEditor": "/pages/lists/upload",
-  "WordListDetails": "/pages/lists/details",
-  "WordDetails": "/pages/words/details",
-  "WordCreate": "/pages/words/details",
-  "WordEdit": "/pages/words/details",
-  "Application": "/pages/words/details",
-  "QuickRecording": "/pages/words/pronunciations/upload",
-  "RankList": "/pages/words/pronunciations/ranking",
-  "Pinyin": "/pages/tools/pinyin",
-  "Tools": "/pages/tools/index",
-  "Conditions": "/pages/tools/condition",
-  "Characters": "/pages/words/characters/details",
-  "DailyExpressions": "/pages/tools/daily-expression/index",
-  "RecordConfirming": "/pages/words/pronunciations",
-  "WordConfirming": "/pages/words/details",
-  "Relative": "/pages/tools/relative",
-  "Dictionary": "/pages/tools/dictionary",
-  "Translation": "/pages/index",
-  "ptxTranslation": "/pages/index",
-  "xtpTranslation": "/pages/index",
-  "Music": "/pages/index",
-  "About": "/pages/index"
+  "Home": {
+    "path": "/pages/index"
+  },
+  "Search": {
+    "path": "/pages/search",
+    "paramMap": {
+      "key": "keywords"
+    }
+  },
+  "Articles": {
+    "path": "/pages/articles/index"
+  },
+  "ArticleDetails": {
+    "path": "/pages/articles/details"
+  },
+  "ArticleCreate": {
+    "path": "/pages/articles/edit"
+  },
+  "ArticleEdit": {
+    "path": "/pages/articles/edit"
+  },
+  "Forget": {
+    "path": "/pages/login/forget"
+  },
+  "Login": {
+    "path": "/pages/login/login"
+  },
+  "Register": {
+    "path": "/pages/login/register"
+  },
+  "QuizResearch": {
+    "path": "/pages/quizzes/search"
+  },
+  "PuxianExam": {
+    "path": "/pages/quizzes/random"
+  },
+  "QuizDetails": {
+    "path": "/pages/quizzes/details"
+  },
+  "QuizCreate": {
+    "path": "/pages/quizzes/index"
+  },
+  "UserDetails": {
+    "path": "/pages/users/details"
+  },
+  "UserSettings": {
+    "path": "/pages/users/settings/information"
+  },
+  "Certificate": {
+    "path": "/pages/users/details"
+  },
+  "Notification": {
+    "path": "/pages/mails/index"
+  },
+  "Rewards": {
+    "path": "/pages/index"
+  },
+  "RewardsDetails": {
+    "path": "/pages/index"
+  },
+  "AdminRewards": {
+    "path": "/pages/index"
+  },
+  "RewardsTransactions": {
+    "path": "/pages/index"
+  },
+  "WordList": {
+    "path": "/pages/lists/index"
+  },
+  "WordListEditor": {
+    "path": "/pages/lists/upload"
+  },
+  "WordListDetails": {
+    "path": "/pages/lists/details"
+  },
+  "WordDetails": {
+    "path": "/pages/words/details"
+  },
+  "WordCreate": {
+    "path": "/pages/words/details"
+  },
+  "WordEdit": {
+    "path": "/pages/words/details"
+  },
+  "Application": {
+    "path": "/pages/words/details"
+  },
+  "QuickRecording": {
+    "path": "/pages/words/pronunciations/upload"
+  },
+  "RankList": {
+    "path": "/pages/words/pronunciations/ranking"
+  },
+  "Pinyin": {
+    "path": "/pages/tools/pinyin"
+  },
+  "Tools": {
+    "path": "/pages/tools/index"
+  },
+  "Conditions": {
+    "path": "/pages/tools/condition"
+  },
+  "Characters": {
+    "path": "/pages/words/characters/details"
+  },
+  "DailyExpressions": {
+    "path": "/pages/tools/daily-expression/index"
+  },
+  "RecordConfirming": {
+    "path": "/pages/words/pronunciations"
+  },
+  "WordConfirming": {
+    "path": "/pages/words/details"
+  },
+  "Relative": {
+    "path": "/pages/tools/relative"
+  },
+  "Dictionary": {
+    "path": "/pages/tools/dictionary"
+  },
+  "Translation": {
+    "path": "/pages/index"
+  },
+  "ptxTranslation": {
+    "path": "/pages/index"
+  },
+  "xtpTranslation": {
+    "path": "/pages/index"
+  },
+  "Music": {
+    "path": "/pages/index"
+  },
+  "About": {
+    "path": "/pages/index"
+  }
 }

@@ -46,15 +46,31 @@ export default {
   watch: {
     routeName (val) {
       if (!this.isMobile) return
-      const path = pc2mob[val]
+      const routeConfig = pc2mob[val]
+      
+      // Handle both old string format and new object format
+      const path = typeof routeConfig === 'string' ? routeConfig : routeConfig?.path
+      
       if (!path) {
         // If no mapping exists, redirect to mobile home page
         window.open('https://m.hinghwa.cn/pages/index', '_self')
         return
       }
       
-      // Build query string from route params and query
-      const queryParams = { ...this.$route.params, ...this.$route.query }
+      // Build query params, applying parameter name transformations if specified
+      let queryParams = { ...this.$route.params, ...this.$route.query }
+      
+      // Apply parameter name mapping if specified
+      if (typeof routeConfig === 'object' && routeConfig.paramMap) {
+        const transformedParams = {}
+        for (const [key, value] of Object.entries(queryParams)) {
+          // Use mapped name if it exists, otherwise use original name
+          const mappedKey = routeConfig.paramMap[key] || key
+          transformedParams[mappedKey] = value
+        }
+        queryParams = transformedParams
+      }
+      
       const queryString = Object.keys(queryParams).length 
         ? '?' + Object.entries(queryParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&')
         : ''
