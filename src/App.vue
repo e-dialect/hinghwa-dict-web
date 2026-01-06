@@ -71,7 +71,7 @@ export default {
       } catch (e) {
         // Ignore storage access errors (e.g., in strict privacy modes)
       }
-      
+
       // Check if we've already attempted redirect in this session to prevent loops
       try {
         if (sessionStorage.getItem('redirectAttempted') === 'true') {
@@ -80,7 +80,7 @@ export default {
       } catch (e) {
         // Ignore storage access errors (e.g., in strict privacy modes)
       }
-      
+
       // Only redirect if BOTH conditions are true:
       // 1. Device identifies as mobile (User-Agent)
       // 2. Viewport is actually narrow (not desktop mode)
@@ -107,28 +107,28 @@ export default {
   watch: {
     routeName (val) {
       if (!this.shouldRedirectToMobile) return
-      
+
       // Mark that we've attempted a redirect in this session
       try {
         sessionStorage.setItem('redirectAttempted', 'true')
       } catch (e) {
         // Ignore storage access errors (e.g., in strict privacy modes)
       }
-      
+
       const routeConfig = pc2mob[val]
-      
+
       // Handle both old string format and new object format
       const path = typeof routeConfig === 'string' ? routeConfig : routeConfig?.path
-      
+
       if (!path) {
         // If no mapping exists, redirect to mobile home page
         window.open('https://m.hinghwa.cn/pages/index', '_self')
         return
       }
-      
+
       // Build query params, applying parameter name transformations if specified
       let queryParams = { ...this.$route.params, ...this.$route.query }
-      
+
       // Apply parameter name mapping if specified
       if (typeof routeConfig === 'object' && routeConfig !== null && routeConfig.paramMap) {
         const transformedParams = {}
@@ -139,14 +139,14 @@ export default {
         }
         queryParams = transformedParams
       }
-      
-      const queryString = Object.keys(queryParams).length 
+
+      const queryString = Object.keys(queryParams).length
         ? '?' + Object.entries(queryParams)
-            .filter(([key, value]) => value != null) // Filters both null and undefined
-            .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
-            .join('&')
+          .filter(([key, value]) => value != null) // Filters both null and undefined
+          .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+          .join('&')
         : ''
-      
+
       window.open(`https://m.hinghwa.cn${path}${queryString}`, '_self')
     }
   }
