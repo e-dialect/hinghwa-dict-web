@@ -30,17 +30,26 @@ export default {
     myFooter,
     MusicAffix
   },
+  data () {
+    return {
+      desktopPreferenceChecked: false
+    }
+  },
   async beforeCreate () {
     if (window.localStorage.getItem('token')) {
       await refreshToken()
     }
+  },
+  created () {
+    // Check URL parameter once on component creation
+    this.checkDesktopPreference()
   },
   computed: {
     routeName () {
       return this.$route.name
     },
     isMobileDevice () {
-      return navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)
+      return !!navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)
     },
     isNarrowViewport () {
       // Check if viewport is narrow (mobile-like)
@@ -48,14 +57,6 @@ export default {
       return window.innerWidth <= 768
     },
     shouldRedirectToMobile () {
-      // Check if URL has desktop parameter to force desktop version
-      const urlParams = new URLSearchParams(window.location.search)
-      if (urlParams.get('desktop') === '1') {
-        // Store preference when explicitly requested via URL
-        localStorage.setItem('preferDesktopSite', 'true')
-        return false
-      }
-      
       // Check if user has explicitly opted out of redirects
       if (localStorage.getItem('preferDesktopSite') === 'true') {
         return false
@@ -70,6 +71,19 @@ export default {
       // 1. Device identifies as mobile (User-Agent)
       // 2. Viewport is actually narrow (not desktop mode)
       return this.isMobileDevice && this.isNarrowViewport
+    }
+  },
+  methods: {
+    checkDesktopPreference () {
+      // Check if URL has desktop parameter to force desktop version (only once)
+      if (!this.desktopPreferenceChecked) {
+        const urlParams = new URLSearchParams(window.location.search)
+        if (urlParams.get('desktop') === '1') {
+          // Store preference when explicitly requested via URL
+          localStorage.setItem('preferDesktopSite', 'true')
+        }
+        this.desktopPreferenceChecked = true
+      }
     }
   },
   watch: {
