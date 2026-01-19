@@ -79,7 +79,8 @@ def download_object(client, bucket, key, output_path):
     print(f'Downloaded {key} to {output_path}')
 
 
-def copy_prefix(client, bucket, src_prefix, dst_prefix):
+# 修改 1: 函数定义增加 region 参数
+def copy_prefix(client, bucket, region, src_prefix, dst_prefix, prefer_fallback=False):
     print(f'Listing objects under source prefix: "{src_prefix}"')
     src_keys = list_objects(client, bucket, src_prefix)
     print(f'Found {len(src_keys)} objects to copy')
@@ -93,12 +94,8 @@ def copy_prefix(client, bucket, src_prefix, dst_prefix):
             rel = src_key[len(src_prefix):] if src_key.startswith(src_prefix) else src_key
         dst_key = dst_prefix + rel
         print(f'[{i}/{len(src_keys)}] copy {src_key} -> {dst_key}')
-        try:
-            client.copy_object(Bucket=bucket, CopySource={'Bucket': bucket, 'Key': src_key}, Key=dst_key)
-        except Exception as e:
-            print(f'server-side copy failed for {src_key} -> {dst_key}: {e}')
-            print('Attempting fallback copy (download + upload). If this also fails, check region/endpoint configuration, bucket permissions, and object size limits.')
-            # Fallback to get/put
+        if prefer_fallback:
+            # Directly use get/put without attempting server-side copy
             try:
                 resp = client.get_object(Bucket=bucket, Key=src_key)
                 body = resp.get('Body')
@@ -106,11 +103,35 @@ def copy_prefix(client, bucket, src_prefix, dst_prefix):
                     raise RuntimeError('No Body in get_object response')
                 data = read_body_bytes(body)
                 client.put_object(Bucket=bucket, Key=dst_key, Body=data)
-                print(f'[{i}/{len(src_keys)}] copied via get/put {src_key} -> {dst_key}')
+                print(f'[{i}/{len(src_keys)}] copied via get/put {src_key} -> {dst_key} (prefer-fallback)')
             except Exception as e2:
-                print(f'Fallback copy failed for {src_key} -> {dst_key}: {e2}')
-                print('Fallback failure hints: check IAM permissions for get/put, verify the object is not larger than allowed upload size, and ensure network access from CI.')
+                print(f'Prefer-fallback copy failed for {src_key} -> {dst_key}: {e2}')
+                print('Hints: verify GetObject/PutObject permissions and network access from CI.')
                 raise
+        else:
+            try:
+                # 修改 2: CopySource 字典中增加 'Region': region
+                client.copy_object(
+                    Bucket=bucket, 
+                    CopySource={'Bucket': bucket, 'Key': src_key, 'Region': region}, 
+                    Key=dst_key
+                )
+            except Exception as e:
+                print(f'server-side copy failed for {src_key} -> {dst_key}: {e}')
+                print('Attempting fallback copy (download + upload). If this also fails, check region/endpoint configuration, bucket permissions, and object size limits.')
+                # Fallback to get/put
+                try:
+                    resp = client.get_object(Bucket=bucket, Key=src_key)
+                    body = resp.get('Body')
+                    if body is None:
+                        raise RuntimeError('No Body in get_object response')
+                    data = read_body_bytes(body)
+                    client.put_object(Bucket=bucket, Key=dst_key, Body=data)
+                    print(f'[{i}/{len(src_keys)}] copied via get/put {src_key} -> {dst_key}')
+                except Exception as e2:
+                    print(f'Fallback copy failed for {src_key} -> {dst_key}: {e2}')
+                    print('Fallback failure hints: check IAM permissions for get/put, verify the object is not larger than allowed upload size, and ensure network access from CI.')
+                    raise
         time.sleep(0.01)
 
 
@@ -118,6 +139,8 @@ def main():
     p = argparse.ArgumentParser(description='Copy objects under a prefix within a COS bucket')
     p.add_argument('--bucket', required=True)
     p.add_argument('--region', required=True)
+    p.add_argument('--endpoint', default='')
+    p.add_argument('--prefer-fallback', action='store_true', help='Skip server-side copy and always use download+upload')
     p.add_argument('--src-prefix', default='')
     p.add_argument('--dst-prefix', default='')
     p.add_argument('--secret-id', default=os.environ.get('TENCENT_CLOUD_SECRET_ID'))
@@ -145,7 +168,8 @@ def main():
     if dst and not dst.endswith('/'):
         dst = dst + '/'
 
-    client = make_client(region, args.secret_id, args.secret_key)
+    endpoint = args.endpoint or None
+    client = make_client(region, args.secret_id, args.secret_key, endpoint=endpoint)
 
     if args.download_key:
         try:
@@ -161,7 +185,8 @@ def main():
         print(f'destination prefix "{dst}" already has {len(existing)} objects, skipping copy')
         return
 
-    copy_prefix(client, bucket, src, dst)
+    # 修改 3: 调用时传入 region 参数
+    copy_prefix(client, bucket, region, src, dst, prefer_fallback=args.prefer_fallback)
 
 
 if __name__ == '__main__':
