@@ -1,0 +1,20 @@
+name: PR Preview Cleanup from Tencent COS
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  cleanup-preview:
+    runs-on: ubuntu-latest
+    env:
+      REPO_NAME: ${{ github.event.repository.name }}
+    steps:
+      - name: Install coscmd
+        run: |
+          pip install coscmd
+          coscmd config -a ${{ secrets.TENCENT_CLOUD_SECRET_ID }} -s ${{ secrets.TENCENT_CLOUD_SECRET_KEY }} -b ${{ secrets.TENCENT_CLOUD_BUCKET }} -r ${{ secrets.TENCENT_CLOUD_REGION }}
+
+      - name: Delete PR preview directory from COS
+        run: |
+          coscmd delete -r /${REPO_NAME}-pr-${{ github.event.number }}/
+        # coscmd will use the configuration written by the prior `coscmd config` step
