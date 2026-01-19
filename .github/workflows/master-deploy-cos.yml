@@ -28,12 +28,30 @@ jobs:
           PREVIEW_BASE: "/master/"
         run: yarn run build-dev
 
+      - name: Generate SHA256 for dist
+        run: |
+          find dist -type f -exec sha256sum {} \; > dist/sha256sum.txt
+
       - name: Install coscmd and configure
         run: |
           pip install coscmd
           coscmd config -a ${{ secrets.TENCENT_CLOUD_SECRET_ID }} -s ${{ secrets.TENCENT_CLOUD_SECRET_KEY }} -b ${{ secrets.TENCENT_CLOUD_BUCKET }} -r ${{ secrets.TENCENT_CLOUD_REGION }} || true
 
-      - name: Upload dist to COS via coscmd
+      - name: Download previous master sha (if exists)
         run: |
-          echo "Uploading dist -> /master/"
+          set -e
+          coscmd download /master/sha256sum.txt ./previous_master_sha.txt || true
+
+      - name: Run incremental diff vs previous master
+        run: |
+          chmod +x ./incremental-diff.sh
+          ./incremental-diff.sh ./previous_master_sha.txt
+
+      - name: Upload changed files to COS via coscmd
+        run: |
+          echo "Uploading changed files -> /master/"
           coscmd upload -r dist /master/
+
+      - name: Upload new master sha file
+        run: |
+          coscmd upload dist/sha256sum.txt /master/sha256sum.txt || true

@@ -32,10 +32,29 @@ jobs:
           pip install coscmd
           coscmd config -a ${{ secrets.TENCENT_CLOUD_SECRET_ID }} -s ${{ secrets.TENCENT_CLOUD_SECRET_KEY }} -b ${{ secrets.TENCENT_CLOUD_BUCKET }} -r ${{ secrets.TENCENT_CLOUD_REGION }} || true
 
-      - name: Upload dist to COS via coscmd
-        run: |
-          echo "Uploading dist -> /pr-hinghwa-dic-web-${{ github.event.number }}/"
-          coscmd upload -r dist /pr-hinghwa-dic-web-${{ github.event.number }}/
+        - name: Generate SHA256 for dist
+          run: |
+            find dist -type f -exec sha256sum {} \; > dist/sha256sum.txt
+
+        - name: Install coscmd and configure
+          run: |
+            pip install coscmd
+            coscmd config -a ${{ secrets.TENCENT_CLOUD_SECRET_ID }} -s ${{ secrets.TENCENT_CLOUD_SECRET_KEY }} -b ${{ secrets.TENCENT_CLOUD_BUCKET }} -r ${{ secrets.TENCENT_CLOUD_REGION }} || true
+
+        - name: Download master sha (if exists)
+          run: |
+            set -e
+            coscmd download /master/sha256sum.txt ./master_sha256.txt || true
+
+        - name: Run incremental diff vs master
+          run: |
+            chmod +x ./incremental-diff.sh
+            ./incremental-diff.sh ./master_sha256.txt
+
+        - name: Upload changed files to COS via coscmd
+          run: |
+            echo "Uploading changed files -> /pr-hinghwa-dic-web-${{ github.event.number }}/"
+            coscmd upload -r dist /pr-hinghwa-dic-web-${{ github.event.number }}/
 
       - name: Comment PR with preview link
         uses: actions/github-script@v7
