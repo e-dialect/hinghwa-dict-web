@@ -62,7 +62,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const prNumber = context.payload.pull_request.number;
-            const previewUrl = `https://cos.test.edialect.top/pr-hinghwa-dic-web-${prNumber}/`;
+            const previewUrl = `https://github.test.edialect.top/pr-hinghwa-dic-web-${prNumber}/`;
             const body = `预览链接：${previewUrl}`;
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
