@@ -6,6 +6,8 @@ on:
 jobs:
   build-and-upload:
     runs-on: ubuntu-latest
+    env:
+      REPO_NAME: ${{ github.event.repository.name }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -24,7 +26,6 @@ jobs:
 
       - name: Build project
         env:
-          REPO_NAME: ${{ github.event.repository.name }}
           PREVIEW_BASE: "/${{ env.REPO_NAME }}-pr-${{ github.event.number }}/"
         run: yarn run build-dev
 
@@ -40,7 +41,6 @@ jobs:
         env:
           TENCENT_CLOUD_SECRET_ID: ${{ secrets.TENCENT_CLOUD_SECRET_ID }}
           TENCENT_CLOUD_SECRET_KEY: ${{ secrets.TENCENT_CLOUD_SECRET_KEY }}
-          REPO_NAME: ${{ env.REPO_NAME }}
         run: |
           python3 ./scripts/cos_copy_prefix.py \
             --bucket "${{ secrets.TENCENT_CLOUD_BUCKET }}" \
@@ -55,7 +55,6 @@ jobs:
           TENCENT_CLOUD_SECRET_ID: ${{ secrets.TENCENT_CLOUD_SECRET_ID }}
           TENCENT_CLOUD_SECRET_KEY: ${{ secrets.TENCENT_CLOUD_SECRET_KEY }}
           REPO_NAME: ${{ env.REPO_NAME }}
-        run: |
           python3 ./scripts/cos_copy_prefix.py \
             --bucket "${{ secrets.TENCENT_CLOUD_BUCKET }}" \
             --region "${{ secrets.TENCENT_CLOUD_REGION }}" \
@@ -70,8 +69,6 @@ jobs:
 
       - name: Upload changed files to COS via coscmd
         env:
-          REPO_NAME: ${{ env.REPO_NAME }}
-        run: |
           echo "Uploading changed files -> /${REPO_NAME}-pr-${{ github.event.number }}/"
           coscmd upload -r dist /${REPO_NAME}-pr-${{ github.event.number }}/
 
