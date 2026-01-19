@@ -49,4 +49,4 @@ jobs:
       - name: Upload changed files to COS via coscmd
         run: |
           echo "Uploading changed files -> /${REPO_NAME}-master/"
-          coscmd upload -r dist /${REPO_NAME}-master/
+          cd dist && coscmd upload -r . /${REPO_NAME}-master/

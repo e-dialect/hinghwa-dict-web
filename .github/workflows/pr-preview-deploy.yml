@@ -75,7 +75,7 @@ jobs:
       - name: Upload changed files to COS via coscmd
         run: |
           echo "Uploading changed files -> /${REPO_NAME}-pr-${{ github.event.number }}/"
-          coscmd upload -r dist /${REPO_NAME}-pr-${{ github.event.number }}/
+          cd dist && coscmd upload -r . /${REPO_NAME}-pr-${{ github.event.number }}/
 
       - name: Comment PR with preview link
         uses: actions/github-script@v7
