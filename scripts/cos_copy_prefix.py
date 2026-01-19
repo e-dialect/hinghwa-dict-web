@@ -1,4 +1,16 @@
 #!/usr/bin/env python3
+
+"""
+Simple COS prefix copy utility.
+
+Behavior:
+- Primary: perform server-side copy using SDK's `copy_object`.
+- If `copy_object` fails (common in some CI/network setups), fallback to
+    downloading the object and re-uploading it (`get` + `put`).
+
+This file focuses on clarity and minimal dependencies.
+"""
+
 import argparse
 import os
 import sys
@@ -17,6 +29,15 @@ def normalize_prefix(p):
     return p.lstrip('/')
 
 
+def make_client(region, secret_id, secret_key, endpoint=None):
+    # Provide an explicit endpoint if not given. This avoids some SDK errors
+    # when region-to-endpoint resolution fails in restricted environments.
+    if not endpoint and region:
+        endpoint = f'cos.{region}.myqcloud.com'
+    cfg = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key, Endpoint=endpoint)
+    return CosS3Client(cfg)
+
+
 def list_objects(client, bucket, prefix):
     marker = ''
     keys = []
@@ -33,15 +54,40 @@ def list_objects(client, bucket, prefix):
     return keys
 
 
+def read_body_bytes(body):
+    # Try common ways SDK exposes body as bytes
+    try:
+        return body.get_raw_stream().read()
+    except Exception:
+        try:
+            return body.read()
+        except Exception:
+            chunks = []
+            for chunk in body:
+                chunks.append(chunk)
+            return b''.join(chunks)
+
+
+def download_object(client, bucket, key, output_path):
+    resp = client.get_object(Bucket=bucket, Key=key)
+    body = resp.get('Body')
+    if body is None:
+        raise RuntimeError('No Body in get_object response')
+    data = read_body_bytes(body)
+    with open(output_path, 'wb') as f:
+        f.write(data if isinstance(data, (bytes, bytearray)) else data.encode())
+    print(f'Downloaded {key} to {output_path}')
+
+
 def copy_prefix(client, bucket, src_prefix, dst_prefix):
     print(f'Listing objects under source prefix: "{src_prefix}"')
     src_keys = list_objects(client, bucket, src_prefix)
     print(f'Found {len(src_keys)} objects to copy')
     if not src_keys:
         return
+
     for i, src_key in enumerate(src_keys, 1):
-        # compute destination key
-        if src_prefix == '' or src_prefix == '/':
+        if src_prefix in ('', '/'):
             rel = src_key
         else:
             rel = src_key[len(src_prefix):] if src_key.startswith(src_prefix) else src_key
@@ -50,47 +96,24 @@ def copy_prefix(client, bucket, src_prefix, dst_prefix):
         try:
             client.copy_object(Bucket=bucket, CopySource={'Bucket': bucket, 'Key': src_key}, Key=dst_key)
         except Exception as e:
-            print('copy error:', e)
-            raise
+            print('server-side copy failed:', e)
+            # Fallback to get/put
+            try:
+                resp = client.get_object(Bucket=bucket, Key=src_key)
+                body = resp.get('Body')
+                if body is None:
+                    raise RuntimeError('No Body in get_object response')
+                data = read_body_bytes(body)
+                client.put_object(Bucket=bucket, Key=dst_key, Body=data)
+                print(f'[{i}/{len(src_keys)}] copied via get/put {src_key} -> {dst_key}')
+            except Exception as e2:
+                print('fallback copy error:', e2)
+                raise
         time.sleep(0.01)
 
 
-def download_object(client, bucket, key, output_path):
-    try:
-        resp = client.get_object(Bucket=bucket, Key=key)
-    except Exception as e:
-        print(f'get_object error for key {key}:', e)
-        raise
-    body = resp.get('Body')
-    if body is None:
-        raise RuntimeError('No Body in get_object response')
-    data = None
-    # try common methods
-    try:
-        data = body.get_raw_stream().read()
-    except Exception:
-        try:
-            data = body.read()
-        except Exception:
-            try:
-                # some SDK versions provide iter
-                chunks = []
-                for chunk in body:
-                    chunks.append(chunk)
-                data = b''.join(chunks)
-            except Exception as e:
-                print('Failed to read object body:', e)
-                raise
-    with open(output_path, 'wb') as f:
-        if isinstance(data, str):
-            f.write(data.encode())
-        else:
-            f.write(data)
-    print(f'Downloaded {key} to {output_path}')
-
-
 def main():
-    p = argparse.ArgumentParser()
+    p = argparse.ArgumentParser(description='Copy objects under a prefix within a COS bucket')
     p.add_argument('--bucket', required=True)
     p.add_argument('--region', required=True)
     p.add_argument('--src-prefix', default='')
@@ -104,11 +127,9 @@ def main():
     if not args.secret_id or not args.secret_key:
         print('Missing credentials: provide --secret-id/--secret-key or set env TENCENT_CLOUD_SECRET_ID/TENCENT_CLOUD_SECRET_KEY')
         sys.exit(2)
-
     if not args.region:
         print('Region is required: provide --region')
         sys.exit(2)
-
     if not args.bucket:
         print('Bucket is required: provide --bucket')
         sys.exit(2)
@@ -122,14 +143,8 @@ def main():
     if dst and not dst.endswith('/'):
         dst = dst + '/'
 
-    # Ensure SDK has an explicit endpoint derived from region to avoid
-    # "Region or Endpoint is required not empty" errors during copy_object.
-    # Endpoint format expected by qcloud_cos SDK: cos.<region>.myqcloud.com
-    endpoint = f'cos.{region}.myqcloud.com' if region else None
-    config = CosConfig(Region=region, SecretId=args.secret_id, SecretKey=args.secret_key, Endpoint=endpoint)
-    client = CosS3Client(config)
+    client = make_client(region, args.secret_id, args.secret_key)
 
-    # If download-key provided, download and exit
     if args.download_key:
         try:
             download_object(client, bucket, args.download_key, args.output_file)
@@ -138,13 +153,11 @@ def main():
             sys.exit(1)
         return
 
-    # if dst already has objects, skip copying
     existing = list_objects(client, bucket, dst)
     if existing:
         print(f'destination prefix "{dst}" already has {len(existing)} objects, skipping copy')
         return
 
-    # copy
     copy_prefix(client, bucket, src, dst)
 
 
