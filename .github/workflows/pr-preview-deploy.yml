@@ -69,7 +69,7 @@ jobs:
           ./scripts/incremental-diff.sh ./master_sha256.txt
 
       - name: Upload changed files to COS via coscmd
-        env:
+        run: |
           echo "Uploading changed files -> /${REPO_NAME}-pr-${{ github.event.number }}/"
           coscmd upload -r dist /${REPO_NAME}-pr-${{ github.event.number }}/
 
