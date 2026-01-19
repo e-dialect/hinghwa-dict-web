@@ -20,8 +20,19 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build project
+        env:
+          PREVIEW_BASE: "/master/"
         run: yarn build
 
+      - name: Show dist contents (debug)
+        run: |
+          echo "Listing dist/ (top-level)"
+          ls -la dist || true
+          echo "Listing dist/img (if exists)"
+          ls -la dist/img || true
+          echo "Find rewards file"
+          find dist -type f -name 'rewards*' -maxdepth 4 || true
+            
       - name: Upload to Tencent COS (master)
         uses: TencentCloud/cos-action@v1
         with:

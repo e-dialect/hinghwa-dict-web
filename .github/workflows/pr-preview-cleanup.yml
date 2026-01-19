@@ -14,7 +14,7 @@ jobs:
 
       - name: Delete PR preview directory from COS
         run: |
-          coscmd delete -r /pr-${{ github.event.number }}/
+          coscmd delete -r /pr-hinghwa-dic-web-${{ github.event.number }}/
         env:
           TENCENT_CLOUD_SECRET_ID: ${{ secrets.TENCENT_CLOUD_SECRET_ID }}
           TENCENT_CLOUD_SECRET_KEY: ${{ secrets.TENCENT_CLOUD_SECRET_KEY }}
