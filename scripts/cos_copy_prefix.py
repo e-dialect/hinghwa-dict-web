@@ -19,7 +19,7 @@ import time
 try:
     from qcloud_cos import CosConfig, CosS3Client
 except Exception:
-    print('qcloud_cos SDK not installed. Please pip install cos-python-sdk-v5 or qcloud_cos')
+    print('qcloud_cos SDK not installed. Install with: pip install cos-python-sdk-v5')
     raise
 
 
@@ -96,7 +96,8 @@ def copy_prefix(client, bucket, src_prefix, dst_prefix):
         try:
             client.copy_object(Bucket=bucket, CopySource={'Bucket': bucket, 'Key': src_key}, Key=dst_key)
         except Exception as e:
-            print('server-side copy failed:', e)
+            print(f'server-side copy failed for {src_key} -> {dst_key}: {e}')
+            print('Attempting fallback copy (download + upload). If this also fails, check region/endpoint configuration, bucket permissions, and object size limits.')
             # Fallback to get/put
             try:
                 resp = client.get_object(Bucket=bucket, Key=src_key)
@@ -107,7 +108,8 @@ def copy_prefix(client, bucket, src_prefix, dst_prefix):
                 client.put_object(Bucket=bucket, Key=dst_key, Body=data)
                 print(f'[{i}/{len(src_keys)}] copied via get/put {src_key} -> {dst_key}')
             except Exception as e2:
-                print('fallback copy error:', e2)
+                print(f'Fallback copy failed for {src_key} -> {dst_key}: {e2}')
+                print('Fallback failure hints: check IAM permissions for get/put, verify the object is not larger than allowed upload size, and ensure network access from CI.')
                 raise
         time.sleep(0.01)
 
@@ -125,13 +127,13 @@ def main():
     args = p.parse_args()
 
     if not args.secret_id or not args.secret_key:
-        print('Missing credentials: provide --secret-id/--secret-key or set env TENCENT_CLOUD_SECRET_ID/TENCENT_CLOUD_SECRET_KEY')
+        print('Missing credentials: provide --secret-id/--secret-key or set environment variables TENCENT_CLOUD_SECRET_ID and TENCENT_CLOUD_SECRET_KEY. In GitHub Actions set these as repository Secrets.')
         sys.exit(2)
     if not args.region:
-        print('Region is required: provide --region')
+        print('Region is required (e.g. ap-beijing). Provide with --region or set the corresponding secret.')
         sys.exit(2)
     if not args.bucket:
-        print('Bucket is required: provide --bucket')
+        print('Bucket is required: provide --bucket (your COS bucket name).')
         sys.exit(2)
 
     bucket = args.bucket
@@ -149,7 +151,8 @@ def main():
         try:
             download_object(client, bucket, args.download_key, args.output_file)
         except Exception as e:
-            print('download failed', e)
+            print(f'Download failed for key {args.download_key}: {e}')
+            print('Hints: verify the key exists, the bucket and region are correct, and the credentials have GetObject permission.')
             sys.exit(1)
         return
 
