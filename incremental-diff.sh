@@ -21,7 +21,7 @@ set -o pipefail
 PREVIOUS_SHA_FILE="${1:-sha256sum.txt}"
 
 # Generate SHA256 by:
-# find public -type f -exec sha256sum {} \; > public/sha256sum.txt
+# find dist -type f -exec sha256sum {} \; > dist/sha256sum.txt
 
 IFS=$'\n'
 FILE_LIST=($(cat "${PREVIOUS_SHA_FILE}" | awk -F '  ' '{ print $2 }'))
@@ -40,6 +40,6 @@ for ((i = 0; i < ${#FILE_LIST[@]}; i++)); do
 done
 
 echo "These files will be uploaded after diff:"
-find public -type f -exec echo "    {}" \;
+find dist -type f -exec echo "    {}" \;
 echo -n "Total size: "
-du -sh public | awk '{ print $1 }'
+du -sh dist | awk '{ print $1 }'

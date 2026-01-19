@@ -44,14 +44,9 @@ jobs:
 
       - name: Run incremental diff vs previous master
         run: |
-          chmod +x ./incremental-diff.sh
           ./incremental-diff.sh ./previous_master_sha.txt
 
       - name: Upload changed files to COS via coscmd
         run: |
           echo "Uploading changed files -> /master/"
           coscmd upload -r dist /master/
-
-      - name: Upload new master sha file
-        run: |
-          coscmd upload dist/sha256sum.txt /master/sha256sum.txt || true
