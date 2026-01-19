@@ -105,6 +105,14 @@ def main():
         print('Missing credentials: provide --secret-id/--secret-key or set env TENCENT_CLOUD_SECRET_ID/TENCENT_CLOUD_SECRET_KEY')
         sys.exit(2)
 
+    if not args.region:
+        print('Region is required: provide --region')
+        sys.exit(2)
+
+    if not args.bucket:
+        print('Bucket is required: provide --bucket')
+        sys.exit(2)
+
     bucket = args.bucket
     region = args.region
     src = normalize_prefix(args.src_prefix)
@@ -114,7 +122,11 @@ def main():
     if dst and not dst.endswith('/'):
         dst = dst + '/'
 
-    config = CosConfig(Region=region, SecretId=args.secret_id, SecretKey=args.secret_key)
+    # Ensure SDK has an explicit endpoint derived from region to avoid
+    # "Region or Endpoint is required not empty" errors during copy_object.
+    # Endpoint format expected by qcloud_cos SDK: cos.<region>.myqcloud.com
+    endpoint = f'cos.{region}.myqcloud.com' if region else None
+    config = CosConfig(Region=region, SecretId=args.secret_id, SecretKey=args.secret_key, Endpoint=endpoint)
     client = CosS3Client(config)
 
     # If download-key provided, download and exit
