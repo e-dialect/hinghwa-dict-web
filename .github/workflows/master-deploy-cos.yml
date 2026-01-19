@@ -17,12 +17,16 @@ jobs:
           node-version: '14'
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --frozen-lockfile --production=false
+
+      - name: Lint
+        run: |
+          yarn run lint
 
       - name: Build project
         env:
           PREVIEW_BASE: "/master/"
-        run: yarn build
+        run: yarn run build-dev
 
       - name: Show dist contents (debug)
         run: |
