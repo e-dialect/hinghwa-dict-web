@@ -55,7 +55,8 @@ jobs:
           TENCENT_CLOUD_SECRET_ID: ${{ secrets.TENCENT_CLOUD_SECRET_ID }}
           TENCENT_CLOUD_SECRET_KEY: ${{ secrets.TENCENT_CLOUD_SECRET_KEY }}
           REPO_NAME: ${{ env.REPO_NAME }}
-          python3 ./scripts/cos_copy_prefix.py \
+        run: |
+          python3 ./scripts/cos_copy_prefix.py
             --bucket "${{ secrets.TENCENT_CLOUD_BUCKET }}" \
             --region "${{ secrets.TENCENT_CLOUD_REGION }}" \
             --secret-id "$TENCENT_CLOUD_SECRET_ID" \
