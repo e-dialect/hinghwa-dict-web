@@ -28,15 +28,6 @@ jobs:
           PREVIEW_BASE: "/master/"
         run: yarn run build-dev
 
-      - name: Show dist contents (debug)
-        run: |
-          echo "Listing dist/ (top-level)"
-          ls -la dist || true
-          echo "Listing dist/img (if exists)"
-          ls -la dist/img || true
-          echo "Find rewards file"
-          find dist -type f -name 'rewards*' -maxdepth 4 || true
-
       - name: Install coscmd and configure
         run: |
           pip install coscmd
