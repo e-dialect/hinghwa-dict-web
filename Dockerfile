@@ -1,4 +1,4 @@
-FROM node:14-alpine AS build
+FROM node:22-alpine AS build
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 COPY package*.json yarn.lock ./
