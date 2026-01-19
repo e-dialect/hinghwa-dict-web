@@ -4,9 +4,7 @@
       <template #message>
         网站移动版
         <a href="http://m.hinghwa.cn" target="_blank">m.hinghwa.cn</a>
-        现已开放测试，必要时可访问
-        <a href="http://dict.hinghwa.cn" target="_blank">旧版网站</a>
-        或微信小程序
+        现已开放测试，也可以访问微信小程序
         <i>兴化语记</i>
       </template>
     </a-alert>
