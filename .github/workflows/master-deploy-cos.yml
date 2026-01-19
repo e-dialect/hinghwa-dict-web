@@ -44,7 +44,7 @@ jobs:
 
       - name: Run incremental diff vs previous master
         run: |
-          ./incremental-diff.sh ./previous_master_sha.txt
+          ./scripts/incremental-diff.sh ./previous_master_sha.txt
 
       - name: Upload changed files to COS via coscmd
         run: |

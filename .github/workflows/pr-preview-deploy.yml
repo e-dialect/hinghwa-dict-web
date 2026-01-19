@@ -43,7 +43,7 @@ jobs:
 
       - name: Run incremental diff vs master
         run: |
-          ./incremental-diff.sh ./master_sha256.txt
+          ./scripts/incremental-diff.sh ./master_sha256.txt
 
       - name: Upload changed files to COS via coscmd
         run: |
