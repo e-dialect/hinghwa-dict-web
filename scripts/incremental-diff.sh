@@ -20,6 +20,11 @@ set -o pipefail
 
 PREVIOUS_SHA_FILE="${1:-sha256sum.txt}"
 
+if [ ! -f "${PREVIOUS_SHA_FILE}" ]; then
+    echo "Previous SHA file not found, skipping incremental diff."
+    exit 0
+fi
+
 # Generate SHA256 by:
 # find dist -type f -exec sha256sum {} \; > dist/sha256sum.txt
 
