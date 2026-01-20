@@ -16,5 +16,6 @@ jobs:
 
       - name: Delete PR preview directory from COS
         run: |
-          coscmd delete -r /${REPO_NAME}-pr-${{ github.event.number }}/
+          # Auto-confirm deletion to avoid interactive prompt in CI
+          yes | coscmd delete -r /${REPO_NAME}-pr-${{ github.event.number }}/
         # coscmd will use the configuration written by the prior `coscmd config` step
