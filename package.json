@@ -12,7 +12,7 @@
     "@achrinza/node-ipc": "^9.2.9",
     "@ant-design/icons-vue": "^4.0.6",
     "ant-design-vue": "^1.7.7",
-    "axios": "^0.21.2",
+    "axios": "^0.30.2",
     "crypto-js": "^4.1.1",
     "mavon-editor": "^2",
     "moment": "^2.29.2",
