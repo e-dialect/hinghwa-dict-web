@@ -27,7 +27,7 @@ jobs:
 
       - name: Build project
         env:
-          PREVIEW_BASE: "/${{ env.REPO_NAME }}-pr-${{ github.event.number }}/"
+          PREVIEW_BASE: "/${{ env.REPO_NAME }}-master/"
         run: yarn run build-dev
 
       - name: Generate SHA256 for dist
