@@ -15,7 +15,7 @@
         <span style="font-size: 100%;color: rgb(155,155,155);padding-left: 18px">
           / {{ word.standard_ipa }}/
         </span>
-        <PlaySoundButton :url="word.source" :pinyin="word.standard_pinyin" :ipa="word.standard_ipa" :word-id="word.id"/>
+        <PlayWordSoundButton :url="word.source" :pinyin="word.standard_pinyin" :ipa="word.standard_ipa" :word-id="word.id"/>
       </template>
 
       <template v-slot:extra>
@@ -136,7 +136,7 @@ import axios from 'axios'
 import ArticleList from '../../components/Articles/ArticleList'
 import Recording from '../../components/Pronunciation/Recording'
 import DefinitionShow from '../../components/Word/DefinitionShow'
-import PlaySoundButton from '../../components/Tools/PlaySoundButton'
+import PlayWordSoundButton from '../../components/Tools/PlayWordSoundButton'
 import MarkdownViewer from '../../components/Articles/MarkdownViewer'
 import { getWordDetails } from '@/services/words'
 import WordTag from '@/components/Word/WordTag.vue'
@@ -147,7 +147,7 @@ export default {
   components: {
     WordTag,
     MarkdownViewer,
-    PlaySoundButton,
+    PlayWordSoundButton,
     Definition: DefinitionShow,
     Recording,
     ArticleList

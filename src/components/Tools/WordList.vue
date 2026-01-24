@@ -26,7 +26,7 @@
                 / {{ item.word.standard_ipa }}/
               </span>
             <word-tag :tags="item.word.tags" style="margin-left: 10px"/>
-            <PlaySoundButton
+            <PlayWordSoundButton
               :url="item.pronunciation.url"
               :ipa="item.word.standard_ipa"
               :pinyin="item.word.standard_pinyin"
@@ -49,12 +49,12 @@
 </template>
 <script>
 import axios from 'axios'
-import PlaySoundButton from './PlaySoundButton'
+import PlayWordSoundButton from './PlayWordSoundButton'
 import WordTag from '@/components/Word/WordTag.vue'
 
 export default {
   name: 'WordList',
-  components: { WordTag, PlaySoundButton },
+  components: { WordTag, PlayWordSoundButton },
   data () {
     return {
       listSource: null,

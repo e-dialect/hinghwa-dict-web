@@ -1,10 +1,10 @@
 <script>
-import PlaySoundButton from '@/components/Tools/PlaySoundButton.vue'
+import PlayWordSoundButton from '@/components/Tools/PlayWordSoundButton.vue'
 import EyeOutlined from '@ant-design/icons-vue/lib/icons/EyeOutlined'
 import { splitDefinition } from '@/components/Word/Definition'
 export default {
   name: 'MultiWordsMode',
-  components: { PlaySoundButton, EyeOutlined },
+  components: { PlayWordSoundButton, EyeOutlined },
   props: {
     list: {
       type: Array,
@@ -57,7 +57,8 @@ export default {
         <span style="color: #000">发音：</span>
         <span style="color: #222;margin-right: 10px">{{item.standard_pinyin}}</span>
         <span style="color: rgb(155,155,155)">/{{item.standard_ipa}}/</span>
-        <PlaySoundButton :ipa="item.standard_ipa" :pinyin="item.standard_pinyin" :word-id="item.id"/>
+        <br>
+        <PlayWordSoundButton :ipa="item.standard_ipa" :pinyin="item.standard_pinyin" :word-id="item.id"/>
       </a-col>
       <a-col :span="3">
         <a-button type="link" @click="$router.push(`/words/${item.id}`)">
