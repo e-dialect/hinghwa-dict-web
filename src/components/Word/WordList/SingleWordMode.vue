@@ -1,13 +1,13 @@
 <script>
 import axios from 'axios'
-import PlaySoundButton from '@/components/Tools/PlaySoundButton.vue'
+import PlayWordSoundButton from '@/components/Tools/PlayWordSoundButton.vue'
 import Definition from '@/components/Word/DefinitionShow.vue'
 import MarkdownViewer from '@/components/Articles/MarkdownViewer.vue'
 import WordTag from '@/components/Word/WordTag.vue'
 
 export default {
   name: 'SingleWordMode',
-  components: { WordTag, MarkdownViewer, Definition, PlaySoundButton },
+  components: { WordTag, MarkdownViewer, Definition, PlayWordSoundButton },
   props: {
     list: {
       type: Array,
@@ -52,7 +52,7 @@ export default {
         第{{index + 1}}/{{list.length}}个
       </template>
       <a-row style="margin-top: 20px;margin-bottom: 40px">
-        <a-row style="font-size: 1.3em;color: #000;margin-bottom: 5px">发音<PlaySoundButton :ipa="thisPage.standard_ipa" :pinyin="thisPage.standard_pinyin" :word-id="thisPage.id"/></a-row>
+        <a-row style="font-size: 1.3em;color: #000;margin-bottom: 5px">发音<PlayWordSoundButton :ipa="thisPage.standard_ipa" :pinyin="thisPage.standard_pinyin" :word-id="thisPage.id"/></a-row>
         <a-row style="color: #222;font-size: 1.3em">{{thisPage.standard_pinyin}}</a-row>
         <a-row style="color: rgb(155,155,155)">/{{thisPage.standard_ipa}}/</a-row>
         <word-tag :tags="thisPage.tags" style="margin-top: 10px"/>
