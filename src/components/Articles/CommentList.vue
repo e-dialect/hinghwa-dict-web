@@ -51,6 +51,10 @@
             </template>
 
             <template slot="actions">
+              <span @click="commentLike(item)">
+                <a-icon :type="item.liked ? 'like' : 'like-o'" />
+                {{ item.likes }}
+              </span>
               <span
                 v-if="item.user.id===user.id"
                 :disabled="btnCommentSubmitting"
@@ -112,6 +116,31 @@ export default {
   },
   methods: {
 
+    /**
+     * 点赞/取消点赞评论
+     * @param item 评论对象
+     */
+    commentLike (item) {
+      if (!this.$store.getters.loginStatus) {
+        this.$message.error('请先登录后再操作哦~')
+        return
+      }
+      if (item.liked) {
+        axios.delete(`/articles/${this.id}/comments/${item.id}/like`).then(() => {
+          item.liked = false
+          item.likes -= 1
+        }).catch(() => {
+          this.$message.error('操作失败，请稍后重试')
+        })
+      } else {
+        axios.post(`/articles/${this.id}/comments/${item.id}/like`).then(() => {
+          item.liked = true
+          item.likes += 1
+        }).catch(() => {
+          this.$message.error('操作失败，请稍后重试')
+        })
+      }
+    },
     /**
      * 提交评论
      * @param parent 回复的评论的id，若无则为0

@@ -54,7 +54,9 @@ export default new Vuex.Store({
         },
         content: 'content',
         time: '2000-01-01 00:00:00',
-        parent: 123
+        parent: 123,
+        likes: 0,
+        liked: false
       }
     ]
   },
@@ -165,6 +167,8 @@ export default new Vuex.Store({
         state.comments = res.data.comments
         state.comments.forEach(item => {
           item.time = moment(item.time).fromNow()
+          if (item.likes === undefined) item.likes = 0
+          if (item.liked === undefined) item.liked = false
         })
       }).finally(() => {
         state.commentsLoading = false
