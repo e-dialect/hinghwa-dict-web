@@ -122,20 +122,20 @@
 </template>
 
 <script>
-import axios from "axios";
-import CommentList from "../../components/Articles/CommentList";
-import MarkdownViewer from "../../components/Articles/MarkdownViewer";
-import SelectSearch from "@/components/Tools/SelectSearch.vue";
+import axios from 'axios'
+import CommentList from '../../components/Articles/CommentList'
+import MarkdownViewer from '../../components/Articles/MarkdownViewer'
+import SelectSearch from '@/components/Tools/SelectSearch.vue'
 
 export default {
-  name: "ArticleDetails",
+  name: 'ArticleDetails',
   components: {
     MarkdownViewer,
     CommentList,
-    SelectSearch,
+    SelectSearch
   },
   props: { id: String },
-  data() {
+  data () {
     return {
       spinning: true,
       btnLikeLoading: false,
@@ -145,119 +145,119 @@ export default {
         id: 0,
         author: {
           id: 0,
-          username: "username",
-          nickname: "nickname",
-          email: "edialect@edialect.top",
-          telephone: "",
-          registration_time: "2000-01-01 00:00:00",
-          login_time: "2000-01-01 00:00:00",
-          birthday: "2000-01-01 00:00:00",
-          avatar: "",
-          county: "",
-          town: "",
-          is_admin: false,
+          username: 'username',
+          nickname: 'nickname',
+          email: 'edialect@edialect.top',
+          telephone: '',
+          registration_time: '2000-01-01 00:00:00',
+          login_time: '2000-01-01 00:00:00',
+          birthday: '2000-01-01 00:00:00',
+          avatar: '',
+          county: '',
+          town: '',
+          is_admin: false
         },
         likes: 0,
         views: 0,
         like_users: [],
-        publish_time: "2000-01-01 00:00:00",
-        update_time: "2000-01-01 00:00:00",
-        title: "title",
-        description: "description",
-        content: "content",
-        cover: "",
+        publish_time: '2000-01-01 00:00:00',
+        update_time: '2000-01-01 00:00:00',
+        title: 'title',
+        description: 'description',
+        content: 'content',
+        cover: ''
       },
       me: {
         liked: false,
-        is_author: false,
-      },
-    };
+        is_author: false
+      }
+    }
   },
   computed: {
-    commentsLoading() {
-      return this.$store.getters.commentsLoading;
-    },
+    commentsLoading () {
+      return this.$store.getters.commentsLoading
+    }
   },
-  created() {
+  created () {
     axios
-      .get("/articles/" + this.id)
+      .get('/articles/' + this.id)
       .then(async (res) => {
-        this.article = res.data.article;
-        this.me = res.data.me;
-        this.$store.commit("updateComments", this.id);
+        this.article = res.data.article
+        this.me = res.data.me
+        this.$store.commit('updateComments', this.id)
       })
       .catch(() => {
-        this.$message.destroy();
-        this.$router.replace({ name: "NotFound" });
+        this.$message.destroy()
+        this.$router.replace({ name: 'NotFound' })
       })
       .finally(() => {
-        this.spinning = false;
-      });
+        this.spinning = false
+      })
   },
-  beforeRouteEnter(to, from, next) {
+  beforeRouteEnter (to, from, next) {
     if (to.params.id % 1 === 0) {
-      next();
+      next()
     } else {
-      next({ name: "NotFound" });
+      next({ name: 'NotFound' })
     }
   },
   methods: {
     /**
      * 点击按钮点赞/取消点赞触发事件
      */
-    btnLikeClick() {
+    btnLikeClick () {
       if (!this.$store.getters.loginStatus) {
-        this.$message.error("请先登录后再操作哦~");
-        return;
+        this.$message.error('请先登录后再操作哦~')
+        return
       }
-      this.btnLikeLoading = true;
+      this.btnLikeLoading = true
       if (this.me.liked) {
         axios
-          .delete("/articles/" + this.id + "/like")
+          .delete('/articles/' + this.id + '/like')
           .then(() => {
-            this.$set(this.me, "liked", false);
-            this.$message.success("取消点赞成功");
+            this.$set(this.me, 'liked', false)
+            this.$message.success('取消点赞成功')
             setTimeout(() => {
-              this.article.likes -= 1;
-              this.btnLikeLoading = false;
-            }, 500);
+              this.article.likes -= 1
+              this.btnLikeLoading = false
+            }, 500)
           })
           .catch(() => {
-            this.$message.error("取消点赞失败");
-            this.btnLikeLoading = false;
-          });
+            this.$message.error('取消点赞失败')
+            this.btnLikeLoading = false
+          })
       } else {
         axios
-          .post("/articles/" + this.id + "/like")
+          .post('/articles/' + this.id + '/like')
           .then(() => {
-            this.$set(this.me, "liked", true);
-            this.$message.success("点赞成功");
+            this.$set(this.me, 'liked', true)
+            this.$message.success('点赞成功')
             setTimeout(() => {
-              this.article.likes += 1;
-              this.btnLikeLoading = false;
-            }, 500);
+              this.article.likes += 1
+              this.btnLikeLoading = false
+            }, 500)
           })
           .catch(() => {
-            this.$message.error("点赞失败");
-            this.btnLikeLoading = false;
-          });
+            this.$message.error('点赞失败')
+            this.btnLikeLoading = false
+          })
       }
     },
     /**
      * 删除文章
      */
-    deleteArticle() {
-      this.btnDeleteLoading = true;
-      axios.delete("/articles/" + this.id).finally(() => {
+    deleteArticle () {
+      this.btnDeleteLoading = true
+      axios.delete('/articles/' + this.id).finally(() => {
         // axios.delete('http://127.0.0.1:4523/mock/404238/articles/' + this.id).finally(() => {
         setTimeout(() => {
-          this.btnDeleteLoading = false;
-          this.hasDeleted = true;
-        }, 500);
-      });
-    },
-  },
-};
+          this.btnDeleteLoading = false
+          this.hasDeleted = true
+        }, 500)
+      })
+    }
+  }
+}
 </script>
 
 <style scoped></style>
