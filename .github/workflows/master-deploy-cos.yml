@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       REPO_NAME: ${{ github.event.repository.name }}
+      COSCMD_CONFIG_PATH: ${{ github.workspace }}/.cos.conf
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -23,7 +24,7 @@ jobs:
 
       - name: Lint
         run: |
-          yarn run lint
+          yarn run lint --max-warnings=0
 
       - name: Build project
         env:
@@ -37,12 +38,12 @@ jobs:
       - name: Install coscmd and configure
         run: |
           pip install coscmd
-          coscmd config -a ${{ secrets.TENCENT_CLOUD_SECRET_ID }} -s ${{ secrets.TENCENT_CLOUD_SECRET_KEY }} -b ${{ secrets.TENCENT_CLOUD_BUCKET }} -r ${{ secrets.TENCENT_CLOUD_REGION }} || true
+          coscmd -c "$COSCMD_CONFIG_PATH" config -a ${{ secrets.TENCENT_CLOUD_SECRET_ID }} -s ${{ secrets.TENCENT_CLOUD_SECRET_KEY }} -b ${{ secrets.TENCENT_CLOUD_BUCKET }} -r ${{ secrets.TENCENT_CLOUD_REGION }}
 
       - name: Download previous master sha (if exists)
         run: |
           set -e
-          coscmd download /${REPO_NAME}-master/sha256sum.txt ./previous_master_sha.txt || true
+          coscmd -c "$COSCMD_CONFIG_PATH" download /${REPO_NAME}-master/sha256sum.txt ./previous_master_sha.txt || true
 
       - name: Run incremental diff vs previous master
         run: |
@@ -51,4 +52,4 @@ jobs:
       - name: Upload changed files to COS via coscmd
         run: |
           echo "Uploading changed files -> /${REPO_NAME}-master/"
-          cd dist && coscmd upload -r . /${REPO_NAME}-master/
+          cd dist && coscmd -c "$COSCMD_CONFIG_PATH" upload -r . /${REPO_NAME}-master/
