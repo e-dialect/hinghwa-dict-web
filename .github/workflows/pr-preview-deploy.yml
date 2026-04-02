@@ -76,8 +76,21 @@ jobs:
 
       - name: Upload changed files to COS via coscmd
         run: |
-          echo "Uploading changed files -> /${REPO_NAME}-pr-${{ github.event.number }}/"
-          cd dist && coscmd -c "$COSCMD_CONFIG_PATH" upload -r . /${REPO_NAME}-pr-${{ github.event.number }}/
+          set -euo pipefail
+          TARGET_PREFIX="/${REPO_NAME}-pr-${{ github.event.number }}/"
+          echo "Uploading changed files -> ${TARGET_PREFIX}"
+          cd dist
+          mapfile -t CHANGED_FILES < <(find . -type f | sort)
+          if [ "${#CHANGED_FILES[@]}" -eq 0 ]; then
+            echo "No changed files to upload."
+            exit 0
+          fi
+
+          for f in "${CHANGED_FILES[@]}"; do
+            echo "Uploading: $f"
+            timeout 600 coscmd -c "$COSCMD_CONFIG_PATH" -m 8 upload "$f" "${TARGET_PREFIX}${f#./}" || true
+          done
+          echo "Upload phase completed."
 
       - name: Comment PR with preview link
         uses: actions/github-script@v7

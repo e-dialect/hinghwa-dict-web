@@ -51,5 +51,18 @@ jobs:
 
       - name: Upload changed files to COS via coscmd
         run: |
-          echo "Uploading changed files -> /${REPO_NAME}-master/"
-          cd dist && coscmd -c "$COSCMD_CONFIG_PATH" upload -r . /${REPO_NAME}-master/
+          set -euo pipefail
+          TARGET_PREFIX="/${REPO_NAME}-master/"
+          echo "Uploading changed files -> ${TARGET_PREFIX}"
+          cd dist
+          mapfile -t CHANGED_FILES < <(find . -type f | sort)
+          if [ "${#CHANGED_FILES[@]}" -eq 0 ]; then
+            echo "No changed files to upload."
+            exit 0
+          fi
+
+          for f in "${CHANGED_FILES[@]}"; do
+            echo "Uploading: $f"
+            timeout 600 coscmd -c "$COSCMD_CONFIG_PATH" -m 8 upload "$f" "${TARGET_PREFIX}${f#./}" || true
+          done
+          echo "Upload phase completed."
