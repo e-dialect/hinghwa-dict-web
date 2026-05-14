@@ -202,22 +202,35 @@ export default {
       }
       this.btnLikeLoading = true
       if (this.me.liked) {
-        axios.delete('/articles/' + this.id + '/like').finally(() => {
-          this.me.liked = false
-          setTimeout(() => {
-            this.article.likes -= 1
+        axios
+          .delete('/articles/' + this.id + '/like')
+          .then(() => {
+            this.$set(this.me, 'liked', false)
+            this.$message.success('取消点赞成功')
+            setTimeout(() => {
+              this.article.likes -= 1
+              this.btnLikeLoading = false
+            }, 500)
+          })
+          .catch(() => {
+            this.$message.error('取消点赞失败')
             this.btnLikeLoading = false
-          }, 500)
-        })
+          })
       } else {
-        axios.post('/articles/' + this.id + '/like').finally(() => {
-          this.me.liked = true
-          // this.btnLikeLoading = false
-          setTimeout(() => {
-            this.article.likes += 1
+        axios
+          .post('/articles/' + this.id + '/like')
+          .then(() => {
+            this.$set(this.me, 'liked', true)
+            this.$message.success('点赞成功')
+            setTimeout(() => {
+              this.article.likes += 1
+              this.btnLikeLoading = false
+            }, 500)
+          })
+          .catch(() => {
+            this.$message.error('点赞失败')
             this.btnLikeLoading = false
-          }, 500)
-        })
+          })
       }
     },
     /**
