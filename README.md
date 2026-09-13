@@ -44,3 +44,11 @@
 2. 系统会记住您的选择，之后访问时不会再自动跳转
 
 3. 如需恢复自动跳转，只需清除本网站在浏览器 localStorage 中保存的该偏好设置（键名为 `preferDesktopSite`）即可，无需清空全部 localStorage
+
+## 许可证
+
+本仓库中由 e-dialect 有权授权的原创软件代码，除另有说明外采用
+**GNU Affero General Public License v3.0 only（`AGPL-3.0-only`）**。
+AGPL 允许商业使用，但使用者须遵守其全部条款；无法或不希望遵守这些条款的组织，
+可以联系维护者了解替代商业许可。第三方组件以及词典、语料、录音、用户内容、数据、
+商标和 Logo 不自动适用该许可证。详见 [`LICENSING.md`](LICENSING.md)。
