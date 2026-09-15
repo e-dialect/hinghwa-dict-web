@@ -51,4 +51,6 @@
 **GNU Affero General Public License v3.0 only（`AGPL-3.0-only`）**。
 AGPL 允许商业使用，但使用者须遵守其全部条款；无法或不希望遵守这些条款的组织，
 可以联系维护者了解替代商业许可。第三方组件以及词典、语料、录音、用户内容、数据、
-商标和 Logo 不自动适用该许可证。详见 [`LICENSING.md`](LICENSING.md)。
+商标和 Logo 不自动适用该许可证。详见 [`LICENSING.md`](LICENSING.md)、
+[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) 和
+[`ASSET_BOUNDARIES.md`](ASSET_BOUNDARIES.md)。
