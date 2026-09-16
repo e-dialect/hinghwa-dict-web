@@ -1,9 +1,9 @@
 
 import CryptoJS from 'crypto-js'
 import Worker from './transcode.worker.js'
-const APPID = 'c4045cad'
-const API_SECRET = 'YmFmY2Q3ZGNlODNmMmY5ZmJlNmNmMzRl'
-const API_KEY = '6bf97b8af37798841d2c609963f4e151'
+const APPID = 'UNCONFIGURED_XFYUN_APP_ID'
+const API_SECRET = 'UNCONFIGURED_XFYUN_API_SECRET'
+const API_KEY = 'UNCONFIGURED_XFYUN_API_KEY'
 const transWorker = new Worker()
 console.log(transWorker)
 var startTime = ''
