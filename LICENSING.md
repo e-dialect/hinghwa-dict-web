@@ -16,12 +16,14 @@ provenance-constrained paths. No audited record establishes authority to
 relicense every path on different terms.
 
 Third-party packages, fonts, images, and other components retain their original
-copyright and license notices. This includes the Apache-2.0 deployment helper
-and two speech-recognition demo-derived files whose open-source license remains
-unresolved; see [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md). The
-software license does not automatically cover dictionary or corpus content,
-recordings, user content, datasets, trademarks, logos, or other separately
-identified assets; see [`ASSET_BOUNDARIES.md`](./ASSET_BOUNDARIES.md).
+copyright and license notices. This includes the Apache-2.0 deployment helper;
+see [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md). Historical
+speech-recognition demo-derived files have been removed from the current tree
+rather than relicensed. Purchased illustration assets remain subject to their
+purchase terms and are not included in the software grant. The software
+license does not automatically cover dictionary or corpus content, recordings,
+user content, datasets, trademarks, logos, or other separately identified
+assets; see [`ASSET_BOUNDARIES.md`](./ASSET_BOUNDARIES.md).
 
 Historical releases and file-level grants remain governed by their published
 terms. In particular, the root license was GPL version 3 from 17 November 2022
@@ -38,10 +40,11 @@ authority.
 责任公司在其拥有或已取得充分再许可权的代码范围内提供的替代商业许可。
 **替代商业重许可状态：`PARTIAL`。** 本仓库有多位历史贡献者，并包含第三方或来源
 受限路径；目前没有可审计记录证明项目有权以不同条款重许可全部路径。
-第三方组件继续适用原版权和许可证。采用 Apache-2.0 的部署脚本以及开源授权尚未
-查明的两份语音识别示例派生文件见
-[`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md)。代码许可证不自动授权词典或
-语料内容、录音、用户内容、数据集、商标或 Logo；路径边界见
+第三方组件继续适用原版权和许可证。采用 Apache-2.0 的部署脚本见
+[`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md)。历史语音识别示例派生文件与
+已从当前代码树删除，而非被重新许可。维护者购买的插画继续适用购买条款，不属于
+软件授权范围。代码许可证不自动授权词典或语料内容、录音、用户内容、数据集、商标
+或 Logo；路径边界见
 [`ASSET_BOUNDARIES.md`](./ASSET_BOUNDARIES.md)。
 
 根许可证在 2022 年 11 月 17 日至 2026 年 3 月 19 日期间为 GPL 第 3 版，此前版本

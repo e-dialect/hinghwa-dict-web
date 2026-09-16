@@ -13,14 +13,12 @@
     "@ant-design/icons-vue": "^4.0.6",
     "ant-design-vue": "^1.7.7",
     "axios": "^0.30.2",
-    "crypto-js": "^4.1.1",
     "mavon-editor": "^2",
     "moment": "^2.29.2",
     "qrcodejs2": "^0.0.2",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
-    "vuex": "^3.4.0",
-    "worker-loader": "^2.0.0"
+    "vuex": "^3.4.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^5.0.8",

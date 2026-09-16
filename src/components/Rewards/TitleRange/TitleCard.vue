@@ -44,7 +44,7 @@ export default {
         <Title :title="title"/>
       </a-row>
       <a-row class="points">
-        <img src="../../../assets/rewards.svg" alt=""/>
+        <img src="../../../assets/rewards.svg" alt="积分"/>
         <span>{{ detail.points }}</span>
       </a-row>
       <a-row style="text-align: center">
