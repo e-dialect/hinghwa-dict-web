@@ -8,7 +8,7 @@
     </a-menu-item>
     <a-menu-item key="ptxTranslation">
       <router-link replace :to="{name:'ptxTranslation'}">
-        普通话输入
+        普通话识别
       </router-link>
     </a-menu-item>
   </a-menu>

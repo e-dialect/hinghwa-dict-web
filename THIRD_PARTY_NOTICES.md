@@ -12,26 +12,33 @@ unrecorded upstream grant. Packages installed through `package.json` and
 - License: Apache License 2.0, as declared in the file header. The standard
   license text is preserved in [`LICENSES/Apache-2.0.txt`](LICENSES/Apache-2.0.txt).
 
-## Historical speech-recognition WebAPI demo-derived files (removed)
+## Speech-recognition WebAPI demo-derived files
 
-- Historical paths: `src/assets/IatRecorder.js` and
+- Local paths: `src/assets/IatRecorder.js` and
   `src/assets/transcode.worker.js`.
 - Provenance: the structure, comments, endpoint, and helper names identify the
   files as copied or adapted from the iFLYTEK streaming voice-dictation WebAPI
   browser demo. The official API documentation links a JavaScript demo:
   <https://www.xfyun.cn/doc/asr/voicedictation/API.html>.
-- No auditable open-source grant was established for the historical files.
-  Public availability or a vendor documentation download is not itself
-  permission to redistribute or relicense code.
-- Current status: both files and their browser-side signing dependencies were
-  removed from the current tree on 2026-09-16. The remaining translation route
-  accepts text input and no longer connects directly to the external WebAPI.
-- Security: the historical client contained a provider credential. Its value
-  is intentionally omitted from this record and must be revoked at the
-  provider. Deleting it from the current tree does not make the historical
-  credential safe.
-- Earlier Git revisions retain their original rights status; this removal is
-  not a retroactive license grant.
+- Introduction record: PR #120 / commit
+  `628a493733e14e9d4c30363b41696f2112504ec9`, contributed by
+  [@123daxian](https://github.com/123daxian).
+- License status: **`UNRESOLVED`**. Neither local file contains a copyright or
+  license notice, and this audit did not establish an auditable open-source
+  grant for the demo source. Public availability or a vendor documentation
+  download is not itself permission to redistribute or relicense code.
+- Current handling: the browser microphone-recognition UI, dependencies, and
+  implementation structure are preserved for product continuity. Historical
+  credential values are not republished by this PR; the three local constants
+  use explicit inert placeholders with maintainer approval. A safe credential
+  path is required before live provider calls can work again. These files are
+  not declared to be project-original AGPL code and are excluded from any
+  alternative commercial-license scope.
+- Follow-up: provenance, authorization, and historical provider-credential
+  rotation are tracked in
+  [Issue #187](https://github.com/e-dialect/hinghwa-dict-web/issues/187),
+  assigned to the original contributor. No credential value is reproduced in
+  that Issue or this notice.
 
 ## Purchased illustration assets
 
@@ -47,7 +54,8 @@ unrecorded upstream grant. Packages installed through `package.json` and
 - The private purchase record and applicable license terms should be retained
   for audit; this notice does not publish confidential transaction details.
 
-**Current-tree unresolved redistributed files: 0.**
+**Current-tree unresolved paths: 2**, both isolated above and tracked by
+Issue #187.
 
 The WebAPI service itself is external and remains governed by the provider's
 service terms. API credentials and user recordings are not licensed by this
@@ -56,9 +64,12 @@ repository.
 ---
 
 根目录 AGPL 声明仅覆盖项目有权授权的代码。`scripts/incremental-diff.sh` 继续适用
-其文件头声明的 Apache-2.0。历史语音识别 WebAPI 示例派生文件没有可核验的开源授权，
-已连同浏览器端签名依赖从当前代码树删除；旧版本中曾公开的服务商凭据仍须在服务商
-侧撤销。维护者确认仓库插画系为项目使用而购买；仍在使用的积分插画继续适用购买
-条款且不纳入代码许可证，未使用的麦克风 GIF 已作为无用媒体删除。当前代码树中继续
-分发的未解决路径为 0；删除不构成对历史文件的追溯授权。讯飞 WebAPI 服务、API
-凭据与用户录音也不由本仓库授权。
+其文件头声明的 Apache-2.0。两份语音识别 WebAPI 示例派生文件没有可核验的开源授权；
+语音识别 UI、依赖和实现结构为保持产品连续性而保留，历史真实凭据不在本 PR 中重新
+发布，三个本地常量经维护者同意改为不可用占位符。在建立安全凭据路径前，实时服务商
+调用无法恢复。这些文件不声明为项目原创 AGPL 代码，也不纳入替代商业许可。来源、
+授权及历史服务商凭据轮换由原贡献者通过
+[Issue #187](https://github.com/e-dialect/hinghwa-dict-web/issues/187) 跟踪，本文不记录
+任何凭据值。维护者确认仓库插画系为项目使用而购买；仍在使用的积分插画继续适用
+购买条款且不纳入代码许可证，未使用的麦克风 GIF 已作为无用媒体删除。讯飞 WebAPI
+服务、API 凭据与用户录音也不由本仓库授权。

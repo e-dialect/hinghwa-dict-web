@@ -2,12 +2,14 @@
     <!--    翻译区-->
   <a-card>
   <div>
-    <p>输入普通话文本以查询对应读音</p>
+    <p>点击按钮开始录制普通话</p>
     <a-row>
       <a-col :span="14">
-        <a-input v-model="words" placeholder="请输入普通话文本"></a-input>
+        <a-input :value="this.words"></a-input>
       </a-col>
       <a-col :span="10">
+    <a-button v-if="!recording" icon="audio" @click="translationStart">开始录制</a-button>
+    <a-button v-else icon="pause" @click="translationEnd">停止录制</a-button>
     <a-button icon="sound" @click="playWords()">语音翻译</a-button>
     <a-button icon="search" @click="search(words)">搜索更多</a-button>
       </a-col>
@@ -23,21 +25,27 @@
 </template>
 
 <script>
+import IatRecorder from '@/assets/IatRecorder'
 import PinyinList from '../../components/Tools/PinyinList'
 import axios from 'axios'
+const iatRecorder = new IatRecorder('en_us', 'mandarin', '5f27b6a9')
 
 export default {
   name: 'ptxTranslation',
   components: { PinyinList },
   data () {
     return {
-      words: '',
+      words: '请录制普通话语音',
       pronunciation: {
         url: '',
         loading: false,
         disabled: false
-      }
+      },
+      recording: false
     }
+  },
+  created () {
+    this.loadingRecord()
   },
   computed: {
     chinese () {
@@ -64,6 +72,20 @@ export default {
       }).finally(() => {
         this.pronunciation.loading = false
       })
+    },
+    translationStart () {
+      iatRecorder.start()
+      this.recording = true
+    },
+    translationEnd () {
+      this.recording = false
+      setTimeout(() => {
+        this.words = iatRecorder.resultText
+        if (this.words === '') {
+          this.$message.info('识别结果为空哦~')
+        }
+      }, 1000)
+      iatRecorder.stop()
     },
     search (content) {
       if (content) {
