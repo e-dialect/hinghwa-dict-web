@@ -17,20 +17,11 @@
 </template>
 
 <script>
-import { getRandomQuiz } from '@/services/quiz'
 export default {
   name: 'Quiz',
-  data () {
-    return {
-      quiz: {
-        id: 0
-      }
-    }
-  },
   methods: {
     async jumpToRandomQuiz () {
-      this.quiz = (await getRandomQuiz()).quiz
-      await this.$router.push({ name: 'QuizDetails', params: { id: this.quiz.id } })
+      await this.$router.push({ name: 'QuizDetails', query: { challenge: 'true' } })
     }
   }
 }
