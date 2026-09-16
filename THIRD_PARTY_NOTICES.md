@@ -48,9 +48,9 @@ unrecorded upstream grant. Packages installed through `package.json` and
   purchased authorization. It is a media asset, not AGPL-covered software; its
   presence grants no standalone redistribution or alternative-commercial-
   relicensing right beyond the applicable purchase terms.
-- `src/assets/timg.gif`, first added in `628a493`, had no current code reference
-  and was removed on 2026-09-16 as unused media, not because its purchase was
-  disputed.
+- `src/assets/timg.gif`, first added in `628a493`, is retained as a legacy media
+  asset for functional and historical continuity. It remains outside the root
+  software license and is governed by the applicable purchase terms.
 - The private purchase record and applicable license terms should be retained
   for audit; this notice does not publish confidential transaction details.
 
@@ -70,6 +70,6 @@ repository.
 调用无法恢复。这些文件不声明为项目原创 AGPL 代码，也不纳入替代商业许可。来源、
 授权及历史服务商凭据轮换由原贡献者通过
 [Issue #187](https://github.com/e-dialect/hinghwa-dict-web/issues/187) 跟踪，本文不记录
-任何凭据值。维护者确认仓库插画系为项目使用而购买；仍在使用的积分插画继续适用
-购买条款且不纳入代码许可证，未使用的麦克风 GIF 已作为无用媒体删除。讯飞 WebAPI
+任何凭据值。维护者确认仓库插画系为项目使用而购买；积分插画与作为历史媒体资产保留
+的麦克风 GIF 继续适用购买条款且不纳入代码许可证。讯飞 WebAPI
 服务、API 凭据与用户录音也不由本仓库授权。
