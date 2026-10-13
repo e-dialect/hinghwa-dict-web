@@ -1,0 +1,56 @@
+name: Kinship data contract
+on:
+  pull_request:
+    paths:
+      - 'src/data/kinship/**'
+      - 'src/components/Tools/relative.js'
+      - 'src/services/relative.js'
+      - 'scripts/check-kinship.mjs'
+      - 'scripts/check-relative.mjs'
+      - '.github/workflows/kinship-data-check.yml'
+  push:
+    branches:
+      - master
+    paths:
+      - 'src/data/kinship/**'
+      - 'src/components/Tools/relative.js'
+      - 'src/services/relative.js'
+      - 'scripts/check-kinship.mjs'
+      - 'scripts/check-relative.mjs'
+      - '.github/workflows/kinship-data-check.yml'
+
+jobs:
+  local-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current frontend
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate local schema, frozen IDs and compatible API
+        run: npm run check:kinship
+
+  paired-contract:
+    if: github.event_name == 'pull_request'
+    needs: local-contract
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current frontend
+        uses: actions/checkout@v4
+        with:
+          path: current
+      - name: Checkout matching peer frontend
+        uses: actions/checkout@v4
+        with:
+          repository: e-dialect/hinghwa-dict-uni-app
+          ref: ${{ vars.KINSHIP_PEER_REF || github.head_ref }}
+          path: peer
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate shared data and adapter bytes against paired PR branch
+        working-directory: current
+        run: npm run check:kinship -- ../peer

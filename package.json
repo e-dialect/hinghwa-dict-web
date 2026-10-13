@@ -3,6 +3,7 @@
   "version": "0.1.1",
   "private": true,
   "scripts": {
+    "check:kinship": "node scripts/check-kinship.mjs",
     "check:relative": "node scripts/check-relative.mjs",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
