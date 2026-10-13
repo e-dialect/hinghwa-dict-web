@@ -77,8 +77,11 @@ const loaded = await loadRelativeWords([{ word: '慢', id: 1 }, { word: '待核'
 });
 assert.deepEqual(loaded.map(item => item.word), ['成功', '待核', '失败']);
 assert.equal(loaded[1].id, null);
-assert.equal(loaded[2].id, null);
+assert.equal(loaded[2].id, 2, 'API failure must retain the known dictionary ID');
+assert.equal(loaded[2].loadError, true);
 assert.ok(loaded[2].definition.includes('稍后重试'));
+const rolePending = await loadRelativeWords([{ word: '孙女之子（兴化语称谓待核）', id: null }], fetch => fetch);
+assert.equal(rolePending[0].rolePending, true, 'Role placeholder is not a missing dictionary word');
 
 let componentSource = fs.readFileSync(path.join(root, componentFile), 'utf8').match(/<script>([\s\S]*?)<\/script>/)[1];
 componentSource = componentSource.replace(/^import[\s\S]*?from\s+['"][^'"]+['"];?\s*$/gm, '').replace('export default', 'return');
