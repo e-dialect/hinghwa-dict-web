@@ -1,7 +1,7 @@
 <template>
-<a-card>
+<a-card class="kinship-panel">
   <template slot="title">
-    <h1>亲戚计算器（开发中）</h1>
+    <h1>亲戚计算</h1>
   </template>
   <RelationSelect/>
 </a-card>
@@ -16,5 +16,6 @@ export default {
 </script>
 
 <style scoped>
-
+.kinship-panel { max-width: 760px; margin: 0 auto; border-radius: 12px; }
+h1 { margin: 0; color: #30445d; font-size: 24px; font-weight: 600; }
 </style>

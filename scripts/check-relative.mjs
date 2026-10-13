@@ -7,7 +7,6 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const web = fs.existsSync(path.join(root, 'src/components/Tools/relative.js'));
 const graphFile = web ? 'src/components/Tools/relative.js' : 'src/services/relative.js';
 const helperFile = web ? 'src/components/Tools/relativeWords.js' : 'src/services/relativeWords.js';
-const componentFile = web ? 'src/components/Tools/RelativeSelect.vue' : 'src/pages/tools/relative.vue';
 const fields = ['fa', 'mu', 'xiong', 'di', 'jie', 'mei', 'fu', 'qi', 'zi', 'nv'];
 async function readModule(file) {
   if (path.basename(file) === 'relative.js') {
@@ -95,35 +94,7 @@ assert.ok(loaded[2].definition.includes('稍后重试'));
 const rolePending = await loadRelativeWords([{ word: '孙女之子（兴化语称谓待核）', id: null }], fetch => fetch);
 assert.equal(rolePending[0].rolePending, true, 'Role placeholder is not a missing dictionary word');
 
-let componentSource = fs.readFileSync(path.join(root, componentFile), 'utf8').match(/<script>([\s\S]*?)<\/script>/)[1];
-componentSource = componentSource.replace(/^import[\s\S]*?from\s+['"][^'"]+['"];?\s*$/gm, '').replace('export default', 'return');
-const pending = new Map();
-const fetchWord = id => new Promise(resolve => pending.set(Number(String(id).split('/').pop()), resolve));
-const component = new Function('buttons', 'fieldName', 'find', 'relative', 'axios', 'PlaySoundButton', 'WordListShowing', 'defaultMessage', 'getWordDetails', 'loadRelativeWords', componentSource)(
-  graph.buttons, graph.fieldName, graph.find, graph.relative, { get: fetchWord }, {}, {}, () => ({}), fetchWord, loadRelativeWords,
-);
-const context = component.data();
-const watcher = component.watch.top.handler;
-const older = watcher.call(context, { words: [{ word: '旧', id: 101 }] });
-const newer = watcher.call(context, { words: [{ word: '新', id: 102 }] });
-const apiWord = id => web ? { data: { word: { id, word: '词' + id, source: '' } } } : { id, word: '词' + id, source: '' };
-pending.get(102)(apiWord(102));
-await newer;
-pending.get(101)(apiWord(101));
-await older;
-assert.equal(context.words[0].id, 102, 'Older request replaced the current relation');
-await watcher.call(context, { words: [{ word: '待核称谓', id: null }] });
-assert.equal(context.words[0].word, '待核称谓');
-assert.equal(context.words[0].id, null);
-component.methods[web ? 'pop' : 'popRelative'].call(context);
-assert.equal(context.stack.length, 1, 'Back at initial node underflowed stack');
-const pushContext = { ...context, topLength: 2, top: node('己身') };
-assert.equal(component.methods[web ? 'push' : 'pushRelative'].call(pushContext, 'fa'), false, 'Ambiguous branch accepted a transition');
-if (!web) {
-  const listSource = fs.readFileSync(path.join(root, 'src/components/WordListShowing.vue'), 'utf8');
-  assert.ok(listSource.includes('v-for="(item,index) in wordList"'), 'Null-ID entries must still render');
-  assert.ok(listSource.includes('item.id === null'), 'Pending entry must offer contribution feedback');
-}
+// Phase 3 component behavior is checked by check-kinship-ui.mjs.
 const peer = process.argv[2];
 if (peer) {
   const peerRoot = path.resolve(peer);

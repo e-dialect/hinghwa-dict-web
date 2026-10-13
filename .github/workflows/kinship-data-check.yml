@@ -2,38 +2,60 @@ name: Kinship data contract
 on:
   pull_request:
     paths:
+      - 'package.json'
       - 'src/data/kinship/**'
+      - 'src/components/Tools/RelativeSelect.vue'
+      - 'src/views/Tools/Relative.vue'
       - 'src/components/Tools/relative.js'
+      - 'src/components/Tools/relativeWords.js'
+      - 'src/pages/tools/relative.vue'
+      - 'src/components/WordListShowing.vue'
       - 'src/services/relative.js'
-      - 'scripts/check-kinship.mjs'
+      - 'src/services/relativeWords.js'
+      - 'scripts/*kinship*.mjs'
       - 'scripts/check-relative.mjs'
       - '.github/workflows/kinship-data-check.yml'
   push:
     branches:
       - master
     paths:
+      - 'package.json'
       - 'src/data/kinship/**'
+      - 'src/components/Tools/RelativeSelect.vue'
+      - 'src/views/Tools/Relative.vue'
       - 'src/components/Tools/relative.js'
+      - 'src/components/Tools/relativeWords.js'
+      - 'src/pages/tools/relative.vue'
+      - 'src/components/WordListShowing.vue'
       - 'src/services/relative.js'
-      - 'scripts/check-kinship.mjs'
+      - 'src/services/relativeWords.js'
+      - 'scripts/*kinship*.mjs'
       - 'scripts/check-relative.mjs'
       - '.github/workflows/kinship-data-check.yml'
 
 jobs:
   local-contract:
     runs-on: ubuntu-latest
+    outputs:
+      paired: ${{ steps.scope.outputs.paired }}
     steps:
       - name: Checkout current frontend
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Validate local schema, frozen IDs and compatible API
-        run: npm run check:kinship
+      - name: Determine whether shared files require a paired PR
+        if: github.event_name == 'pull_request'
+        id: scope
+        run: node scripts/kinship-ci-scope.mjs "${{ github.event.pull_request.base.sha }}"
+      - name: Validate local data, engine and component behavior
+        run: npm run check:kinship-module
 
   paired-contract:
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && needs.local-contract.outputs.paired == 'true'
     needs: local-contract
     runs-on: ubuntu-latest
     steps:
@@ -51,6 +73,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Validate shared data and adapter bytes against paired PR branch
+      - name: Validate shared data, modules and tests against paired PR branch
         working-directory: current
-        run: npm run check:kinship -- ../peer
+        run: npm run check:kinship-module -- ../peer

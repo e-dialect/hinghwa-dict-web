@@ -60,6 +60,8 @@
 
 ## 校验和 CI
 
+Phase 3 已将 CI 扩展为数据、引擎和组件事件全套；共享文件继续要求配对，单端模板和仅 package.json 变更只跑本地。当前入口和构建/模型边界见 [计算模块说明](kinship-module.md)。下列命令仍可独立校验数据契约。
+
 ```sh
 npm run check:kinship
 # Web checkout:
