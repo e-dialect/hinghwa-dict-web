@@ -50,21 +50,46 @@ export function createKinshipEngine(dataset, options = {}) {
   const maxDepth = Number.isInteger(options.maxDepth) && options.maxDepth > 0 ? options.maxDepth : 15;
   const selfNode = nodes.get(dataset.selfId);
   const datasetVersion = dataset.datasetVersion || null;
-  const uniqueRoleIds = new Set([dataset.selfId]);
-  for (const field of ['fa', 'mu', 'fu', 'qi']) {
-    const ids = values(selfNode.relations[field]);
-    if (ids.length === 1) uniqueRoleIds.add(ids[0]);
-  }
-  const directSiblingAge = new Map();
-  const ambiguousSiblingAge = new Set();
-  for (const field of SIBLINGS) {
-    for (const id of values(selfNode.relations[field])) {
-      const age = field === 'xiong' || field === 'jie' ? 'older' : 'younger';
-      if (directSiblingAge.has(id) && directSiblingAge.get(id) !== age) ambiguousSiblingAge.add(id);
-      directSiblingAge.set(id, age);
+  // A single parent edge identifies one ancestor only when its role is reached
+  // by one anchored parent path. A shared/aggregate role reached by two paths
+  // must not identify the two people. Do not extend uniqueness via child or
+  // sibling edges: those roles can describe any number of people.
+  const anchorPaths = new Map();
+  function visitAnchor(roleId, lineage = []) {
+    const node = nodes.get(roleId);
+    if (node.kind && node.kind !== 'person') return;
+    // A role that can be its own sibling explicitly represents multiple
+    // people, even if one parent path happens to use that role.
+    if (SIBLINGS.some(field => node.relations[field].includes(roleId))) return;
+    const count = (anchorPaths.get(roleId) || 0) + 1;
+    anchorPaths.set(roleId, count);
+    // Two visits suffice to propagate ambiguity to descendants, and bound
+    // traversal even for malformed cycles or heavily shared parent graphs.
+    if (count > 2 || lineage.includes(roleId)) return;
+    for (const field of ['fa', 'mu']) {
+      const ids = node.relations[field];
+      if (ids.length === 1) visitAnchor(ids[0], lineage.concat(roleId));
     }
   }
-  for (const id of ambiguousSiblingAge) directSiblingAge.delete(id);
+  visitAnchor(dataset.selfId);
+  for (const field of ['fu', 'qi']) {
+    const ids = selfNode.relations[field];
+    if (ids.length === 1) visitAnchor(ids[0]);
+  }
+  const uniqueRoleIds = new Set([...anchorPaths].filter(([, count]) => count === 1).map(([id]) => id));
+  uniqueRoleIds.add(dataset.selfId);
+  const anchoredSiblingAges = [];
+  for (const anchorId of uniqueRoleIds) {
+    const ages = new Map(); const ambiguous = new Set();
+    for (const field of SIBLINGS) for (const id of nodes.get(anchorId).relations[field]) {
+      const age = field === 'xiong' || field === 'jie' ? 'older' : 'younger';
+      if (ages.has(id) && ages.get(id) !== age) ambiguous.add(id);
+      ages.set(id, age);
+    }
+    for (const [roleId, age] of ages) {
+      if (roleId !== anchorId && !ambiguous.has(roleId)) anchoredSiblingAges.push({ anchorId, roleId, age });
+    }
+  }
 
   function newPerson(token, roleId, sex) {
     return { token, roleId, sex, parents: {}, unknownParents: [], children: [], siblings: [], spouse: null };
@@ -178,8 +203,8 @@ export function createKinshipEngine(dataset, options = {}) {
   }
 
   function allocate(graph, roleId) {
-    // Self and the anchored direct parent/spouse roles identify one person in
-    // this model. A repeated 'elder brother' role does not establish identity.
+    // Deterministically anchored ancestors/spouses identify one person. A
+    // repeated 'elder brother' role does not establish identity.
     if (roleId === dataset.selfId) return 'p0';
     if (uniqueRoleIds.has(roleId)) {
       const known = Object.values(graph.people).find(person => person.roleId === roleId);
@@ -209,10 +234,19 @@ export function createKinshipEngine(dataset, options = {}) {
       ? addAge(graph, target, source) : addAge(graph, source, target);
   }
 
-  function roleAge(graph, token) {
-    const age = directSiblingAge.get(graph.people[token].roleId);
-    if (!age || token === 'p0') return true;
-    return age === 'older' ? addAge(graph, token, 'p0') : addAge(graph, 'p0', token);
+  function roleAge(graph) {
+    // Validate all present role/anchor pairs, including a parent first reached
+    // after their sibling. An indirect route (e.g. grandfather -> son) does
+    // not erase the uncle's declared age relative to the unique father.
+    const people = Object.values(graph.people);
+    for (const { anchorId, roleId, age } of anchoredSiblingAges) {
+      for (const anchor of people.filter(person => person.roleId === anchorId)) {
+        for (const person of people.filter(person => person.roleId === roleId)) {
+          if (!(age === 'older' ? addAge(graph, person.token, anchor.token) : addAge(graph, anchor.token, person.token))) return false;
+        }
+      }
+    }
+    return true;
   }
 
   function makeCandidate(graph, token, revision, index, reason) {
@@ -272,7 +306,7 @@ export function createKinshipEngine(dataset, options = {}) {
     const revision = state.revision + 1;
     const candidates = [];
     const add = (graph, token, reason) => {
-      if (!connect(graph, current.personToken, token, field) || !roleAge(graph, token)) return;
+      if (!connect(graph, current.personToken, token, field) || !roleAge(graph)) return;
       // Deduplicate identical identity+constraints only. Never deduplicate by
       // role ID: a previously visited brother and another brother are distinct.
       if (candidates.some(item => item.personToken === token && JSON.stringify(item.graph) === JSON.stringify(graph))) return;

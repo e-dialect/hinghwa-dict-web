@@ -40,4 +40,4 @@ for (const command of commands) {
   const result = spawnSync(process.execPath, command, { cwd: root, stdio: 'inherit' });
   assert.equal(result.status, 0, 'Failed suite: ' + path.basename(command[0]));
 }
-console.log(JSON.stringify({ engineUnitTests: 32, realCorpusTests: 12, componentTests: 18, deepWalks: 1000, sharedModules: peer ? 'passed' : 'not requested', ciScopes: 'passed' }));
+console.log(JSON.stringify({ engineUnitTests: 35, realCorpusTests: 19, componentTests: 18, deepWalks: 1000, sharedModules: peer ? 'passed' : 'not requested', ciScopes: 'passed' }));

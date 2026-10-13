@@ -368,3 +368,53 @@ test('unknown-sex parent without static alternatives is incomplete; exact parent
   assert.equal(exact.hasUnlistedPossibilities, false);
   assert.equal(local.selected(exact).roleId, 'self');
 });
+
+test('one ancestor role shared by two parent paths does not merge their people', () => {
+  const local = createKinshipEngine({ selfId: 'self', nodes: [
+    n('self', { fa: 'father', mu: 'mother' }),
+    n('father', { fa: 'ancestor', zi: 'self' }, 'male'),
+    n('mother', { fa: 'ancestor' }, 'female'),
+    n('ancestor', { zi: 'father' }, 'male')
+  ] });
+  const next = (s, field) => local.reduce(s, { type: 'advance', field });
+  let state = next(next(local.createSession({ sex: 'male' }), 'fa'), 'fa');
+  const paternal = local.selected(state).personToken;
+  state = next(state, 'zi');
+  state = local.reduce(state, { type: 'choose', candidateId: state.candidates.find(c => c.roleId === 'father').candidateId });
+  state = next(state, 'zi');
+  state = next(next(state, 'mu'), 'fa');
+  const maternal = local.selected(state).personToken;
+  assert.notEqual(maternal, paternal);
+  assert.equal(local.selected(state).graph.people[paternal].roleId, 'ancestor');
+  assert.equal(local.selected(state).graph.people[maternal].roleId, 'ancestor');
+});
+
+test('a self-repeating sibling role on a parent path remains an aggregate', () => {
+  const local = createKinshipEngine({ selfId: 'self', nodes: [
+    n('self', { fa: 'father' }),
+    n('father', { fa: 'ancestor' }, 'male'),
+    n('ancestor', { xiong: 'ancestor' }, 'male')
+  ] });
+  let state = local.createSession();
+  for (const field of ['fa', 'fa']) state = local.reduce(state, { type: 'advance', field });
+  const first = local.selected(state).personToken;
+  state = local.reduce(state, { type: 'advance', field: 'xiong' });
+  assert.equal(state.status, 'ready');
+  assert.notEqual(local.selected(state).personToken, first);
+});
+
+test('anchor age is applied when the unique father first appears after his elder brother', () => {
+  const local = createKinshipEngine({ selfId: 'self', nodes: [
+    n('self', { fa: 'father', zi: 'cousin' }),
+    n('father', { xiong: 'uncle' }, 'male'),
+    n('uncle', { di: ['father', 'uncle'] }, 'male'),
+    n('cousin', { fa: 'uncle' }, 'male')
+  ] });
+  let state = local.createSession({ sex: 'female' });
+  for (const field of ['zi', 'fa', 'di']) state = local.reduce(state, { type: 'advance', field });
+  const father = state.candidates.find(c => c.roleId === 'father');
+  assert.ok(father);
+  const uncle = father.graph.people[father.personToken].siblings[0];
+  assert.ok(father.graph.olderThan.some(([older, younger]) => older === uncle && younger === father.personToken));
+  assert.ok(state.candidates.some(c => c.roleId === 'uncle' && c.personToken !== uncle));
+});

@@ -180,6 +180,126 @@ test('one shared dictionary binding does not collapse different ancestor roles',
     .termIds.map(id => terms.get(id).bindingId).filter(Boolean);
   assert.ok(bindingsFor(paternal).some(id => bindingsFor(maternal).includes(id)),
     'The corpus should retain the shared 大公 lexical binding without merging roles');
+  // Keep both ancestral branches in one graph as well as checking their role
+  // projections separately: sharing a binding must not reuse a person token.
+  let state = paternal;
+  for (const roleId of ['paternal-grandfather', 'father']) {
+    state = advance(state, 'zi');
+    const candidate = state.candidates.find(item => item.roleId === roleId);
+    assert.ok(candidate);
+    state = engine.reduce(state, { type: 'choose', candidateId: candidate.candidateId });
+  }
+  for (const field of ['qi', 'fa', 'fa']) state = advance(state, field);
+  assert.equal(selected(state).roleId, selected(maternal).roleId);
+  assert.notEqual(selected(state).personToken, selected(paternal).personToken);
+  assert.equal(selected(state).graph.people[selected(paternal).personToken].roleId, selected(paternal).roleId);
+});
+
+test('returning through either grandfather parent retains one ancestor and the prior child lineage', () => {
+  for (const parent of ['fa', 'mu']) {
+    const before = walk([parent, 'fa']);
+    const ancestor = selected(before).personToken;
+    const priorParent = selected(before).graph.people[ancestor].children[0];
+    const returned = advance(advance(before, 'fa'), 'zi');
+    const choices = returned.candidates.filter(candidate => candidate.roleId === selected(before).roleId);
+    assert.equal(choices.length, 1);
+    assert.equal(choices[0].personToken, ancestor);
+    const restored = engine.reduce(returned, { type: 'choose', candidateId: choices[0].candidateId });
+    const children = advance(restored, parent === 'fa' ? 'zi' : 'nv');
+    assert.ok(children.candidates.some(candidate => candidate.personToken === priorParent));
+  }
+});
+
+test('grandparents retain their unique identity through sibling and co-parent detours', () => {
+  for (const [prefix, route] of [
+    [['fa', 'fa'], ['xiong', 'fa', 'zi']],
+    [['fa', 'mu'], ['xiong', 'mu', 'nv']],
+    [['mu', 'fa'], ['xiong', 'fa', 'zi']]
+  ]) {
+    const before = walk(prefix); let state = before;
+    for (const field of route) state = advance(state, field);
+    const choices = state.candidates.filter(candidate => candidate.roleId === selected(before).roleId);
+    assert.equal(choices.length, 1, prefix.concat(route).join('>'));
+    assert.equal(choices[0].personToken, selected(before).personToken);
+  }
+});
+
+test('indirect elder and younger uncles obey father, grandfather and spouse age anchors', () => {
+  for (const [prefix, elderRole, youngerRole, anchorRole] of [
+    [['fa', 'fa', 'zi'], 'father-older-brother', 'father-younger-brother', 'father'],
+    [['fa', 'fa', 'fa', 'zi'], 'paternal-grandfather-older-brother', 'paternal-grandfather-younger-brother', 'paternal-grandfather'],
+    [['mu', 'fa', 'fa', 'zi'], 'maternal-grandfather-older-brother', 'maternal-grandfather-younger-brother', 'maternal-grandfather'],
+    [['fu', 'fa', 'zi'], 'husband-older-brother', 'husband-younger-brother', 'husband']
+  ]) {
+    for (const [uncleRole, forbidden, allowed] of [[elderRole, 'xiong', 'di'], [youngerRole, 'di', 'xiong']]) {
+      const choices = walk(prefix);
+      const uncle = choices.candidates.find(candidate => candidate.roleId === uncleRole);
+      assert.ok(uncle, uncleRole);
+      const state = engine.reduce(choices, { type: 'choose', candidateId: uncle.candidateId });
+      const after = advance(state, forbidden);
+      if (after.path.length === state.path.length) {
+        assert.equal(after.status, 'unsupported');
+        assert.deepEqual(after.candidates, state.candidates);
+      } else {
+        assert.ok(!after.candidates.some(candidate => candidate.roleId === anchorRole), uncleRole + '>' + forbidden);
+      }
+      assert.ok(advance(state, allowed).candidates.some(candidate => candidate.roleId === anchorRole));
+    }
+  }
+});
+
+test('another elder uncle can be younger than the visited elder uncle while remaining older than father', () => {
+  const choices = walk(['fa', 'fa', 'zi']);
+  const uncle = choices.candidates.find(candidate => candidate.roleId === 'father-older-brother');
+  const state = engine.reduce(choices, { type: 'choose', candidateId: uncle.candidateId });
+  const after = advance(state, 'di');
+  const other = after.candidates.find(candidate => candidate.roleId === uncle.roleId && candidate.personToken !== uncle.personToken);
+  assert.ok(other);
+  const father = Object.values(other.graph.people).find(person => person.roleId === 'father').token;
+  assert.ok(other.graph.olderThan.some(([older, younger]) => older === uncle.personToken && younger === other.personToken));
+  assert.ok(other.graph.olderThan.some(([older, younger]) => older === other.personToken && younger === father));
+  const younger = choices.candidates.find(candidate => candidate.roleId === 'father-younger-brother');
+  const youngState = engine.reduce(choices, { type: 'choose', candidateId: younger.candidateId });
+  assert.ok(advance(youngState, 'xiong').candidates.some(candidate =>
+    candidate.roleId === younger.roleId && candidate.personToken !== younger.personToken));
+});
+
+test('a merged maternal uncle role does not acquire a global age relative to mother', () => {
+  const choices = walk(['mu', 'fa', 'zi']);
+  const uncle = choices.candidates.find(candidate => candidate.roleId === 'mother-brother');
+  const state = engine.reduce(choices, { type: 'choose', candidateId: uncle.candidateId });
+  const mother = Object.values(selected(state).graph.people).find(person => person.roleId === 'mother').token;
+  assert.ok(!selected(state).graph.olderThan.some(pair => pair.includes(mother) && pair.includes(uncle.personToken)));
+  for (const field of ['jie', 'mei']) {
+    assert.ok(advance(state, field).candidates.some(candidate => candidate.personToken === mother));
+  }
+  assert.ok(advance(state, 'xiong').candidates.some(candidate => candidate.roleId === uncle.roleId && candidate.personToken !== uncle.personToken));
+});
+
+test('aggregate cousin roles still produce different people instead of ancestor-like singletons', () => {
+  const first = walk(['fa', 'xiong', 'zi']);
+  const other = advance(first, 'xiong');
+  assert.equal(selected(other).roleId, selected(first).roleId);
+  assert.notEqual(selected(other).personToken, selected(first).personToken);
+});
+
+test('ancestor identity and indirect age constraints survive undo and JSON without contaminating reset', () => {
+  const choices = walk(['fa', 'fa', 'zi']);
+  const uncle = choices.candidates.find(candidate => candidate.roleId === 'father-older-brother');
+  const before = engine.reduce(choices, { type: 'choose', candidateId: uncle.candidateId });
+  const frozen = JSON.stringify(before);
+  const after = advance(JSON.parse(frozen), 'di');
+  const restored = engine.reduce(after, { type: 'back' });
+  assert.equal(JSON.stringify(before), frozen);
+  assert.deepEqual(selected(restored).graph, selected(before).graph);
+  assert.equal(selected(restored).personToken, uncle.personToken);
+  assert.ok(!advance(restored, 'xiong').candidates.some(candidate => candidate.roleId === 'father'));
+  for (const action of [{ type: 'clear' }, { type: 'setContext', context: { sex: 'female' } }]) {
+    const reset = engine.reduce(restored, action);
+    assert.deepEqual(selected(reset).graph.olderThan, []);
+    assert.deepEqual(Object.keys(selected(reset).graph.people), ['p0']);
+    assert.deepEqual(reset.history, []);
+  }
 });
 
 function assertGraph(graph) {
