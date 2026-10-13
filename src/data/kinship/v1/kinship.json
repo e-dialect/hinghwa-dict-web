@@ -1,0 +1,5338 @@
+{
+  "schemaVersion": "1.0.0",
+  "datasetVersion": "2026-10-13.1",
+  "selfId": "self",
+  "fields": [
+    {
+      "key": "fa",
+      "label": "父",
+      "legacyName": "父亲"
+    },
+    {
+      "key": "mu",
+      "label": "母",
+      "legacyName": "母亲"
+    },
+    {
+      "key": "xiong",
+      "label": "兄",
+      "legacyName": "兄亲"
+    },
+    {
+      "key": "di",
+      "label": "弟",
+      "legacyName": "弟亲"
+    },
+    {
+      "key": "jie",
+      "label": "姐",
+      "legacyName": "姊亲"
+    },
+    {
+      "key": "mei",
+      "label": "妹",
+      "legacyName": "妹亲"
+    },
+    {
+      "key": "fu",
+      "label": "夫",
+      "legacyName": "夫亲"
+    },
+    {
+      "key": "qi",
+      "label": "妻",
+      "legacyName": "妻亲"
+    },
+    {
+      "key": "zi",
+      "label": "子",
+      "legacyName": "男亲"
+    },
+    {
+      "key": "nv",
+      "label": "女",
+      "legacyName": "女亲"
+    }
+  ],
+  "sources": [
+    {
+      "id": "phase1-legacy",
+      "kind": "legacy",
+      "title": "Phase 1 compatible graph",
+      "scope": "Existing role edges and display words; role usage has not been linguistically reviewed."
+    },
+    {
+      "id": "chart-v1",
+      "kind": "chart",
+      "title": "莆仙话亲属称谓关系图 v1.0（莆田腔版本）",
+      "uri": "https://github.com/user-attachments/assets/3aacc81d-7607-45d6-815c-7721fdf7c905",
+      "scope": "User supplied chart, 莆仙乡音社, 2026-02-01; family branches and selected role definitions."
+    },
+    {
+      "id": "sqlite-snapshot",
+      "kind": "databaseSnapshot",
+      "title": "兴化语记当前数据.sqlite3",
+      "scope": "User supplied snapshot, inspected 2026-10-13; exact word/ID binding only, not role applicability or live database freshness."
+    },
+    {
+      "id": "role-normalization",
+      "kind": "inference",
+      "title": "Phase 1 relation target normalization",
+      "scope": "Mandarin role labels/definitions inferred from existing relation edges; not confirmed dialect words."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "self",
+      "label": "己身",
+      "sex": "unknown",
+      "kind": "person",
+      "relations": {
+        "fa": "father",
+        "mu": "mother",
+        "xiong": "older-brother",
+        "di": "younger-brother",
+        "jie": "older-sister",
+        "mei": "younger-sister",
+        "fu": "husband",
+        "qi": "wife",
+        "zi": "son",
+        "nv": "daughter"
+      },
+      "termIds": [
+        "term-001"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "己身"
+    },
+    {
+      "id": "ancestors",
+      "label": "祖先",
+      "sex": "unknown",
+      "kind": "collective",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-002"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "祖先"
+    },
+    {
+      "id": "paternal-great-great-grandfather",
+      "label": "高祖父",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": "paternal-great-great-grandmother",
+        "zi": "paternal-great-grandfather",
+        "nv": null
+      },
+      "termIds": [
+        "term-003"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "高祖父"
+    },
+    {
+      "id": "paternal-great-great-grandmother",
+      "label": "高祖母",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": "paternal-great-great-grandfather",
+        "qi": null,
+        "zi": "paternal-great-grandfather",
+        "nv": null
+      },
+      "termIds": [
+        "term-004"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "高祖母"
+    },
+    {
+      "id": "paternal-great-grandfather",
+      "label": "曾祖父",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": "paternal-great-great-grandfather",
+        "mu": "paternal-great-great-grandmother",
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": "paternal-great-grandmother",
+        "zi": [
+          "paternal-grandfather",
+          "paternal-grandfather-older-brother",
+          "paternal-grandfather-younger-brother"
+        ],
+        "nv": [
+          "paternal-grandfather-sister"
+        ]
+      },
+      "termIds": [
+        "term-005"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "曾祖父"
+    },
+    {
+      "id": "paternal-great-grandmother",
+      "label": "曾祖母",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": "paternal-great-grandfather",
+        "qi": null,
+        "zi": [
+          "paternal-grandfather",
+          "paternal-grandfather-older-brother",
+          "paternal-grandfather-younger-brother"
+        ],
+        "nv": [
+          "paternal-grandfather-sister"
+        ]
+      },
+      "termIds": [
+        "term-006"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "曾祖母"
+    },
+    {
+      "id": "maternal-grandfather-father",
+      "label": "外曾祖父",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": "maternal-grandfather-mother",
+        "zi": [
+          "maternal-grandfather",
+          "maternal-grandfather-older-brother",
+          "maternal-grandfather-younger-brother"
+        ],
+        "nv": "maternal-grandfather-sister"
+      },
+      "termIds": [
+        "term-005"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "外曾祖父"
+    },
+    {
+      "id": "maternal-grandfather-mother",
+      "label": "外曾祖母",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": "maternal-grandfather-father",
+        "qi": null,
+        "zi": [
+          "maternal-grandfather",
+          "maternal-grandfather-older-brother",
+          "maternal-grandfather-younger-brother"
+        ],
+        "nv": "maternal-grandfather-sister"
+      },
+      "termIds": [
+        "term-006"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "外曾祖母"
+    },
+    {
+      "id": "paternal-grandfather",
+      "label": "祖父",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": "paternal-great-grandfather",
+        "mu": "paternal-great-grandmother",
+        "xiong": "paternal-grandfather-older-brother",
+        "di": "paternal-grandfather-younger-brother",
+        "jie": "paternal-grandfather-sister",
+        "mei": "paternal-grandfather-sister",
+        "fu": null,
+        "qi": "paternal-grandmother",
+        "zi": [
+          "father",
+          "father-older-brother",
+          "father-younger-brother"
+        ],
+        "nv": "father-sister"
+      },
+      "termIds": [
+        "term-007"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "祖父"
+    },
+    {
+      "id": "paternal-grandmother",
+      "label": "祖母",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": "paternal-grandmother-brother",
+        "di": "paternal-grandmother-brother",
+        "jie": "paternal-grandmother-sister",
+        "mei": "paternal-grandmother-sister",
+        "fu": "paternal-grandfather",
+        "qi": null,
+        "zi": [
+          "father",
+          "father-older-brother",
+          "father-younger-brother"
+        ],
+        "nv": "father-sister"
+      },
+      "termIds": [
+        "term-008",
+        "term-009"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "祖母"
+    },
+    {
+      "id": "paternal-grandfather-older-brother",
+      "label": "伯祖父",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": "paternal-great-grandfather",
+        "mu": "paternal-great-grandmother",
+        "xiong": "paternal-grandfather-older-brother",
+        "di": [
+          "paternal-grandfather",
+          "paternal-grandfather-older-brother",
+          "paternal-grandfather-younger-brother"
+        ],
+        "jie": "paternal-grandfather-sister",
+        "mei": "paternal-grandfather-sister",
+        "fu": null,
+        "qi": "paternal-grandfather-older-brother-wife",
+        "zi": [
+          "father-older-paternal-cousin",
+          "father-younger-paternal-cousin"
+        ],
+        "nv": "father-paternal-female-cousin"
+      },
+      "termIds": [
+        "term-010"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "伯祖父"
+    },
+    {
+      "id": "paternal-grandfather-older-brother-wife",
+      "label": "伯祖母",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": "paternal-grandfather-older-brother",
+        "qi": null,
+        "zi": [
+          "father-older-paternal-cousin",
+          "father-younger-paternal-cousin"
+        ],
+        "nv": "father-paternal-female-cousin"
+      },
+      "termIds": [
+        "term-011",
+        "term-012"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "伯祖母"
+    },
+    {
+      "id": "paternal-grandfather-younger-brother",
+      "label": "叔祖父",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": "paternal-great-grandfather",
+        "mu": "paternal-great-grandmother",
+        "xiong": [
+          "paternal-grandfather",
+          "paternal-grandfather-older-brother",
+          "paternal-grandfather-younger-brother"
+        ],
+        "di": "paternal-grandfather-younger-brother",
+        "jie": "paternal-grandfather-sister",
+        "mei": "paternal-grandfather-sister",
+        "fu": null,
+        "qi": "paternal-grandfather-younger-brother-wife",
+        "zi": [
+          "father-older-paternal-cousin",
+          "father-younger-paternal-cousin"
+        ],
+        "nv": "father-paternal-female-cousin"
+      },
+      "termIds": [
+        "term-013"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "叔祖父"
+    },
+    {
+      "id": "paternal-grandfather-younger-brother-wife",
+      "label": "叔祖母",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": "paternal-grandfather-younger-brother",
+        "qi": null,
+        "zi": [
+          "father-older-paternal-cousin",
+          "father-younger-paternal-cousin"
+        ],
+        "nv": "father-paternal-female-cousin"
+      },
+      "termIds": [
+        "term-014"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "叔祖母"
+    },
+    {
+      "id": "father-older-paternal-cousin",
+      "label": "堂伯父",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": [
+          "paternal-grandfather-older-brother",
+          "paternal-grandfather-younger-brother"
+        ],
+        "mu": [
+          "paternal-grandfather-older-brother-wife",
+          "paternal-grandfather-younger-brother-wife"
+        ],
+        "xiong": "father-older-paternal-cousin",
+        "di": [
+          "father-older-paternal-cousin",
+          "father-younger-paternal-cousin"
+        ],
+        "jie": [
+          "father-paternal-female-cousin"
+        ],
+        "mei": [
+          "father-paternal-female-cousin"
+        ],
+        "fu": null,
+        "qi": "father-older-paternal-cousin-wife",
+        "zi": "paternal-male-cousin",
+        "nv": "paternal-female-cousin"
+      },
+      "termIds": [
+        "term-015"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "堂伯父"
+    },
+    {
+      "id": "father-older-paternal-cousin-wife",
+      "label": "堂伯母",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": "father-older-paternal-cousin",
+        "qi": null,
+        "zi": "paternal-male-cousin",
+        "nv": "paternal-female-cousin"
+      },
+      "termIds": [
+        "term-016",
+        "term-017"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "堂伯母"
+    },
+    {
+      "id": "father-younger-paternal-cousin",
+      "label": "堂叔父",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": [
+          "paternal-grandfather-older-brother",
+          "paternal-grandfather-younger-brother"
+        ],
+        "mu": [
+          "paternal-grandfather-older-brother-wife",
+          "paternal-grandfather-younger-brother-wife"
+        ],
+        "xiong": [
+          "father-older-paternal-cousin",
+          "father-younger-paternal-cousin"
+        ],
+        "di": "father-younger-paternal-cousin",
+        "jie": [
+          "father-paternal-female-cousin"
+        ],
+        "mei": [
+          "father-paternal-female-cousin"
+        ],
+        "fu": null,
+        "qi": "father-younger-paternal-cousin-wife",
+        "zi": "paternal-male-cousin",
+        "nv": "paternal-female-cousin"
+      },
+      "termIds": [
+        "term-018"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "堂叔父"
+    },
+    {
+      "id": "father-younger-paternal-cousin-wife",
+      "label": "堂叔母",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": "father-younger-paternal-cousin",
+        "qi": null,
+        "zi": "paternal-male-cousin",
+        "nv": "paternal-female-cousin"
+      },
+      "termIds": [
+        "term-019"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "堂叔母"
+    },
+    {
+      "id": "paternal-grandfather-sister",
+      "label": "姑祖母",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": "paternal-great-grandfather",
+        "mu": "paternal-great-grandmother",
+        "xiong": [
+          "paternal-grandfather",
+          "paternal-grandfather-older-brother",
+          "paternal-grandfather-younger-brother"
+        ],
+        "di": [
+          "paternal-grandfather",
+          "paternal-grandfather-older-brother",
+          "paternal-grandfather-younger-brother"
+        ],
+        "jie": "paternal-grandfather-sister",
+        "mei": "paternal-grandfather-sister",
+        "fu": "paternal-grandfather-sister-husband",
+        "qi": null,
+        "zi": [
+          "father-younger-non-paternal-male-cousin",
+          "father-older-non-paternal-male-cousin"
+        ],
+        "nv": "father-non-paternal-female-cousin"
+      },
+      "termIds": [
+        "term-020"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "姑祖母"
+    },
+    {
+      "id": "paternal-grandfather-sister-husband",
+      "label": "姑祖父",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": "paternal-grandfather-sister",
+        "zi": [
+          "father-younger-non-paternal-male-cousin",
+          "father-older-non-paternal-male-cousin"
+        ],
+        "nv": "father-non-paternal-female-cousin"
+      },
+      "termIds": [
+        "term-021"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "姑祖父"
+    },
+    {
+      "id": "paternal-grandmother-brother",
+      "label": "舅祖父",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": "paternal-grandmother-father",
+        "mu": "paternal-grandmother-mother",
+        "xiong": "paternal-grandmother-brother",
+        "di": "paternal-grandmother-brother",
+        "jie": [
+          "paternal-grandmother",
+          "paternal-grandmother-sister"
+        ],
+        "mei": [
+          "paternal-grandmother",
+          "paternal-grandmother-sister"
+        ],
+        "fu": null,
+        "qi": "paternal-grandmother-brother-wife",
+        "zi": [
+          "father-younger-non-paternal-male-cousin",
+          "father-older-non-paternal-male-cousin"
+        ],
+        "nv": "father-non-paternal-female-cousin"
+      },
+      "termIds": [
+        "term-022"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "舅祖父"
+    },
+    {
+      "id": "paternal-grandmother-brother-wife",
+      "label": "舅祖母",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": "paternal-grandmother-brother",
+        "qi": null,
+        "zi": [
+          "father-younger-non-paternal-male-cousin",
+          "father-older-non-paternal-male-cousin"
+        ],
+        "nv": "father-non-paternal-female-cousin"
+      },
+      "termIds": [
+        "term-023"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "舅祖母"
+    },
+    {
+      "id": "paternal-grandmother-sister",
+      "label": "姨祖母",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": "paternal-grandmother-father",
+        "mu": "paternal-grandmother-mother",
+        "xiong": "paternal-grandmother-brother",
+        "di": "paternal-grandmother-brother",
+        "jie": [
+          "paternal-grandmother",
+          "paternal-grandmother-sister"
+        ],
+        "mei": [
+          "paternal-grandmother",
+          "paternal-grandmother-sister"
+        ],
+        "fu": "paternal-grandmother-sister-husband",
+        "qi": null,
+        "zi": [
+          "father-younger-non-paternal-male-cousin",
+          "father-older-non-paternal-male-cousin"
+        ],
+        "nv": "father-non-paternal-female-cousin"
+      },
+      "termIds": [
+        "term-024"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "姨祖母"
+    },
+    {
+      "id": "paternal-grandmother-sister-husband",
+      "label": "姨祖父",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": "paternal-grandmother-sister",
+        "zi": [
+          "father-younger-non-paternal-male-cousin",
+          "father-older-non-paternal-male-cousin"
+        ],
+        "nv": "father-non-paternal-female-cousin"
+      },
+      "termIds": [
+        "term-025"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "姨祖父"
+    },
+    {
+      "id": "maternal-grandfather",
+      "label": "外祖父",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": "maternal-grandfather-father",
+        "mu": "maternal-grandfather-mother",
+        "xiong": "maternal-grandfather-older-brother",
+        "di": "maternal-grandfather-younger-brother",
+        "jie": "maternal-grandfather-sister",
+        "mei": "maternal-grandfather-sister",
+        "fu": null,
+        "qi": "maternal-grandmother",
+        "zi": "mother-brother",
+        "nv": [
+          "mother",
+          "mother-sister"
+        ]
+      },
+      "termIds": [
+        "term-026"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "外祖父"
+    },
+    {
+      "id": "maternal-grandmother",
+      "label": "外祖母",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": "maternal-grandfather",
+        "qi": null,
+        "zi": "mother-brother",
+        "nv": [
+          "mother",
+          "mother-sister"
+        ]
+      },
+      "termIds": [
+        "term-027",
+        "term-009"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "外祖母"
+    },
+    {
+      "id": "father",
+      "label": "父亲",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": "paternal-grandfather",
+        "mu": "paternal-grandmother",
+        "xiong": "father-older-brother",
+        "di": "father-younger-brother",
+        "jie": "father-sister",
+        "mei": "father-sister",
+        "fu": null,
+        "qi": "mother",
+        "zi": [
+          "self",
+          "older-brother",
+          "younger-brother"
+        ],
+        "nv": [
+          "self",
+          "older-sister",
+          "younger-sister"
+        ]
+      },
+      "termIds": [
+        "term-028",
+        "term-029",
+        "term-030"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "父亲"
+    },
+    {
+      "id": "mother",
+      "label": "母亲",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": "maternal-grandfather",
+        "mu": "maternal-grandmother",
+        "xiong": "mother-brother",
+        "di": "mother-brother",
+        "jie": "mother-sister",
+        "mei": "mother-sister",
+        "fu": "father",
+        "qi": null,
+        "zi": [
+          "self",
+          "older-brother",
+          "younger-brother"
+        ],
+        "nv": [
+          "self",
+          "older-sister",
+          "younger-sister"
+        ]
+      },
+      "termIds": [
+        "term-031",
+        "term-032",
+        "term-033",
+        "term-034",
+        "term-035",
+        "term-036",
+        "term-037",
+        "term-038",
+        "term-039"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "母亲"
+    },
+    {
+      "id": "father-older-brother",
+      "label": "伯父",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": "paternal-grandfather",
+        "mu": "paternal-grandmother",
+        "xiong": "father-older-brother",
+        "di": [
+          "father",
+          "father-older-brother",
+          "father-younger-brother"
+        ],
+        "jie": "father-sister",
+        "mei": "father-sister",
+        "fu": null,
+        "qi": "father-older-brother-wife",
+        "zi": "paternal-male-cousin",
+        "nv": "paternal-female-cousin"
+      },
+      "termIds": [
+        "term-015"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "伯父"
+    },
+    {
+      "id": "father-older-brother-wife",
+      "label": "伯母",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": "father-older-brother",
+        "qi": null,
+        "zi": "paternal-male-cousin",
+        "nv": "paternal-female-cousin"
+      },
+      "termIds": [
+        "term-016",
+        "term-017"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "伯母"
+    },
+    {
+      "id": "father-younger-brother",
+      "label": "叔父",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": "paternal-grandfather",
+        "mu": "paternal-grandmother",
+        "xiong": [
+          "father",
+          "father-older-brother",
+          "father-younger-brother"
+        ],
+        "di": "father-younger-brother",
+        "jie": "father-sister",
+        "mei": "father-sister",
+        "fu": null,
+        "qi": "father-younger-brother-wife",
+        "zi": "paternal-male-cousin",
+        "nv": "paternal-female-cousin"
+      },
+      "termIds": [
+        "term-018"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "叔父"
+    },
+    {
+      "id": "father-younger-brother-wife",
+      "label": "叔母",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": "father-younger-brother",
+        "qi": null,
+        "zi": "paternal-male-cousin",
+        "nv": "paternal-female-cousin"
+      },
+      "termIds": [
+        "term-019"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "叔母"
+    },
+    {
+      "id": "father-sister",
+      "label": "姑母",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": "paternal-grandfather",
+        "mu": "paternal-grandmother",
+        "xiong": [
+          "father",
+          "father-older-brother",
+          "father-younger-brother"
+        ],
+        "di": [
+          "father",
+          "father-older-brother",
+          "father-younger-brother"
+        ],
+        "jie": "father-sister",
+        "mei": "father-sister",
+        "fu": "father-sister-husband",
+        "qi": null,
+        "zi": "non-paternal-male-cousin",
+        "nv": "non-paternal-female-cousin"
+      },
+      "termIds": [
+        "term-040"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "姑母"
+    },
+    {
+      "id": "father-sister-husband",
+      "label": "姑父",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": "father-sister",
+        "zi": "non-paternal-male-cousin",
+        "nv": "non-paternal-female-cousin"
+      },
+      "termIds": [
+        "term-041"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "姑父"
+    },
+    {
+      "id": "mother-brother",
+      "label": "舅父",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": "maternal-grandfather",
+        "mu": "maternal-grandmother",
+        "xiong": "mother-brother",
+        "di": "mother-brother",
+        "jie": [
+          "mother-sister",
+          "mother"
+        ],
+        "mei": [
+          "mother-sister",
+          "mother"
+        ],
+        "fu": null,
+        "qi": "mother-brother-wife",
+        "zi": "non-paternal-male-cousin",
+        "nv": "non-paternal-female-cousin"
+      },
+      "termIds": [
+        "term-042"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "舅父"
+    },
+    {
+      "id": "mother-brother-wife",
+      "label": "舅母",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": "mother-brother",
+        "qi": null,
+        "zi": "non-paternal-male-cousin",
+        "nv": "non-paternal-female-cousin"
+      },
+      "termIds": [
+        "term-043"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "舅母"
+    },
+    {
+      "id": "mother-sister",
+      "label": "姨母",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": "maternal-grandfather",
+        "mu": "maternal-grandmother",
+        "xiong": "mother-brother",
+        "di": "mother-brother",
+        "jie": [
+          "mother",
+          "mother-sister"
+        ],
+        "mei": [
+          "mother",
+          "mother-sister"
+        ],
+        "fu": "mother-sister-husband",
+        "qi": null,
+        "zi": "non-paternal-male-cousin",
+        "nv": "non-paternal-female-cousin"
+      },
+      "termIds": [
+        "term-044"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "姨母"
+    },
+    {
+      "id": "mother-sister-husband",
+      "label": "姨父",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": "mother-sister",
+        "zi": "non-paternal-male-cousin",
+        "nv": "non-paternal-female-cousin"
+      },
+      "termIds": [
+        "term-045"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "姨父"
+    },
+    {
+      "id": "older-brother",
+      "label": "兄亲",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": "father",
+        "mu": "mother",
+        "xiong": "older-brother",
+        "di": [
+          "older-brother",
+          "self",
+          "younger-brother"
+        ],
+        "jie": "older-sister",
+        "mei": [
+          "self",
+          "younger-sister",
+          "older-sister"
+        ],
+        "fu": null,
+        "qi": "older-brother-wife",
+        "zi": "brother-son",
+        "nv": "brother-daughter"
+      },
+      "termIds": [
+        "term-046"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "兄亲"
+    },
+    {
+      "id": "older-brother-wife",
+      "label": "兄妇",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": "older-brother",
+        "qi": null,
+        "zi": "brother-son",
+        "nv": "brother-daughter"
+      },
+      "termIds": [
+        "term-047"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "兄妇"
+    },
+    {
+      "id": "younger-brother",
+      "label": "弟亲",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": "father",
+        "mu": "mother",
+        "xiong": [
+          "self",
+          "older-brother",
+          "younger-brother"
+        ],
+        "di": "younger-brother",
+        "jie": [
+          "self",
+          "older-sister",
+          "younger-sister"
+        ],
+        "mei": "younger-sister",
+        "fu": null,
+        "qi": "younger-brother-wife",
+        "zi": "brother-son",
+        "nv": "brother-daughter"
+      },
+      "termIds": [
+        "term-048"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "弟亲"
+    },
+    {
+      "id": "younger-brother-wife",
+      "label": "弟妇",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": "younger-brother",
+        "qi": null,
+        "zi": "brother-son",
+        "nv": "brother-daughter"
+      },
+      "termIds": [
+        "term-049",
+        "term-050"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "弟妇"
+    },
+    {
+      "id": "brother-son",
+      "label": "侄男",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": [
+          "older-brother",
+          "younger-brother"
+        ],
+        "mu": [
+          "older-brother-wife",
+          "younger-brother-wife"
+        ],
+        "xiong": "brother-son",
+        "di": "brother-son",
+        "jie": "brother-daughter",
+        "mei": "brother-daughter",
+        "fu": null,
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-051"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "侄男"
+    },
+    {
+      "id": "brother-daughter",
+      "label": "侄女",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": [
+          "older-brother",
+          "younger-brother"
+        ],
+        "mu": [
+          "older-brother-wife",
+          "younger-brother-wife"
+        ],
+        "xiong": "brother-son",
+        "di": "brother-son",
+        "jie": "brother-daughter",
+        "mei": "brother-daughter",
+        "fu": null,
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-052"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "侄女"
+    },
+    {
+      "id": "older-sister",
+      "label": "姊亲",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": "father",
+        "mu": "mother",
+        "xiong": "older-brother",
+        "di": [
+          "self",
+          "younger-brother",
+          "older-brother"
+        ],
+        "jie": "older-sister",
+        "mei": [
+          "self",
+          "younger-sister",
+          "older-sister"
+        ],
+        "fu": "older-sister-husband",
+        "qi": null,
+        "zi": "sister-son",
+        "nv": "sister-daughter"
+      },
+      "termIds": [
+        "term-053"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "姊亲"
+    },
+    {
+      "id": "older-sister-husband",
+      "label": "姊夫",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": "older-sister",
+        "zi": "sister-son",
+        "nv": "sister-daughter"
+      },
+      "termIds": [
+        "term-054",
+        "term-055"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "姊夫"
+    },
+    {
+      "id": "younger-sister",
+      "label": "妹亲",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": "father",
+        "mu": "mother",
+        "xiong": [
+          "self",
+          "older-brother",
+          "younger-brother"
+        ],
+        "di": "younger-brother",
+        "jie": [
+          "self",
+          "older-sister",
+          "younger-sister"
+        ],
+        "mei": "younger-sister",
+        "fu": "younger-sister-husband",
+        "qi": null,
+        "zi": "sister-son",
+        "nv": "sister-daughter"
+      },
+      "termIds": [
+        "term-056"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "妹亲"
+    },
+    {
+      "id": "younger-sister-husband",
+      "label": "妹夫",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": "younger-sister",
+        "zi": "sister-son",
+        "nv": "sister-daughter"
+      },
+      "termIds": [
+        "term-057"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "妹夫"
+    },
+    {
+      "id": "sister-son",
+      "label": "甥男",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": [
+          "older-sister-husband",
+          "younger-sister-husband"
+        ],
+        "mu": [
+          "older-sister",
+          "younger-sister"
+        ],
+        "xiong": "sister-son",
+        "di": "sister-son",
+        "jie": "sister-daughter",
+        "mei": "sister-daughter",
+        "fu": null,
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-058"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "甥男"
+    },
+    {
+      "id": "sister-daughter",
+      "label": "甥女",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": [
+          "older-sister-husband",
+          "younger-sister-husband"
+        ],
+        "mu": [
+          "older-sister",
+          "younger-sister"
+        ],
+        "xiong": "sister-son",
+        "di": "sister-son",
+        "jie": "sister-daughter",
+        "mei": "sister-daughter",
+        "fu": null,
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-059"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "甥女"
+    },
+    {
+      "id": "paternal-male-cousin",
+      "label": "堂兄弟",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": [
+          "father-older-brother",
+          "father-younger-brother"
+        ],
+        "mu": [
+          "father-older-brother-wife",
+          "father-younger-brother-wife"
+        ],
+        "xiong": "paternal-male-cousin",
+        "di": "paternal-male-cousin",
+        "jie": "paternal-female-cousin",
+        "mei": "paternal-female-cousin",
+        "fu": null,
+        "qi": null,
+        "zi": "paternal-male-cousin-son",
+        "nv": "paternal-male-cousin-daughter"
+      },
+      "termIds": [
+        "term-060"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "堂兄弟"
+    },
+    {
+      "id": "paternal-female-cousin",
+      "label": "堂姊妹",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": [
+          "father-older-brother",
+          "father-younger-brother"
+        ],
+        "mu": [
+          "father-older-brother-wife",
+          "father-younger-brother-wife"
+        ],
+        "xiong": "paternal-male-cousin",
+        "di": "paternal-male-cousin",
+        "jie": "paternal-female-cousin",
+        "mei": "paternal-female-cousin",
+        "fu": null,
+        "qi": null,
+        "zi": "paternal-female-cousin-son",
+        "nv": "paternal-female-cousin-daughter"
+      },
+      "termIds": [
+        "term-061"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "堂姊妹"
+    },
+    {
+      "id": "non-paternal-male-cousin",
+      "label": "表兄弟",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": [
+          "father-sister-husband",
+          "mother-brother",
+          "mother-sister-husband"
+        ],
+        "mu": [
+          "father-sister",
+          "mother-brother-wife",
+          "mother-sister"
+        ],
+        "xiong": "non-paternal-male-cousin",
+        "di": "non-paternal-male-cousin",
+        "jie": "non-paternal-female-cousin",
+        "mei": "non-paternal-female-cousin",
+        "fu": null,
+        "qi": null,
+        "zi": "non-paternal-male-cousin-son",
+        "nv": "non-paternal-male-cousin-daughter"
+      },
+      "termIds": [
+        "term-062"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "表兄弟"
+    },
+    {
+      "id": "non-paternal-female-cousin",
+      "label": "表姊妹",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": [
+          "father-sister-husband",
+          "mother-brother",
+          "mother-sister-husband"
+        ],
+        "mu": [
+          "father-sister",
+          "mother-brother-wife",
+          "mother-sister"
+        ],
+        "xiong": "non-paternal-male-cousin",
+        "di": "non-paternal-male-cousin",
+        "jie": "non-paternal-female-cousin",
+        "mei": "non-paternal-female-cousin",
+        "fu": null,
+        "qi": null,
+        "zi": "non-paternal-female-cousin-son",
+        "nv": "non-paternal-female-cousin-daughter"
+      },
+      "termIds": [
+        "term-063"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "表姊妹"
+    },
+    {
+      "id": "son",
+      "label": "男亲",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": [
+          "self",
+          "husband"
+        ],
+        "mu": [
+          "self",
+          "wife"
+        ],
+        "xiong": "son",
+        "di": "son",
+        "jie": "daughter",
+        "mei": "daughter",
+        "fu": null,
+        "qi": "son-wife",
+        "zi": "paternal-grandson",
+        "nv": "paternal-granddaughter"
+      },
+      "termIds": [
+        "term-064",
+        "term-065",
+        "term-066",
+        "term-067",
+        "term-068"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "note": "大囝、长子只用于长子；细囝、尾囝只用于幼子。本页尚未记录排行，请按实际关系选用。",
+      "legacyName": "男亲"
+    },
+    {
+      "id": "son-wife",
+      "label": "儿妇",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": "son-wife-father",
+        "mu": "son-wife-mother",
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": "son",
+        "qi": null,
+        "zi": "paternal-grandson",
+        "nv": "paternal-granddaughter"
+      },
+      "termIds": [
+        "term-069",
+        "term-070"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "儿妇"
+    },
+    {
+      "id": "son-wife-father",
+      "label": "亲家公（儿）",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": "son-wife-mother",
+        "zi": null,
+        "nv": "son-wife"
+      },
+      "termIds": [
+        "term-071"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "亲家公（儿）"
+    },
+    {
+      "id": "son-wife-mother",
+      "label": "亲家母（儿）",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": "son-wife-father",
+        "qi": null,
+        "zi": null,
+        "nv": "son-wife"
+      },
+      "termIds": [
+        "term-072"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "亲家母（儿）"
+    },
+    {
+      "id": "daughter",
+      "label": "女亲",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": [
+          "self",
+          "husband"
+        ],
+        "mu": [
+          "self",
+          "wife"
+        ],
+        "xiong": "son",
+        "di": "son",
+        "jie": "daughter",
+        "mei": "daughter",
+        "fu": "daughter-husband",
+        "qi": null,
+        "zi": "maternal-grandson",
+        "nv": "maternal-granddaughter"
+      },
+      "termIds": [
+        "term-073"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "女亲"
+    },
+    {
+      "id": "daughter-husband",
+      "label": "女婿",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": "daughter-husband-father",
+        "mu": "daughter-husband-mother",
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": "daughter",
+        "zi": "maternal-grandson",
+        "nv": "maternal-granddaughter"
+      },
+      "termIds": [
+        "term-074"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "女婿"
+    },
+    {
+      "id": "daughter-husband-father",
+      "label": "亲家公（女）",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": "daughter-husband-mother",
+        "zi": "daughter-husband",
+        "nv": null
+      },
+      "termIds": [
+        "term-071"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "亲家公（女）"
+    },
+    {
+      "id": "daughter-husband-mother",
+      "label": "亲家母（女）",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": "daughter-husband-father",
+        "qi": null,
+        "zi": "daughter-husband",
+        "nv": null
+      },
+      "termIds": [
+        "term-072"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "亲家母（女）"
+    },
+    {
+      "id": "paternal-grandson",
+      "label": "孙儿",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": "son",
+        "mu": "son-wife",
+        "xiong": "paternal-grandson",
+        "di": "paternal-grandson",
+        "jie": "paternal-granddaughter",
+        "mei": "paternal-granddaughter",
+        "fu": null,
+        "qi": "paternal-grandson-wife",
+        "zi": "paternal-grandson-son",
+        "nv": "paternal-grandson-daughter"
+      },
+      "termIds": [
+        "term-075",
+        "term-076",
+        "term-077"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "孙儿"
+    },
+    {
+      "id": "paternal-granddaughter",
+      "label": "孙女",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": "son",
+        "mu": "son-wife",
+        "xiong": "paternal-grandson",
+        "di": "paternal-grandson",
+        "jie": "paternal-granddaughter",
+        "mei": "paternal-granddaughter",
+        "fu": "paternal-granddaughter-husband",
+        "qi": null,
+        "zi": "paternal-granddaughter-child",
+        "nv": "paternal-granddaughter-child"
+      },
+      "termIds": [
+        "term-075"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "孙女"
+    },
+    {
+      "id": "maternal-grandson",
+      "label": "外孙儿",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": "daughter-husband",
+        "mu": "daughter",
+        "xiong": "maternal-grandson",
+        "di": "maternal-grandson",
+        "jie": "maternal-granddaughter",
+        "mei": "maternal-granddaughter",
+        "fu": null,
+        "qi": "maternal-grandson-wife",
+        "zi": "maternal-grandson-child",
+        "nv": "maternal-grandson-child"
+      },
+      "termIds": [
+        "term-078"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "外孙儿"
+    },
+    {
+      "id": "paternal-grandson-son",
+      "label": "曾孙",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": "paternal-grandson",
+        "mu": "paternal-grandson-wife",
+        "xiong": "paternal-grandson-son",
+        "di": "paternal-grandson-son",
+        "jie": "paternal-grandson-daughter",
+        "mei": "paternal-grandson-daughter",
+        "fu": null,
+        "qi": null,
+        "zi": "paternal-grandson-son-son",
+        "nv": null
+      },
+      "termIds": [
+        "term-079"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "note": "此词条只确认孙子的儿子；未据此推广到女性或外孙母系。",
+      "legacyName": "曾孙"
+    },
+    {
+      "id": "paternal-granddaughter-child",
+      "label": "曾外孙",
+      "sex": "unknown",
+      "kind": "person",
+      "relations": {
+        "fa": "paternal-granddaughter-husband",
+        "mu": "paternal-granddaughter",
+        "xiong": "paternal-granddaughter-child",
+        "di": "paternal-granddaughter-child",
+        "jie": "paternal-granddaughter-child",
+        "mei": "paternal-granddaughter-child",
+        "fu": null,
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-080"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "曾外孙"
+    },
+    {
+      "id": "paternal-grandson-son-son",
+      "label": "玄孙",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": "paternal-grandson-son",
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-081"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "玄孙"
+    },
+    {
+      "id": "husband",
+      "label": "夫亲",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": "husband-father",
+        "mu": "husband-mother",
+        "xiong": "husband-older-brother",
+        "di": "husband-younger-brother",
+        "jie": "husband-sister",
+        "mei": "husband-sister",
+        "fu": null,
+        "qi": "self",
+        "zi": "son",
+        "nv": "daughter"
+      },
+      "termIds": [
+        "term-082"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "夫亲"
+    },
+    {
+      "id": "husband-father",
+      "label": "公父",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": "husband-mother",
+        "zi": [
+          "husband",
+          "husband-older-brother",
+          "husband-younger-brother"
+        ],
+        "nv": "husband-sister"
+      },
+      "termIds": [
+        "term-083"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "公父"
+    },
+    {
+      "id": "husband-mother",
+      "label": "婆母",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": "husband-father",
+        "qi": null,
+        "zi": [
+          "husband",
+          "husband-older-brother",
+          "husband-younger-brother"
+        ],
+        "nv": "husband-sister"
+      },
+      "termIds": [
+        "term-084"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "婆母"
+    },
+    {
+      "id": "husband-older-brother",
+      "label": "伯兄",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": "husband-father",
+        "mu": "husband-mother",
+        "xiong": "husband-older-brother",
+        "di": [
+          "husband",
+          "husband-older-brother",
+          "husband-younger-brother"
+        ],
+        "jie": "husband-sister",
+        "mei": "husband-sister",
+        "fu": null,
+        "qi": "husband-older-brother-wife",
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-085"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "伯兄"
+    },
+    {
+      "id": "husband-older-brother-wife",
+      "label": "伯兄妇",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": "husband-older-brother",
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-086"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "伯兄妇"
+    },
+    {
+      "id": "husband-younger-brother",
+      "label": "叔弟",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": "husband-father",
+        "mu": "husband-mother",
+        "xiong": [
+          "husband",
+          "husband-older-brother",
+          "husband-younger-brother"
+        ],
+        "di": "husband-younger-brother",
+        "jie": "husband-sister",
+        "mei": "husband-sister",
+        "fu": null,
+        "qi": "husband-younger-brother-wife",
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-087"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "叔弟"
+    },
+    {
+      "id": "husband-younger-brother-wife",
+      "label": "叔弟妇",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": "husband-younger-brother",
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-088"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "叔弟妇"
+    },
+    {
+      "id": "husband-sister",
+      "label": "姑姊妹",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": "husband-father",
+        "mu": "husband-mother",
+        "xiong": [
+          "husband",
+          "husband-older-brother",
+          "husband-younger-brother"
+        ],
+        "di": [
+          "husband",
+          "husband-older-brother",
+          "husband-younger-brother"
+        ],
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-089"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "姑姊妹"
+    },
+    {
+      "id": "wife",
+      "label": "妻亲",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": "wife-father",
+        "mu": "wife-mother",
+        "xiong": "wife-older-brother",
+        "di": "wife-younger-brother",
+        "jie": "wife-sister",
+        "mei": "wife-sister",
+        "fu": "self",
+        "qi": null,
+        "zi": "son",
+        "nv": "daughter"
+      },
+      "termIds": [
+        "term-090"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "妻亲"
+    },
+    {
+      "id": "wife-father",
+      "label": "丈父",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": "wife-mother",
+        "zi": [
+          "wife-older-brother",
+          "wife-younger-brother"
+        ],
+        "nv": [
+          "wife",
+          "wife-sister"
+        ]
+      },
+      "termIds": [
+        "term-091"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "丈父"
+    },
+    {
+      "id": "wife-mother",
+      "label": "丈母",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": "wife-father",
+        "qi": null,
+        "zi": [
+          "wife-older-brother",
+          "wife-younger-brother"
+        ],
+        "nv": [
+          "wife",
+          "wife-sister"
+        ]
+      },
+      "termIds": [
+        "term-092"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "丈母"
+    },
+    {
+      "id": "wife-older-brother",
+      "label": "舅兄",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": "wife-father",
+        "mu": "wife-mother",
+        "xiong": "wife-older-brother",
+        "di": [
+          "wife-younger-brother",
+          "wife-older-brother"
+        ],
+        "jie": "wife-sister",
+        "mei": [
+          "wife-sister",
+          "wife"
+        ],
+        "fu": null,
+        "qi": "wife-older-brother-wife",
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-093"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "舅兄"
+    },
+    {
+      "id": "wife-older-brother-wife",
+      "label": "舅兄妇",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": "wife-older-brother",
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-094"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "舅兄妇"
+    },
+    {
+      "id": "wife-younger-brother",
+      "label": "舅弟",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": "wife-father",
+        "mu": "wife-mother",
+        "xiong": [
+          "wife-younger-brother",
+          "wife-older-brother"
+        ],
+        "di": "wife-younger-brother",
+        "jie": [
+          "wife-sister",
+          "wife"
+        ],
+        "mei": "wife-sister",
+        "fu": null,
+        "qi": "wife-younger-brother-wife",
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-095"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "舅弟"
+    },
+    {
+      "id": "wife-younger-brother-wife",
+      "label": "舅弟妇",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": "wife-younger-brother",
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-096"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "舅弟妇"
+    },
+    {
+      "id": "wife-sister",
+      "label": "姨姊妹",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": "wife-father",
+        "mu": "wife-mother",
+        "xiong": [
+          "wife-younger-brother",
+          "wife-older-brother"
+        ],
+        "di": [
+          "wife-younger-brother",
+          "wife-older-brother"
+        ],
+        "jie": [
+          "wife-sister",
+          "wife"
+        ],
+        "mei": [
+          "wife-sister",
+          "wife"
+        ],
+        "fu": "wife-sister-husband",
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-097"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "note": "阿姨囝词条只确认妻子的妹妹；妻子的姐姐称谓待核。本页尚未区分二者。",
+      "legacyName": "姨姊妹"
+    },
+    {
+      "id": "wife-sister-husband",
+      "label": "姨姊妹夫",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": "wife-sister",
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-098"
+      ],
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "legacyName": "姨姊妹夫"
+    },
+    {
+      "id": "father-paternal-female-cousin",
+      "label": "堂姑母",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": [
+          "paternal-grandfather-older-brother",
+          "paternal-grandfather-younger-brother"
+        ],
+        "mu": [
+          "paternal-grandfather-older-brother-wife",
+          "paternal-grandfather-younger-brother-wife"
+        ],
+        "xiong": [
+          "father-older-paternal-cousin",
+          "father-younger-paternal-cousin"
+        ],
+        "di": [
+          "father-older-paternal-cousin",
+          "father-younger-paternal-cousin"
+        ],
+        "jie": "father-paternal-female-cousin",
+        "mei": "father-paternal-female-cousin",
+        "fu": null,
+        "qi": null,
+        "zi": "non-paternal-male-cousin",
+        "nv": "non-paternal-female-cousin"
+      },
+      "termIds": [
+        "term-099"
+      ],
+      "provenance": [
+        "role-normalization"
+      ],
+      "note": "父亲的堂姊妹。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。",
+      "legacyName": "堂姑母"
+    },
+    {
+      "id": "father-older-non-paternal-male-cousin",
+      "label": "表伯父",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-100"
+      ],
+      "provenance": [
+        "role-normalization"
+      ],
+      "note": "父亲的年长男性表亲。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。",
+      "legacyName": "表伯父"
+    },
+    {
+      "id": "father-younger-non-paternal-male-cousin",
+      "label": "表叔父",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-101"
+      ],
+      "provenance": [
+        "role-normalization"
+      ],
+      "note": "父亲的年幼男性表亲。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。",
+      "legacyName": "表叔父"
+    },
+    {
+      "id": "father-non-paternal-female-cousin",
+      "label": "表姑母",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-102"
+      ],
+      "provenance": [
+        "role-normalization"
+      ],
+      "note": "父亲的女性表亲。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。",
+      "legacyName": "表姑母"
+    },
+    {
+      "id": "paternal-grandmother-father",
+      "label": "曾外祖父",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": "paternal-grandmother-mother",
+        "zi": "paternal-grandmother-brother",
+        "nv": [
+          "paternal-grandmother",
+          "paternal-grandmother-sister"
+        ]
+      },
+      "termIds": [
+        "term-103"
+      ],
+      "provenance": [
+        "role-normalization"
+      ],
+      "note": "祖母的父亲（沿祖母母家路径）。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。",
+      "legacyName": "曾外祖父"
+    },
+    {
+      "id": "paternal-grandmother-mother",
+      "label": "曾外祖母",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": "paternal-grandmother-father",
+        "qi": null,
+        "zi": "paternal-grandmother-brother",
+        "nv": [
+          "paternal-grandmother",
+          "paternal-grandmother-sister"
+        ]
+      },
+      "termIds": [
+        "term-104"
+      ],
+      "provenance": [
+        "role-normalization"
+      ],
+      "note": "祖母的母亲（沿祖母母家路径）。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。",
+      "legacyName": "曾外祖母"
+    },
+    {
+      "id": "maternal-grandfather-older-brother",
+      "label": "伯外祖父",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": "maternal-grandfather-father",
+        "mu": "maternal-grandfather-mother",
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-105"
+      ],
+      "provenance": [
+        "role-normalization"
+      ],
+      "note": "外祖父的哥哥。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。",
+      "legacyName": "伯外祖父"
+    },
+    {
+      "id": "maternal-grandfather-younger-brother",
+      "label": "叔外祖父",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": "maternal-grandfather-father",
+        "mu": "maternal-grandfather-mother",
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-106"
+      ],
+      "provenance": [
+        "role-normalization"
+      ],
+      "note": "外祖父的弟弟。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。",
+      "legacyName": "叔外祖父"
+    },
+    {
+      "id": "maternal-grandfather-sister",
+      "label": "姑外祖母",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": "maternal-grandfather-father",
+        "mu": "maternal-grandfather-mother",
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-107"
+      ],
+      "provenance": [
+        "role-normalization"
+      ],
+      "note": "外祖父的姊妹。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。",
+      "legacyName": "姑外祖母"
+    },
+    {
+      "id": "paternal-male-cousin-son",
+      "label": "堂侄男",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": "paternal-male-cousin",
+        "mu": null,
+        "xiong": "paternal-male-cousin-son",
+        "di": "paternal-male-cousin-son",
+        "jie": "paternal-male-cousin-daughter",
+        "mei": "paternal-male-cousin-daughter",
+        "fu": null,
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-108"
+      ],
+      "provenance": [
+        "role-normalization"
+      ],
+      "note": "堂兄弟的儿子。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。",
+      "legacyName": "堂侄男"
+    },
+    {
+      "id": "paternal-male-cousin-daughter",
+      "label": "堂侄女",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": "paternal-male-cousin",
+        "mu": null,
+        "xiong": "paternal-male-cousin-son",
+        "di": "paternal-male-cousin-son",
+        "jie": "paternal-male-cousin-daughter",
+        "mei": "paternal-male-cousin-daughter",
+        "fu": null,
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-109"
+      ],
+      "provenance": [
+        "role-normalization"
+      ],
+      "note": "堂兄弟的女儿。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。",
+      "legacyName": "堂侄女"
+    },
+    {
+      "id": "paternal-female-cousin-son",
+      "label": "堂甥男",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": "paternal-female-cousin",
+        "xiong": "paternal-female-cousin-son",
+        "di": "paternal-female-cousin-son",
+        "jie": "paternal-female-cousin-daughter",
+        "mei": "paternal-female-cousin-daughter",
+        "fu": null,
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-110"
+      ],
+      "provenance": [
+        "role-normalization"
+      ],
+      "note": "堂姊妹的儿子。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。",
+      "legacyName": "堂甥男"
+    },
+    {
+      "id": "paternal-female-cousin-daughter",
+      "label": "堂甥女",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": "paternal-female-cousin",
+        "xiong": "paternal-female-cousin-son",
+        "di": "paternal-female-cousin-son",
+        "jie": "paternal-female-cousin-daughter",
+        "mei": "paternal-female-cousin-daughter",
+        "fu": null,
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-111"
+      ],
+      "provenance": [
+        "role-normalization"
+      ],
+      "note": "堂姊妹的女儿。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。",
+      "legacyName": "堂甥女"
+    },
+    {
+      "id": "non-paternal-male-cousin-son",
+      "label": "表侄男",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": "non-paternal-male-cousin",
+        "mu": null,
+        "xiong": "non-paternal-male-cousin-son",
+        "di": "non-paternal-male-cousin-son",
+        "jie": "non-paternal-male-cousin-daughter",
+        "mei": "non-paternal-male-cousin-daughter",
+        "fu": null,
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-112"
+      ],
+      "provenance": [
+        "role-normalization"
+      ],
+      "note": "表兄弟的儿子。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。",
+      "legacyName": "表侄男"
+    },
+    {
+      "id": "non-paternal-male-cousin-daughter",
+      "label": "表侄女",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": "non-paternal-male-cousin",
+        "mu": null,
+        "xiong": "non-paternal-male-cousin-son",
+        "di": "non-paternal-male-cousin-son",
+        "jie": "non-paternal-male-cousin-daughter",
+        "mei": "non-paternal-male-cousin-daughter",
+        "fu": null,
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-113"
+      ],
+      "provenance": [
+        "role-normalization"
+      ],
+      "note": "表兄弟的女儿。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。",
+      "legacyName": "表侄女"
+    },
+    {
+      "id": "non-paternal-female-cousin-son",
+      "label": "表甥男",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": "non-paternal-female-cousin",
+        "xiong": "non-paternal-female-cousin-son",
+        "di": "non-paternal-female-cousin-son",
+        "jie": "non-paternal-female-cousin-daughter",
+        "mei": "non-paternal-female-cousin-daughter",
+        "fu": null,
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-114"
+      ],
+      "provenance": [
+        "role-normalization"
+      ],
+      "note": "表姊妹的儿子。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。",
+      "legacyName": "表甥男"
+    },
+    {
+      "id": "non-paternal-female-cousin-daughter",
+      "label": "表甥女",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": "non-paternal-female-cousin",
+        "xiong": "non-paternal-female-cousin-son",
+        "di": "non-paternal-female-cousin-son",
+        "jie": "non-paternal-female-cousin-daughter",
+        "mei": "non-paternal-female-cousin-daughter",
+        "fu": null,
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-115"
+      ],
+      "provenance": [
+        "role-normalization"
+      ],
+      "note": "表姊妹的女儿。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。",
+      "legacyName": "表甥女"
+    },
+    {
+      "id": "maternal-granddaughter",
+      "label": "外孙女",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": "daughter-husband",
+        "mu": "daughter",
+        "xiong": "maternal-grandson",
+        "di": "maternal-grandson",
+        "jie": "maternal-granddaughter",
+        "mei": "maternal-granddaughter",
+        "fu": "maternal-granddaughter-husband",
+        "qi": null,
+        "zi": "maternal-granddaughter-child",
+        "nv": "maternal-granddaughter-child"
+      },
+      "termIds": [
+        "term-116"
+      ],
+      "provenance": [
+        "role-normalization"
+      ],
+      "note": "女儿的女儿。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。",
+      "legacyName": "外孙女"
+    },
+    {
+      "id": "paternal-grandson-wife",
+      "label": "孙妇",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": "paternal-grandson",
+        "qi": null,
+        "zi": "paternal-grandson-son",
+        "nv": "paternal-grandson-daughter"
+      },
+      "termIds": [
+        "term-117"
+      ],
+      "provenance": [
+        "role-normalization"
+      ],
+      "note": "孙子的妻子。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。",
+      "legacyName": "孙妇"
+    },
+    {
+      "id": "paternal-granddaughter-husband",
+      "label": "孙婿",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": "paternal-granddaughter",
+        "zi": "paternal-granddaughter-child",
+        "nv": "paternal-granddaughter-child"
+      },
+      "termIds": [
+        "term-118"
+      ],
+      "provenance": [
+        "role-normalization"
+      ],
+      "note": "孙女的丈夫。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。",
+      "legacyName": "孙婿"
+    },
+    {
+      "id": "maternal-grandson-wife",
+      "label": "外孙妇",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": "maternal-grandson",
+        "qi": null,
+        "zi": "maternal-grandson-child",
+        "nv": "maternal-grandson-child"
+      },
+      "termIds": [
+        "term-119"
+      ],
+      "provenance": [
+        "role-normalization"
+      ],
+      "note": "外孙子的妻子。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。",
+      "legacyName": "外孙妇"
+    },
+    {
+      "id": "maternal-granddaughter-husband",
+      "label": "外孙婿",
+      "sex": "male",
+      "kind": "person",
+      "relations": {
+        "fa": null,
+        "mu": null,
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": "maternal-granddaughter",
+        "zi": "maternal-granddaughter-child",
+        "nv": "maternal-granddaughter-child"
+      },
+      "termIds": [
+        "term-120"
+      ],
+      "provenance": [
+        "role-normalization"
+      ],
+      "note": "外孙女的丈夫。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。",
+      "legacyName": "外孙婿"
+    },
+    {
+      "id": "maternal-grandson-child",
+      "label": "外曾孙",
+      "sex": "unknown",
+      "kind": "person",
+      "relations": {
+        "fa": "maternal-grandson",
+        "mu": "maternal-grandson-wife",
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-121"
+      ],
+      "provenance": [
+        "role-normalization"
+      ],
+      "note": "外孙子的子女（性别未细分）。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。",
+      "legacyName": "外曾孙"
+    },
+    {
+      "id": "maternal-granddaughter-child",
+      "label": "外曾外孙",
+      "sex": "unknown",
+      "kind": "person",
+      "relations": {
+        "fa": "maternal-granddaughter-husband",
+        "mu": "maternal-granddaughter",
+        "xiong": null,
+        "di": null,
+        "jie": null,
+        "mei": null,
+        "fu": null,
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-122"
+      ],
+      "provenance": [
+        "role-normalization"
+      ],
+      "note": "外孙女的子女（性别未细分）。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。",
+      "legacyName": "外曾外孙"
+    },
+    {
+      "id": "paternal-grandson-daughter",
+      "label": "曾孙女",
+      "sex": "female",
+      "kind": "person",
+      "relations": {
+        "fa": "paternal-grandson",
+        "mu": "paternal-grandson-wife",
+        "xiong": "paternal-grandson-son",
+        "di": "paternal-grandson-son",
+        "jie": "paternal-grandson-daughter",
+        "mei": "paternal-grandson-daughter",
+        "fu": null,
+        "qi": null,
+        "zi": null,
+        "nv": null
+      },
+      "termIds": [
+        "term-123"
+      ],
+      "provenance": [
+        "role-normalization"
+      ],
+      "note": "孙子的女儿；不能绑定只表示孙子的儿子的“曾孙”词条。",
+      "legacyName": "曾孙女"
+    }
+  ],
+  "terms": [
+    {
+      "id": "term-001",
+      "text": "家己",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-1966",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-002",
+      "text": "祖公",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-5767",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-003",
+      "text": "四代公",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-4640",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-004",
+      "text": "四代妈",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-4641",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-005",
+      "text": "大公",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-1740",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-006",
+      "text": "大妈",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-1762",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-007",
+      "text": "阿公",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-8",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-008",
+      "text": "阿妈",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-10",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-009",
+      "text": "阿嬷",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-6100",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-010",
+      "text": "伯公",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-270",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-011",
+      "text": "姆妈",
+      "status": "missingWord",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy"
+      ]
+    },
+    {
+      "id": "term-012",
+      "text": "伯妈",
+      "status": "missingWord",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy"
+      ]
+    },
+    {
+      "id": "term-013",
+      "text": "叔公",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-5512",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-014",
+      "text": "婶妈",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-4817",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-015",
+      "text": "阿伯",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-13",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-016",
+      "text": "姆伯",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-4048",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-017",
+      "text": "阿姆",
+      "status": "missingWord",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy"
+      ]
+    },
+    {
+      "id": "term-018",
+      "text": "阿叔",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-21",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-019",
+      "text": "阿婶",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-36",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-020",
+      "text": "姑妈",
+      "status": "missingWord",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy"
+      ]
+    },
+    {
+      "id": "term-021",
+      "text": "姑丈公",
+      "status": "missingWord",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy"
+      ]
+    },
+    {
+      "id": "term-022",
+      "text": "舅公",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-2413",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-023",
+      "text": "妗妈",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-2315",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-024",
+      "text": "姨妈",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-2922",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-025",
+      "text": "姨丈公",
+      "status": "missingWord",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy"
+      ]
+    },
+    {
+      "id": "term-026",
+      "text": "外头公",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-2439",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-027",
+      "text": "外头妈",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-2441",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-028",
+      "text": "郎罢",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-3494",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-029",
+      "text": "老父",
+      "status": "missingWord",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy"
+      ]
+    },
+    {
+      "id": "term-030",
+      "text": "阿爸",
+      "status": "missingWord",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy"
+      ]
+    },
+    {
+      "id": "term-031",
+      "text": "娘妳",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-3956",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-032",
+      "text": "阿负",
+      "status": "missingWord",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy"
+      ]
+    },
+    {
+      "id": "term-033",
+      "text": "阿奶",
+      "status": "missingWord",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy"
+      ]
+    },
+    {
+      "id": "term-034",
+      "text": "阿嫡",
+      "status": "missingWord",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy"
+      ]
+    },
+    {
+      "id": "term-035",
+      "text": "娘奶",
+      "status": "missingWord",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy"
+      ]
+    },
+    {
+      "id": "term-036",
+      "text": "阿妸",
+      "status": "missingWord",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy"
+      ]
+    },
+    {
+      "id": "term-037",
+      "text": "依妸",
+      "status": "missingWord",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy"
+      ]
+    },
+    {
+      "id": "term-038",
+      "text": "妈妈",
+      "status": "missingWord",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy"
+      ]
+    },
+    {
+      "id": "term-039",
+      "text": "妈阿",
+      "status": "missingWord",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy"
+      ]
+    },
+    {
+      "id": "term-040",
+      "text": "阿姑",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-29",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-041",
+      "text": "姑丈",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-2361",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-042",
+      "text": "阿舅",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-41",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-043",
+      "text": "阿妗",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-17",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-044",
+      "text": "阿姨",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-31",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-045",
+      "text": "姨丈",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-2921",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-046",
+      "text": "阿兄",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-9",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-047",
+      "text": "阿嫂",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-37",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-048",
+      "text": "阿弟",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-14",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-049",
+      "text": "弟妇",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-1476",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-050",
+      "text": "阿弟妇",
+      "status": "missingWord",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy"
+      ]
+    },
+    {
+      "id": "term-051",
+      "text": "乃侄",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-3854",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-052",
+      "text": "乃侄女",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-3855",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-053",
+      "text": "阿姊",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-19",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-054",
+      "text": "阿姊夫",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-20",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-055",
+      "text": "阿丈",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-6115",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-056",
+      "text": "阿妹",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-26",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-057",
+      "text": "阿妹夫",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-27",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-058",
+      "text": "乃甥",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-3856",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-059",
+      "text": "乃甥女",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-3857",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-060",
+      "text": "叔伯兄弟",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-4599",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-061",
+      "text": "叔伯姐妹囝",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-4600",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-062",
+      "text": "表兄弟",
+      "status": "missingWord",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy"
+      ]
+    },
+    {
+      "id": "term-063",
+      "text": "表姊妹",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-499",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-064",
+      "text": "囝",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-2508",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-065",
+      "text": "大囝",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-1759",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-066",
+      "text": "长子",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-1910",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-067",
+      "text": "细囝",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-4550",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-068",
+      "text": "尾囝",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-739",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-069",
+      "text": "新妇",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-4807",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-070",
+      "text": "囝新妇",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-2512",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-071",
+      "text": "亲家",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-1062",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-072",
+      "text": "亲家姆",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-1063",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-073",
+      "text": "婶娘囝",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-4820",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-074",
+      "text": "囝婿",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-2511",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-075",
+      "text": "孙",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-4929",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-076",
+      "text": "里头孙",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-3553",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-077",
+      "text": "正孙",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-5579",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-078",
+      "text": "外头孙",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-2440",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-079",
+      "text": "曾孙",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-5495",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-080",
+      "text": "曾外孙（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ],
+      "displayDefinition": "孙女的子女；原词条“曾孙”仅释为孙子的儿子，不能绑定。"
+    },
+    {
+      "id": "term-081",
+      "text": "玄孙",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-2646",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-082",
+      "text": "老公",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-3463",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-083",
+      "text": "大官",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-1543",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-084",
+      "text": "大家",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-1545",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-085",
+      "text": "大伯",
+      "status": "missingWord",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy"
+      ]
+    },
+    {
+      "id": "term-086",
+      "text": "伯兄妇（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ],
+      "displayDefinition": "原“伯叔婶”词条释义为妯娌合称，面称待核。"
+    },
+    {
+      "id": "term-087",
+      "text": "小郎",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-4758",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-088",
+      "text": "叔弟妇（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ],
+      "displayDefinition": "原“伯叔婶”词条释义为妯娌合称，面称待核。"
+    },
+    {
+      "id": "term-089",
+      "text": "小姑",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-4760",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-090",
+      "text": "老妈",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-3468",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-091",
+      "text": "丈侬",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-1644",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-092",
+      "text": "丈母",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-1643",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-093",
+      "text": "舅兄（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ]
+    },
+    {
+      "id": "term-094",
+      "text": "舅兄妇（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ]
+    },
+    {
+      "id": "term-095",
+      "text": "阿舅囝",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-42",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-096",
+      "text": "阿妗囝",
+      "status": "missingWord",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy"
+      ],
+      "displayDefinition": "现有称谓待词条核验；原 ID 17 是“阿妗”，不能绑定。"
+    },
+    {
+      "id": "term-097",
+      "text": "阿姨囝",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-32",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-098",
+      "text": "襟友",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-3273",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-099",
+      "text": "堂姑母（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ],
+      "displayDefinition": "关系名称用于继续计算；兴化语称谓及词条待核。"
+    },
+    {
+      "id": "term-100",
+      "text": "表伯父（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ],
+      "displayDefinition": "关系名称用于继续计算；兴化语称谓及词条待核。"
+    },
+    {
+      "id": "term-101",
+      "text": "表叔父（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ],
+      "displayDefinition": "关系名称用于继续计算；兴化语称谓及词条待核。"
+    },
+    {
+      "id": "term-102",
+      "text": "表姑母（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ],
+      "displayDefinition": "关系名称用于继续计算；兴化语称谓及词条待核。"
+    },
+    {
+      "id": "term-103",
+      "text": "曾外祖父（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ],
+      "displayDefinition": "关系名称用于继续计算；兴化语称谓及词条待核。"
+    },
+    {
+      "id": "term-104",
+      "text": "曾外祖母（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ],
+      "displayDefinition": "关系名称用于继续计算；兴化语称谓及词条待核。"
+    },
+    {
+      "id": "term-105",
+      "text": "伯外祖父（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ],
+      "displayDefinition": "关系名称用于继续计算；兴化语称谓及词条待核。"
+    },
+    {
+      "id": "term-106",
+      "text": "叔外祖父（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ],
+      "displayDefinition": "关系名称用于继续计算；兴化语称谓及词条待核。"
+    },
+    {
+      "id": "term-107",
+      "text": "姑外祖母（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ],
+      "displayDefinition": "关系名称用于继续计算；兴化语称谓及词条待核。"
+    },
+    {
+      "id": "term-108",
+      "text": "堂侄男（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ],
+      "displayDefinition": "关系名称用于继续计算；兴化语称谓及词条待核。"
+    },
+    {
+      "id": "term-109",
+      "text": "堂侄女（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ],
+      "displayDefinition": "关系名称用于继续计算；兴化语称谓及词条待核。"
+    },
+    {
+      "id": "term-110",
+      "text": "堂甥男（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ],
+      "displayDefinition": "关系名称用于继续计算；兴化语称谓及词条待核。"
+    },
+    {
+      "id": "term-111",
+      "text": "堂甥女（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ],
+      "displayDefinition": "关系名称用于继续计算；兴化语称谓及词条待核。"
+    },
+    {
+      "id": "term-112",
+      "text": "表侄男（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ],
+      "displayDefinition": "关系名称用于继续计算；兴化语称谓及词条待核。"
+    },
+    {
+      "id": "term-113",
+      "text": "表侄女（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ],
+      "displayDefinition": "关系名称用于继续计算；兴化语称谓及词条待核。"
+    },
+    {
+      "id": "term-114",
+      "text": "表甥男（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ],
+      "displayDefinition": "关系名称用于继续计算；兴化语称谓及词条待核。"
+    },
+    {
+      "id": "term-115",
+      "text": "表甥女（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ],
+      "displayDefinition": "关系名称用于继续计算；兴化语称谓及词条待核。"
+    },
+    {
+      "id": "term-116",
+      "text": "外孙女（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ],
+      "displayDefinition": "女儿的女儿；兴化语称谓待核。"
+    },
+    {
+      "id": "term-117",
+      "text": "孙新妇",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-4931",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-118",
+      "text": "孙婿",
+      "status": "bound",
+      "usage": "unknown",
+      "bindingId": "hinghwa-word-4930",
+      "provenance": [
+        "phase1-legacy",
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "term-119",
+      "text": "外孙妇（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ],
+      "displayDefinition": "关系名称用于继续计算；兴化语称谓及词条待核。"
+    },
+    {
+      "id": "term-120",
+      "text": "外孙婿（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ],
+      "displayDefinition": "关系名称用于继续计算；兴化语称谓及词条待核。"
+    },
+    {
+      "id": "term-121",
+      "text": "外曾孙（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ],
+      "displayDefinition": "关系名称用于继续计算；兴化语称谓及词条待核。"
+    },
+    {
+      "id": "term-122",
+      "text": "外曾外孙（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ],
+      "displayDefinition": "关系名称用于继续计算；兴化语称谓及词条待核。"
+    },
+    {
+      "id": "term-123",
+      "text": "曾孙女（兴化语称谓待核）",
+      "status": "rolePending",
+      "usage": "unknown",
+      "bindingId": null,
+      "provenance": [
+        "phase1-legacy",
+        "role-normalization"
+      ],
+      "displayDefinition": "孙子的女儿；兴化语称谓及词条待核。"
+    }
+  ],
+  "bindings": [
+    {
+      "id": "hinghwa-word-1966",
+      "namespace": "hinghwa-word",
+      "wordId": 1966,
+      "snapshotWord": "家己",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-5767",
+      "namespace": "hinghwa-word",
+      "wordId": 5767,
+      "snapshotWord": "祖公",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-4640",
+      "namespace": "hinghwa-word",
+      "wordId": 4640,
+      "snapshotWord": "四代公",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-4641",
+      "namespace": "hinghwa-word",
+      "wordId": 4641,
+      "snapshotWord": "四代妈",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-1740",
+      "namespace": "hinghwa-word",
+      "wordId": 1740,
+      "snapshotWord": "大公",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-1762",
+      "namespace": "hinghwa-word",
+      "wordId": 1762,
+      "snapshotWord": "大妈",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-8",
+      "namespace": "hinghwa-word",
+      "wordId": 8,
+      "snapshotWord": "阿公",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-10",
+      "namespace": "hinghwa-word",
+      "wordId": 10,
+      "snapshotWord": "阿妈",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-6100",
+      "namespace": "hinghwa-word",
+      "wordId": 6100,
+      "snapshotWord": "阿嬷",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-270",
+      "namespace": "hinghwa-word",
+      "wordId": 270,
+      "snapshotWord": "伯公",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-5512",
+      "namespace": "hinghwa-word",
+      "wordId": 5512,
+      "snapshotWord": "叔公",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-4817",
+      "namespace": "hinghwa-word",
+      "wordId": 4817,
+      "snapshotWord": "婶妈",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-13",
+      "namespace": "hinghwa-word",
+      "wordId": 13,
+      "snapshotWord": "阿伯",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-4048",
+      "namespace": "hinghwa-word",
+      "wordId": 4048,
+      "snapshotWord": "姆伯",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-21",
+      "namespace": "hinghwa-word",
+      "wordId": 21,
+      "snapshotWord": "阿叔",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-36",
+      "namespace": "hinghwa-word",
+      "wordId": 36,
+      "snapshotWord": "阿婶",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-2413",
+      "namespace": "hinghwa-word",
+      "wordId": 2413,
+      "snapshotWord": "舅公",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-2315",
+      "namespace": "hinghwa-word",
+      "wordId": 2315,
+      "snapshotWord": "妗妈",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-2922",
+      "namespace": "hinghwa-word",
+      "wordId": 2922,
+      "snapshotWord": "姨妈",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-2439",
+      "namespace": "hinghwa-word",
+      "wordId": 2439,
+      "snapshotWord": "外头公",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-2441",
+      "namespace": "hinghwa-word",
+      "wordId": 2441,
+      "snapshotWord": "外头妈",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-3494",
+      "namespace": "hinghwa-word",
+      "wordId": 3494,
+      "snapshotWord": "郎罢",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-3956",
+      "namespace": "hinghwa-word",
+      "wordId": 3956,
+      "snapshotWord": "娘妳",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-29",
+      "namespace": "hinghwa-word",
+      "wordId": 29,
+      "snapshotWord": "阿姑",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-2361",
+      "namespace": "hinghwa-word",
+      "wordId": 2361,
+      "snapshotWord": "姑丈",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-41",
+      "namespace": "hinghwa-word",
+      "wordId": 41,
+      "snapshotWord": "阿舅",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-17",
+      "namespace": "hinghwa-word",
+      "wordId": 17,
+      "snapshotWord": "阿妗",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-31",
+      "namespace": "hinghwa-word",
+      "wordId": 31,
+      "snapshotWord": "阿姨",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-2921",
+      "namespace": "hinghwa-word",
+      "wordId": 2921,
+      "snapshotWord": "姨丈",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-9",
+      "namespace": "hinghwa-word",
+      "wordId": 9,
+      "snapshotWord": "阿兄",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-37",
+      "namespace": "hinghwa-word",
+      "wordId": 37,
+      "snapshotWord": "阿嫂",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-14",
+      "namespace": "hinghwa-word",
+      "wordId": 14,
+      "snapshotWord": "阿弟",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-1476",
+      "namespace": "hinghwa-word",
+      "wordId": 1476,
+      "snapshotWord": "弟妇",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-3854",
+      "namespace": "hinghwa-word",
+      "wordId": 3854,
+      "snapshotWord": "乃侄",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-3855",
+      "namespace": "hinghwa-word",
+      "wordId": 3855,
+      "snapshotWord": "乃侄女",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-19",
+      "namespace": "hinghwa-word",
+      "wordId": 19,
+      "snapshotWord": "阿姊",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-20",
+      "namespace": "hinghwa-word",
+      "wordId": 20,
+      "snapshotWord": "阿姊夫",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-6115",
+      "namespace": "hinghwa-word",
+      "wordId": 6115,
+      "snapshotWord": "阿丈",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-26",
+      "namespace": "hinghwa-word",
+      "wordId": 26,
+      "snapshotWord": "阿妹",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-27",
+      "namespace": "hinghwa-word",
+      "wordId": 27,
+      "snapshotWord": "阿妹夫",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-3856",
+      "namespace": "hinghwa-word",
+      "wordId": 3856,
+      "snapshotWord": "乃甥",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-3857",
+      "namespace": "hinghwa-word",
+      "wordId": 3857,
+      "snapshotWord": "乃甥女",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-4599",
+      "namespace": "hinghwa-word",
+      "wordId": 4599,
+      "snapshotWord": "叔伯兄弟",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-4600",
+      "namespace": "hinghwa-word",
+      "wordId": 4600,
+      "snapshotWord": "叔伯姐妹囝",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-499",
+      "namespace": "hinghwa-word",
+      "wordId": 499,
+      "snapshotWord": "表姊妹",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-2508",
+      "namespace": "hinghwa-word",
+      "wordId": 2508,
+      "snapshotWord": "囝",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-1759",
+      "namespace": "hinghwa-word",
+      "wordId": 1759,
+      "snapshotWord": "大囝",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-1910",
+      "namespace": "hinghwa-word",
+      "wordId": 1910,
+      "snapshotWord": "长子",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-4550",
+      "namespace": "hinghwa-word",
+      "wordId": 4550,
+      "snapshotWord": "细囝",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-739",
+      "namespace": "hinghwa-word",
+      "wordId": 739,
+      "snapshotWord": "尾囝",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-4807",
+      "namespace": "hinghwa-word",
+      "wordId": 4807,
+      "snapshotWord": "新妇",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-2512",
+      "namespace": "hinghwa-word",
+      "wordId": 2512,
+      "snapshotWord": "囝新妇",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-1062",
+      "namespace": "hinghwa-word",
+      "wordId": 1062,
+      "snapshotWord": "亲家",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-1063",
+      "namespace": "hinghwa-word",
+      "wordId": 1063,
+      "snapshotWord": "亲家姆",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-4820",
+      "namespace": "hinghwa-word",
+      "wordId": 4820,
+      "snapshotWord": "婶娘囝",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-2511",
+      "namespace": "hinghwa-word",
+      "wordId": 2511,
+      "snapshotWord": "囝婿",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-4929",
+      "namespace": "hinghwa-word",
+      "wordId": 4929,
+      "snapshotWord": "孙",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-3553",
+      "namespace": "hinghwa-word",
+      "wordId": 3553,
+      "snapshotWord": "里头孙",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-5579",
+      "namespace": "hinghwa-word",
+      "wordId": 5579,
+      "snapshotWord": "正孙",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-2440",
+      "namespace": "hinghwa-word",
+      "wordId": 2440,
+      "snapshotWord": "外头孙",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-5495",
+      "namespace": "hinghwa-word",
+      "wordId": 5495,
+      "snapshotWord": "曾孙",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-2646",
+      "namespace": "hinghwa-word",
+      "wordId": 2646,
+      "snapshotWord": "玄孙",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-3463",
+      "namespace": "hinghwa-word",
+      "wordId": 3463,
+      "snapshotWord": "老公",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-1543",
+      "namespace": "hinghwa-word",
+      "wordId": 1543,
+      "snapshotWord": "大官",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-1545",
+      "namespace": "hinghwa-word",
+      "wordId": 1545,
+      "snapshotWord": "大家",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-4758",
+      "namespace": "hinghwa-word",
+      "wordId": 4758,
+      "snapshotWord": "小郎",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-4760",
+      "namespace": "hinghwa-word",
+      "wordId": 4760,
+      "snapshotWord": "小姑",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-3468",
+      "namespace": "hinghwa-word",
+      "wordId": 3468,
+      "snapshotWord": "老妈",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-1644",
+      "namespace": "hinghwa-word",
+      "wordId": 1644,
+      "snapshotWord": "丈侬",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-1643",
+      "namespace": "hinghwa-word",
+      "wordId": 1643,
+      "snapshotWord": "丈母",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-42",
+      "namespace": "hinghwa-word",
+      "wordId": 42,
+      "snapshotWord": "阿舅囝",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-32",
+      "namespace": "hinghwa-word",
+      "wordId": 32,
+      "snapshotWord": "阿姨囝",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-3273",
+      "namespace": "hinghwa-word",
+      "wordId": 3273,
+      "snapshotWord": "襟友",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-4931",
+      "namespace": "hinghwa-word",
+      "wordId": 4931,
+      "snapshotWord": "孙新妇",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    },
+    {
+      "id": "hinghwa-word-4930",
+      "namespace": "hinghwa-word",
+      "wordId": 4930,
+      "snapshotWord": "孙婿",
+      "status": "snapshotExactMatch",
+      "provenance": [
+        "sqlite-snapshot"
+      ]
+    }
+  ]
+}

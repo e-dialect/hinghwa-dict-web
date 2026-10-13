@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const web = fs.existsSync(path.join(root, 'src/components/Tools/relative.js'));
@@ -10,6 +10,18 @@ const helperFile = web ? 'src/components/Tools/relativeWords.js' : 'src/services
 const componentFile = web ? 'src/components/Tools/RelativeSelect.vue' : 'src/pages/tools/relative.vue';
 const fields = ['fa', 'mu', 'xiong', 'di', 'jie', 'mei', 'fu', 'qi', 'zi', 'nv'];
 async function readModule(file) {
+  if (path.basename(file) === 'relative.js') {
+    const source = fs.readFileSync(file, 'utf8');
+    const folder = source.includes('../../data/kinship/v1/') ? '../../data/kinship/v1' : '../data/kinship/v1';
+    const directory = path.resolve(path.dirname(file), folder);
+    const data = JSON.parse(fs.readFileSync(path.join(directory, 'kinship.json'), 'utf8'));
+    const roleIds = JSON.parse(fs.readFileSync(path.join(directory, 'role-ids.json'), 'utf8'));
+    const adapter = await import(pathToFileURL(path.join(directory, 'adapter.mjs')));
+    const body = source.replace(/^import.*$/gm, '').replace(/export const /g, 'const ');
+    return new Function('kinshipData', 'roleIds', 'createLegacyApi', 'toEngineDataset', body + '; return { buttons, fieldName, relative, find, dataset, engineDataset, roleIdByName };')(
+      data, roleIds, adapter.createLegacyApi, adapter.toEngineDataset,
+    );
+  }
   return import('data:text/javascript;base64,' + fs.readFileSync(file).toString('base64'));
 }
 const graph = await readModule(path.join(root, graphFile));

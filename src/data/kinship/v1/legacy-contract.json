@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "1.0.0",
+  "description": "Phase 1 exported buttons, fieldName and relative objects must remain identical after structural migration.",
+  "algorithm": "sha256",
+  "encoding": "JSON.stringify({buttons,fieldName,relative})",
+  "sha256": "165df970bf42a6f0b5933d7a0db8d779ebb8538db99c6f3fa0a39fcf923cadf1",
+  "nodeCount": 110,
+  "roleIdsSha256": "222be0a7cabae7f7d3641ad6147fc69c6f2279f0d277ddbca24e17e725e5965b"
+}

@@ -1,0 +1,369 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://e-dialect.github.io/kinship/schema/v1",
+  "title": "Kinship dataset v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "datasetVersion",
+    "selfId",
+    "fields",
+    "sources",
+    "nodes",
+    "terms",
+    "bindings"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "datasetVersion": {
+      "$ref": "#/$defs/nonempty"
+    },
+    "selfId": {
+      "$ref": "#/$defs/id"
+    },
+    "fields": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "items": {
+        "$ref": "#/$defs/field"
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/source"
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/node"
+      }
+    },
+    "terms": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/term"
+      }
+    },
+    "bindings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/binding"
+      }
+    }
+  },
+  "$defs": {
+    "nonempty": {
+      "type": "string",
+      "minLength": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$"
+    },
+    "provenance": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/id"
+      }
+    },
+    "field": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "label",
+        "legacyName"
+      ],
+      "properties": {
+        "key": {
+          "enum": [
+            "fa",
+            "mu",
+            "xiong",
+            "di",
+            "jie",
+            "mei",
+            "fu",
+            "qi",
+            "zi",
+            "nv"
+          ]
+        },
+        "label": {
+          "$ref": "#/$defs/nonempty"
+        },
+        "legacyName": {
+          "$ref": "#/$defs/nonempty"
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "title",
+        "scope"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "kind": {
+          "enum": [
+            "legacy",
+            "chart",
+            "databaseSnapshot",
+            "inference"
+          ]
+        },
+        "title": {
+          "$ref": "#/$defs/nonempty"
+        },
+        "scope": {
+          "$ref": "#/$defs/nonempty"
+        },
+        "uri": {
+          "type": "string",
+          "pattern": "^https://"
+        }
+      }
+    },
+    "target": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/id"
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        }
+      ]
+    },
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "label",
+        "legacyName",
+        "sex",
+        "kind",
+        "relations",
+        "termIds",
+        "provenance"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "$ref": "#/$defs/nonempty"
+        },
+        "sex": {
+          "enum": [
+            "male",
+            "female",
+            "unknown"
+          ]
+        },
+        "kind": {
+          "enum": [
+            "person",
+            "collective",
+            "unsupported"
+          ]
+        },
+        "relations": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "fa",
+            "mu",
+            "xiong",
+            "di",
+            "jie",
+            "mei",
+            "fu",
+            "qi",
+            "zi",
+            "nv"
+          ],
+          "properties": {
+            "fa": {
+              "$ref": "#/$defs/target"
+            },
+            "mu": {
+              "$ref": "#/$defs/target"
+            },
+            "xiong": {
+              "$ref": "#/$defs/target"
+            },
+            "di": {
+              "$ref": "#/$defs/target"
+            },
+            "jie": {
+              "$ref": "#/$defs/target"
+            },
+            "mei": {
+              "$ref": "#/$defs/target"
+            },
+            "fu": {
+              "$ref": "#/$defs/target"
+            },
+            "qi": {
+              "$ref": "#/$defs/target"
+            },
+            "zi": {
+              "$ref": "#/$defs/target"
+            },
+            "nv": {
+              "$ref": "#/$defs/target"
+            }
+          }
+        },
+        "termIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "note": {
+          "$ref": "#/$defs/nonempty"
+        },
+        "legacyName": {
+          "$ref": "#/$defs/nonempty"
+        }
+      }
+    },
+    "term": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "text",
+        "status",
+        "usage",
+        "bindingId",
+        "provenance"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "text": {
+          "$ref": "#/$defs/nonempty"
+        },
+        "status": {
+          "enum": [
+            "bound",
+            "missingWord",
+            "rolePending"
+          ]
+        },
+        "usage": {
+          "const": "unknown"
+        },
+        "bindingId": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/id"
+            }
+          ]
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "displayDefinition": {
+          "$ref": "#/$defs/nonempty"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "bound"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "bindingId": {
+                "$ref": "#/$defs/id"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "bindingId": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "namespace",
+        "wordId",
+        "snapshotWord",
+        "status",
+        "provenance"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "namespace": {
+          "const": "hinghwa-word"
+        },
+        "wordId": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "snapshotWord": {
+          "$ref": "#/$defs/nonempty"
+        },
+        "status": {
+          "const": "snapshotExactMatch"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      }
+    }
+  }
+}
