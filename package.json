@@ -3,6 +3,9 @@
   "version": "0.1.1",
   "private": true,
   "scripts": {
+    "check:kinship-module": "node scripts/check-kinship-module.mjs",
+    "check:kinship-ui": "node scripts/check-kinship-ui.mjs",
+    "check:kinship-engine": "node --test scripts/kinship-engine.test.mjs && node scripts/check-kinship-engine.mjs . src/data/kinship/v1/engine.mjs && node scripts/kinship-deepwalk.test.mjs . src/data/kinship/v1/engine.mjs",
     "check:kinship": "node scripts/check-kinship.mjs",
     "check:relative": "node scripts/check-relative.mjs",
     "serve": "vue-cli-service serve",
