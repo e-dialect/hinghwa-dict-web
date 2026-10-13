@@ -80,7 +80,7 @@
             </div>
           </a-card>
           <a-card v-else :hoverable="true" style="width: 100%">
-            <a-card-meta description="（词条等待创建）">
+            <a-card-meta :description="item.definition || '（词条等待创建）'">
               <template v-slot:title>
                 <span style="font-size: 150%">
                   {{ item.word }}
@@ -98,6 +98,7 @@
           </a-card>
         </template>
       </a-list>
+      <p v-if="top.note" style="color: #666">{{ top.note }}</p>
     </div>
   </div>
 </template>
@@ -106,6 +107,7 @@
 import { buttons, fieldName, find, relative } from './relative'
 import axios from 'axios'
 import PlaySoundButton from './PlaySoundButton'
+import loadRelativeWords from './relativeWords'
 
 export default {
   name: 'RelationSelect',
@@ -114,12 +116,9 @@ export default {
     return {
       stack: [[relative[0]]],
       select: [],
-      words: []
+      words: [],
+      wordRequest: 0
     }
-  },
-  created () {
-    this.push('fa')
-    this.pop()
   },
   computed: {
     relations () {
@@ -149,7 +148,7 @@ export default {
         return false
       }
 
-      if (!this.top.relations[field]) return false
+      if (this.topLength !== 1 || !this.top.relations[field]) return false
       const ans = []
       if (typeof this.top.relations[field] !== 'string') {
         for (const i in this.top.relations[field]) {
@@ -160,13 +159,13 @@ export default {
       }
       this.select.push(fieldName[field])
       this.stack.push(ans)
-      console.log(this.top)
     },
     choose (name) {
       this.stack.push([find(name)])
       this.select.push(null)
     },
     pop () {
+      if (this.stack.length === 1) return
       this.select.pop()
       this.stack.pop()
     },
@@ -176,27 +175,17 @@ export default {
     }
   },
   watch: {
-    async top (value) {
-      console.log(this.top, value, this.words)
-      const ans = []
-      for (const item of value.words) {
-        let tmp = {
-          word: item.word,
-          id: null
-        }
-        if (item.id) {
-          await axios.get(`/words/${item.id}`).then((res) => {
-            tmp = res.data
-            tmp.url = res.data.word.source
-            tmp.id = item.id
-          })
-        } else {
-          tmp = { ...item }
-        }
-        ans.push(tmp)
+    top: {
+      immediate: true,
+      async handler (value) {
+        const request = ++this.wordRequest
+        this.words = []
+        const ans = await loadRelativeWords(value.words, async id => {
+          const res = await axios.get(`/words/${id}`)
+          return { ...res.data, id, url: res.data.word.source }
+        })
+        if (request === this.wordRequest) this.words = ans
       }
-      console.log(ans)
-      this.words = ans
     }
   }
 }
