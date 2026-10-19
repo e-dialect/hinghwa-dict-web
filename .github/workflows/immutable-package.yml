@@ -1,0 +1,105 @@
+name: Immutable package
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out exact source revision
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --production=false
+
+      - name: Lint
+        run: yarn run lint --max-warnings=0
+
+      - name: Build production static assets
+        run: yarn run build
+
+      - name: Verify production API is baked into the static output
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          root = Path('dist')
+          files = list(root.rglob('*.js'))
+          assert files, 'no JavaScript assets were produced'
+          content = b'\n'.join(path.read_bytes() for path in files)
+          assert b'https://api.pxm.edialect.top' in content, 'production API URL is missing'
+          assert b'https://api.pxm.test.edialect.top' not in content, 'test API URL leaked into production output'
+          PY
+
+  publish:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: validate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Check out exact source revision
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and publish immutable source-SHA package
+        id: package
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          platforms: linux/amd64
+          tags: ghcr.io/${{ github.repository_owner }}/hinghwa-dict-web:sha-${{ github.sha }}
+          labels: |
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.title=hinghwa-dict-web
+
+      - name: Write exact image digest manifest
+        env:
+          IMAGE_DIGEST: ${{ steps.package.outputs.digest }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          image = 'ghcr.io/${{ github.repository_owner }}/hinghwa-dict-web'
+          manifest = {
+              'schemaVersion': 1,
+              'repository': '${{ github.repository }}',
+              'sourceSha': '${{ github.sha }}',
+              'image': image,
+              'imageRef': f"{image}@{os.environ['IMAGE_DIGEST']}",
+              'digest': os.environ['IMAGE_DIGEST'],
+              'platforms': ['linux/amd64'],
+          }
+          Path('release-manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
+          PY
+
+      - name: Archive digest manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: hinghwa-dict-web-release-${{ github.sha }}
+          path: release-manifest.json
+          if-no-files-found: error
+          retention-days: 90
