@@ -1,0 +1,82 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Production lint and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: yarn install --frozen-lockfile --production=false
+      - run: yarn run lint --no-fix --max-warnings=0
+      - run: yarn run build
+      - name: Check production API and self-contained entry assets
+        run: python3 scripts/check-assets.py --root dist
+  release-safety:
+    name: Release safety
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test scripts/release.test.mjs
+      - run: python3 -m unittest discover -s scripts -p 'test_*.py'
+  image:
+    name: Static image and routes
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile.release
+          platforms: linux/amd64
+          push: false
+          load: true
+          provenance: false
+          tags: hinghwa-dict-web:ci
+          labels: org.opencontainers.image.revision=${{ github.sha }}
+          cache-from: type=gha,scope=hinghwa-dict-web
+          cache-to: type=gha,mode=max,scope=hinghwa-dict-web
+      - name: Check real restricted Nginx image and every emitted JS/CSS asset
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+        run: python3 scripts/check-runtime.py --image hinghwa-dict-web:ci --source-sha "$SOURCE_SHA"
+  ci-gate:
+    name: CI gate
+    if: always()
+    needs: [validate, release-safety, image]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require every CI job
+        env:
+          NEEDS: ${{ toJSON(needs) }}
+        run: |
+          node <<'JS'
+          for (const [name, job] of Object.entries(JSON.parse(process.env.NEEDS))) {
+            if (job.result !== 'success') throw new Error(`${name}: ${job.result}`);
+          }
+          JS

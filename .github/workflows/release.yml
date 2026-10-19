@@ -1,0 +1,193 @@
+name: Publish production images
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      source_sha:
+        description: Full current master SHA with successful CI
+        required: true
+      ci_run_id:
+        description: Successful latest CI run for that exact master SHA
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-image-publication
+  cancel-in-progress: false
+
+jobs:
+  authorize:
+    name: Verify trusted master and CI gate
+    if: github.repository == 'e-dialect/hinghwa-dict-web' && github.repository_id == '393897080' && (github.event_name == 'workflow_run' || github.ref == 'refs/heads/master')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: read
+    outputs:
+      source_sha: ${{ steps.verify.outputs.source_sha }}
+      ci_run_id: ${{ steps.verify.outputs.ci_run_id }}
+    steps:
+      # No checkout or registry credentials before GitHub records authorize master.
+      - uses: actions/github-script@v8
+        id: verify
+        env:
+          REQUESTED_SHA: ${{ inputs.source_sha }}
+          REQUESTED_CI_RUN_ID: ${{ inputs.ci_run_id }}
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const triggered = context.payload.workflow_run;
+            const runId = triggered?.id ?? Number(process.env.REQUESTED_CI_RUN_ID);
+            const sha = triggered?.head_sha ?? process.env.REQUESTED_SHA;
+            if (!/^[0-9a-f]{40}$/.test(sha ?? '') || !Number.isSafeInteger(runId) || runId < 1) {
+              throw new Error('A full source SHA and valid CI run ID are required');
+            }
+            const [{ data: master }, { data: workflow }, { data: run }, { data: candidates }] = await Promise.all([
+              github.rest.repos.getBranch({ owner, repo, branch: 'master' }),
+              github.rest.actions.getWorkflow({ owner, repo, workflow_id: 'ci.yml' }),
+              github.rest.actions.getWorkflowRun({ owner, repo, run_id: runId }),
+              github.rest.actions.listWorkflowRuns({ owner, repo, workflow_id: 'ci.yml', branch: 'master', head_sha: sha, per_page: 100 }),
+            ]);
+            const trusted = item => item.head_sha === sha && item.head_branch === 'master'
+              && item.head_repository?.full_name === 'e-dialect/hinghwa-dict-web' && item.head_repository?.id === 393897080
+              && item.repository?.full_name === 'e-dialect/hinghwa-dict-web' && item.repository?.id === 393897080
+              && item.workflow_id === workflow.id && ['push', 'workflow_dispatch'].includes(item.event);
+            const latest = candidates.workflow_runs.filter(trusted).sort((a, b) => b.run_number - a.run_number)[0];
+            if (master.commit.sha !== sha || !trusted(run) || latest?.id !== runId
+              || run.status !== 'completed' || run.conclusion !== 'success') {
+              throw new Error('Publication requires the latest successful CI for current trusted master');
+            }
+            const jobs = await github.paginate(github.rest.actions.listJobsForWorkflowRun, {
+              owner, repo, run_id: runId, filter: 'latest', per_page: 100,
+            });
+            const gates = jobs.filter(job => job.name === 'CI gate');
+            if (gates.length !== 1 || gates[0].status !== 'completed' || gates[0].conclusion !== 'success') {
+              throw new Error('The aggregate CI gate did not pass');
+            }
+            core.setOutput('source_sha', sha);
+            core.setOutput('ci_run_id', String(runId));
+
+  publish:
+    name: Publish tested immutable hinghwa-dict-web image
+    needs: authorize
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write
+      actions: read
+    env:
+      SOURCE_SHA: ${{ needs.authorize.outputs.source_sha }}
+      CI_RUN_ID: ${{ needs.authorize.outputs.ci_run_id }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: docker/setup-buildx-action@v3
+      - name: Confirm current master before registry login
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const { data } = await github.rest.repos.getBranch({ ...context.repo, branch: 'master' });
+            if (data.commit.sha !== process.env.SOURCE_SHA) throw new Error('master advanced; publish its CI run instead');
+      - name: Set commit-derived version timestamp
+        run: |
+          python3 - >> "$GITHUB_ENV" <<'PYTHON'
+          import datetime, os, subprocess
+          stamp = int(subprocess.check_output(['git', 'show', '-s', '--format=%ct', os.environ['SOURCE_SHA']]))
+          print('BUILD_DATE=' + datetime.datetime.fromtimestamp(stamp, datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'))
+          PYTHON
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Reuse an existing verified SHA image without overwriting
+        id: existing
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/release.mjs prepare
+      - name: Build missing image locally for smoke
+        if: steps.existing.outputs.existing == ''
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile.release
+          platforms: linux/amd64
+          push: false
+          load: true
+          provenance: false
+          tags: ghcr.io/e-dialect/hinghwa-dict-web:sha-${{ env.SOURCE_SHA }}
+          labels: |
+            org.opencontainers.image.revision=${{ env.SOURCE_SHA }}
+            org.opencontainers.image.version=sha-${{ env.SOURCE_SHA }}
+            org.opencontainers.image.created=${{ env.BUILD_DATE }}
+            org.opencontainers.image.source=https://github.com/e-dialect/hinghwa-dict-web
+          cache-from: type=gha,scope=hinghwa-dict-web
+          cache-to: type=gha,mode=max,scope=hinghwa-dict-web
+      - name: Smoke the exact image before publication
+        run: |
+          mkdir -p release
+          python3 scripts/check-runtime.py --image "ghcr.io/e-dialect/hinghwa-dict-web:sha-${SOURCE_SHA}" --source-sha "$SOURCE_SHA" > release/runtime.json
+          cat release/runtime.json
+      - name: Recheck trusted master and latest exact-SHA CI before publication
+        uses: actions/github-script@v8
+        env:
+          REQUESTED_SHA: ${{ env.SOURCE_SHA }}
+          REQUESTED_CI_RUN_ID: ${{ env.CI_RUN_ID }}
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const triggered = context.payload.workflow_run;
+            const runId = triggered?.id ?? Number(process.env.REQUESTED_CI_RUN_ID);
+            const sha = triggered?.head_sha ?? process.env.REQUESTED_SHA;
+            if (!/^[0-9a-f]{40}$/.test(sha ?? '') || !Number.isSafeInteger(runId) || runId < 1) {
+              throw new Error('A full source SHA and valid CI run ID are required');
+            }
+            const [{ data: master }, { data: workflow }, { data: run }, { data: candidates }] = await Promise.all([
+              github.rest.repos.getBranch({ owner, repo, branch: 'master' }),
+              github.rest.actions.getWorkflow({ owner, repo, workflow_id: 'ci.yml' }),
+              github.rest.actions.getWorkflowRun({ owner, repo, run_id: runId }),
+              github.rest.actions.listWorkflowRuns({ owner, repo, workflow_id: 'ci.yml', branch: 'master', head_sha: sha, per_page: 100 }),
+            ]);
+            const trusted = item => item.head_sha === sha && item.head_branch === 'master'
+              && item.head_repository?.full_name === 'e-dialect/hinghwa-dict-web' && item.head_repository?.id === 393897080
+              && item.repository?.full_name === 'e-dialect/hinghwa-dict-web' && item.repository?.id === 393897080
+              && item.workflow_id === workflow.id && ['push', 'workflow_dispatch'].includes(item.event);
+            const latest = candidates.workflow_runs.filter(trusted).sort((a, b) => b.run_number - a.run_number)[0];
+            if (master.commit.sha !== sha || !trusted(run) || latest?.id !== runId
+              || run.status !== 'completed' || run.conclusion !== 'success') {
+              throw new Error('Publication requires the latest successful CI for current trusted master');
+            }
+            const jobs = await github.paginate(github.rest.actions.listJobsForWorkflowRun, {
+              owner, repo, run_id: runId, filter: 'latest', per_page: 100,
+            });
+            const gates = jobs.filter(job => job.name === 'CI gate');
+            if (gates.length !== 1 || gates[0].status !== 'completed' || gates[0].conclusion !== 'success') {
+              throw new Error('The aggregate CI gate did not pass');
+            }
+            core.setOutput('source_sha', sha);
+            core.setOutput('ci_run_id', String(runId));
+      - name: Publish tested image and immutable manifest
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/release.mjs publish
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-manifest
+          path: |
+            release/release-manifest.json
+            release/runtime.json
+          if-no-files-found: error
+          retention-days: 90
