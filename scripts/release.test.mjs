@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
-import { hash, verifyImage, existingImageDigest, verifiedRuntimeImage } from './release-image.mjs'
+import { hash, verifyImage, existingImageDigest, verifiedRuntimeImage, browserAcceptance } from './release-image.mjs'
 
 const sha = 'a'.repeat(40)
 const date = '2026-10-14T00:00:00Z'
@@ -77,7 +77,7 @@ test('publication requires completed exact-SHA smoke with every route and asset 
     result: 'PASS', cleanup: 'PASS', sourceSHA: sha,
     routes: ['/', '/Home', '/About', '/login'], javaScriptAssets: 3, cssAssets: 2,
     imageId: 'sha256:' + 'c'.repeat(64), containerPort: 8080,
-    nonRoot: true, readOnlyRootFilesystem: true, productionAPI: true, sameOriginAssets: true,
+    nonRoot: true, readOnlyRootFilesystem: true, productionAPI: true, sameOriginEntryAssets: true, browserAcceptance,
     runtimeLimits: {
       capDrop: ['ALL'], securityOpt: ['no-new-privileges:true'],
       memoryBytes: 128 * 1024 * 1024, memorySwapBytes: 128 * 1024 * 1024,
@@ -87,9 +87,13 @@ test('publication requires completed exact-SHA smoke with every route and asset 
   }
   assert.equal(verifiedRuntimeImage(good, sha), good.imageId)
   for (const change of [
-    { result: 'FAIL' }, { cleanup: 'FAIL' }, { sourceSHA: 'b'.repeat(40) },
+    { result: 'FAIL' }, { sameOriginAssets: true }, { browserAcceptance: undefined },
+    { browserAcceptance: { ...browserAcceptance, verified: true } },
+    { browserAcceptance: { ...browserAcceptance, dependencyInventoryComplete: true } },
+    { browserAcceptance: { ...browserAcceptance, knownExternalDependencies: [{ url: 'https://unreviewed.example/script.js' }] } },
+    { browserAcceptance: { ...browserAcceptance, pendingPaths: [] } }, { cleanup: 'FAIL' }, { sourceSHA: 'b'.repeat(40) },
     { routes: ['/'] }, { cssAssets: 0 }, { javaScriptAssets: 0 }, { imageId: '' },
-    { productionAPI: false }, { sameOriginAssets: false }, { containerPort: 80 }, { nonRoot: false }, { readOnlyRootFilesystem: false },
+    { productionAPI: false }, { sameOriginEntryAssets: false }, { containerPort: 80 }, { nonRoot: false }, { readOnlyRootFilesystem: false },
     { runtimeLimits: { ...good.runtimeLimits, pidsLimit: 128 } },
   ]) {
     assert.throws(() => verifiedRuntimeImage({ ...good, ...change }, sha))

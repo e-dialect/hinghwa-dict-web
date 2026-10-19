@@ -21,6 +21,20 @@ only its own loopback-published disposable container: it fetches every emitted J
 checks production API selection, rejects external entry JS/CSS and missing assets, and checks
 sensitive paths are unavailable. It does not call a backend or establish browser/user acceptance.
 
+The receipt claims only `sameOriginEntryAssets`: the HTML entry scripts and stylesheets
+are local, and emitted JS/CSS files are fetched and scanned. It does not execute browser
+JavaScript or prove that dynamic loaders, content, images, fonts, or API calls are same-origin.
+`browserAcceptance` is explicitly unverified; `scripts/browser-acceptance.json` records a
+non-exhaustive dependency inventory and pending browser paths. Empty known dependencies
+mean none were recorded, not that external runtime dependencies are absent.
+
+The unchanged master Markdown editor/viewer uses mavon-editor with its default external
+loading enabled: cdnjs supplies highlight.js (including selected languages/themes), KaTeX,
+and github-markdown CSS. Their exact URLs/templates are recorded in the contract. These
+resources are not fetched by CI smoke. Article/word editing and Markdown previews still
+require real browser verification before production deployment; package CI does not approve
+those user paths. This change preserves the existing product behavior.
+
 The old Dockerfile, Compose, API rewrite script and COS workflows remain legacy paths.
 **A push to master still triggers `master-deploy-cos.yml`, which builds in development mode
 and writes the public `/hinghwa-dict-web-master/` COS prefix.** That deployment side effect is not a CI gate;

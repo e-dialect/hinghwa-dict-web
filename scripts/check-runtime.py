@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Bounded HTTP smoke of the exact static image; only its disposable container is removed."""
 import argparse
+from pathlib import Path
 import json
 import re
 import subprocess
@@ -10,6 +11,8 @@ import urllib.parse
 import urllib.request
 import uuid
 from check_assets import entry_assets, validate_javascript, validate_stylesheet, forbidden_file
+
+BROWSER_ACCEPTANCE = json.loads(Path(__file__).with_name('browser-acceptance.json').read_text())
 
 PORT = 8080
 RUNTIME_LIMITS = {
@@ -126,8 +129,8 @@ def check(image, source_sha):
         assert counts['js'] and counts['css']
         assert b'https://api.pxm.edialect.top' in b'\n'.join(js_content), 'Production API missing'
         result.update(result='PASS', routes=routes, javaScriptAssets=counts['js'], cssAssets=counts['css'],
-                      containerPort=PORT, nonRoot=True, readOnlyRootFilesystem=True, productionAPI=True, sameOriginAssets=True,
-                      runtimeLimits=RUNTIME_LIMITS)
+                      containerPort=PORT, nonRoot=True, readOnlyRootFilesystem=True, productionAPI=True, sameOriginEntryAssets=True,
+                      runtimeLimits=RUNTIME_LIMITS, browserAcceptance=BROWSER_ACCEPTANCE)
     finally:
         if cid:
             docker('rm', '-f', cid)

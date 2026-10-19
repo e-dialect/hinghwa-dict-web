@@ -1,0 +1,40 @@
+{
+  "verified": false,
+  "dependencyInventoryComplete": false,
+  "knownExternalDependencies": [
+    {
+      "kind": "script",
+      "url": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"
+    },
+    {
+      "kind": "script",
+      "urlTemplate": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/{language}.min.js"
+    },
+    {
+      "kind": "stylesheet",
+      "urlTemplate": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/{theme}.min.css"
+    },
+    {
+      "kind": "script",
+      "url": "https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js"
+    },
+    {
+      "kind": "stylesheet",
+      "url": "https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css"
+    },
+    {
+      "kind": "stylesheet",
+      "url": "https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.9.0/github-markdown.min.css"
+    }
+  ],
+  "pendingPaths": [
+    "/articles/create",
+    "/articles/edit/:id",
+    "/articles/:id",
+    "/words/Create",
+    "/words/:id/edit",
+    "/words/:id",
+    "/application/:id",
+    "/wordlist/:id"
+  ]
+}

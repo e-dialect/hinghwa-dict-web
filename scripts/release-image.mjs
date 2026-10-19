@@ -1,8 +1,10 @@
 import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
 import { execFileSync } from 'node:child_process'
 import { createHash } from 'node:crypto'
 
 export const hash = bytes => `sha256:${createHash('sha256').update(bytes).digest('hex')}`
+export const browserAcceptance = JSON.parse(readFileSync(new URL('./browser-acceptance.json', import.meta.url), 'utf8'))
 const CONFIG_LIMIT = 1024 * 1024
 
 function parseManifest(raw, digest) {
@@ -134,7 +136,9 @@ export function verifiedRuntimeImage(receipt, sourceSHA) {
   assert.ok(Number.isSafeInteger(receipt.cssAssets) && receipt.cssAssets > 0)
   assert.match(receipt.imageId ?? '', /^sha256:[0-9a-f]{64}$/)
   assert.equal(receipt.productionAPI, true)
-  assert.equal(receipt.sameOriginAssets, true)
+  assert.equal(receipt.sameOriginEntryAssets, true)
+  assert.equal(Object.hasOwn(receipt, 'sameOriginAssets'), false, 'Legacy all-runtime same-origin claim is forbidden')
+  assert.deepEqual(receipt.browserAcceptance, browserAcceptance)
   assert.equal(receipt.nonRoot, true)
   assert.equal(receipt.readOnlyRootFilesystem, true)
   assert.equal(receipt.containerPort, 8080)

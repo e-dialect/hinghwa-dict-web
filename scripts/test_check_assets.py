@@ -29,7 +29,10 @@ class ProductionAssetsTests(unittest.TestCase):
             (root / 'index.html').write_text('<script src="/app.js"></script><link rel="stylesheet" href="/app.css">')
             (root / 'app.js').write_text('const api="https://api.pxm.edialect.top";')
             (root / 'app.css').write_text('body {}')
-            self.assertEqual(check_tree(root)['result'], 'PASS')
+            receipt = check_tree(root)
+            self.assertEqual(receipt['result'], 'PASS')
+            self.assertTrue(receipt['sameOriginEntryAssets'])
+            self.assertNotIn('sameOriginAssets', receipt)
             for filename in ['.env.production', '.cos.conf', 'app.js.map', 'package.json']:
                 (root / filename).write_text('synthetic-only')
                 with self.subTest(filename=filename), self.assertRaises(AssertionError):

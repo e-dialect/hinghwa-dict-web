@@ -52,7 +52,8 @@ def entry_assets(body):
 def validate_javascript(body):
     assert b'https://api.pxm.test.edialect.top' not in body, 'Test API leaked into production JavaScript'
     assert b'VITE_BACKEND_URL_RUNTIME_REPLACEMENT' not in body, 'Runtime API rewrite still required'
-    # Only imports/loaders are executable dependencies; ordinary external links and API URLs are permitted.
+    # Reject recognizable external import syntax; this is not analysis of dynamic browser loaders.
+    # Ordinary external links and API URLs are permitted.
     text = body.decode('utf-8')
     assert not re.search(r'''(?:\bimport\s*(?:\(\s*|[^;\n]{0,200}?\bfrom\s*)|\bimportScripts\s*\(\s*)["'](?:https?:)?//''', text), 'External JavaScript dependency'
 
@@ -86,5 +87,5 @@ def check_tree(root):
             counts['css'] += 1
     assert counts['js'] and counts['css']
     assert PRODUCTION_API in b'\n'.join(javascript), 'Production API missing'
-    return {'result': 'PASS', 'productionAPI': True, 'sameOriginAssets': True,
+    return {'result': 'PASS', 'productionAPI': True, 'sameOriginEntryAssets': True,
             'entryAssets': entries, 'javaScriptAssets': counts['js'], 'cssAssets': counts['css']}
