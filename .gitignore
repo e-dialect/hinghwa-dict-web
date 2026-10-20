@@ -21,3 +21,7 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Immutable-package verifier outputs
+/release/
+scripts/__pycache__/
