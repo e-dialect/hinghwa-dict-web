@@ -102,7 +102,19 @@ export const relative = [
         word: '祖公',
         id: 5767
       }
-    ]
+    ],
+    relations: {
+      fa: null,
+      mu: null,
+      xiong: null,
+      di: null,
+      jie: null,
+      mei: null,
+      fu: null,
+      qi: null,
+      zi: null,
+      nv: null
+    }
   },
   {
     name: '高祖父',
@@ -205,8 +217,8 @@ export const relative = [
       mei: null,
       fu: null,
       qi: '外曾祖母',
-      zi: ['外祖父', '叔祖父', '伯祖父'],
-      nv: ['姑祖母']
+      zi: ['外祖父', '伯外祖父', '叔外祖父'],
+      nv: '姑外祖母'
     }
   },
   {
@@ -226,8 +238,8 @@ export const relative = [
       mei: null,
       fu: '外曾祖父',
       qi: null,
-      zi: ['外祖父', '叔祖父', '伯祖父'],
-      nv: ['姑祖母']
+      zi: ['外祖父', '伯外祖父', '叔外祖父'],
+      nv: '姑外祖母'
     }
   },
   {
@@ -257,6 +269,10 @@ export const relative = [
       {
         word: '阿妈',
         id: 10
+      },
+      {
+        word: '阿嬷',
+        id: 6100
       }
     ],
     relations: {
@@ -293,7 +309,6 @@ export const relative = [
       nv: '堂姑母'
     }
   },
-
   {
     name: '伯祖母',
     words: [
@@ -615,6 +630,10 @@ export const relative = [
       {
         word: '外头妈',
         id: 2441
+      },
+      {
+        word: '阿嬷',
+        id: 6100
       }
     ],
     relations: {
@@ -634,6 +653,10 @@ export const relative = [
     name: '父亲',
     words: [
       {
+        word: '郎罢',
+        id: 3494
+      },
+      {
         word: '老父',
         id: null
       },
@@ -651,21 +674,17 @@ export const relative = [
       mei: '姑母',
       fu: null,
       qi: '母亲',
-      zi: [
-        '己身',
-        '兄亲',
-        '弟亲'
-      ],
-      nv: [
-        '己身',
-        '姊亲',
-        '妹亲'
-      ]
+      zi: ['己身', '兄亲', '弟亲'],
+      nv: ['己身', '姊亲', '妹亲']
     }
   },
   {
     name: '母亲',
     words: [
+      {
+        word: '娘妳',
+        id: 3956
+      },
       {
         word: '阿负',
         id: null
@@ -708,16 +727,8 @@ export const relative = [
       mei: '姨母',
       fu: '父亲',
       qi: null,
-      zi: [
-        '己身',
-        '兄亲',
-        '弟亲'
-      ],
-      nv: [
-        '己身',
-        '姊亲',
-        '妹亲'
-      ]
+      zi: ['己身', '兄亲', '弟亲'],
+      nv: ['己身', '姊亲', '妹亲']
     }
   },
   {
@@ -1152,7 +1163,7 @@ export const relative = [
       },
       {
         word: '阿丈',
-        id: null
+        id: 6115
       }
     ],
     relations: {
@@ -1227,14 +1238,8 @@ export const relative = [
       }
     ],
     relations: {
-      fa: [
-        '姊亲',
-        '妹亲'
-      ],
-      mu: [
-        '姊夫',
-        '妹夫'
-      ],
+      fa: ['姊夫', '妹夫'],
+      mu: ['姊亲', '妹亲'],
       xiong: '甥男',
       di: '甥男',
       jie: '甥女',
@@ -1254,14 +1259,8 @@ export const relative = [
       }
     ],
     relations: {
-      fa: [
-        '姊亲',
-        '妹亲'
-      ],
-      mu: [
-        '姊夫',
-        '妹夫'
-      ],
+      fa: ['姊夫', '妹夫'],
+      mu: ['姊亲', '妹亲'],
       xiong: '甥男',
       di: '甥男',
       jie: '甥女',
@@ -1335,14 +1334,8 @@ export const relative = [
       }
     ],
     relations: {
-      fa: [
-        '姑丈',
-        '姨丈'
-      ],
-      mu: [
-        '姑母',
-        '姨母'
-      ],
+      fa: ['姑父', '舅父', '姨父'],
+      mu: ['姑母', '舅母', '姨母'],
       xiong: '表兄弟',
       di: '表兄弟',
       jie: '表姊妹',
@@ -1362,14 +1355,8 @@ export const relative = [
       }
     ],
     relations: {
-      fa: [
-        '姑父',
-        '姨父'
-      ],
-      mu: [
-        '姑母',
-        '姨母'
-      ],
+      fa: ['姑父', '舅父', '姨父'],
+      mu: ['姑母', '舅母', '姨母'],
       xiong: '表兄弟',
       di: '表兄弟',
       jie: '表姊妹',
@@ -1415,7 +1402,8 @@ export const relative = [
       qi: '儿妇',
       zi: '孙儿',
       nv: '孙女'
-    }
+    },
+    note: '大囝、长子只用于长子；细囝、尾囝只用于幼子。本页尚未记录排行，请按实际关系选用。'
   },
   {
     name: '儿妇',
@@ -1490,8 +1478,8 @@ export const relative = [
     name: '女亲',
     words: [
       {
-        word: '囝',
-        id: 2508
+        word: '婶娘囝',
+        id: 4820
       }
     ],
     relations: {
@@ -1598,27 +1586,15 @@ export const relative = [
       fu: null,
       qi: '孙妇',
       zi: '曾孙',
-      nv: '曾孙'
+      nv: '曾孙女'
     }
   },
   {
     name: '孙女',
     words: [
       {
-        word: '婶娘孙',
-        id: null
-      },
-      {
-        word: '里头孙',
-        id: 3553
-      },
-      {
-        word: '正孙',
-        id: 5579
-      },
-      {
-        word: '子孙',
-        id: null
+        word: '孙',
+        id: 4929
       }
     ],
     relations: {
@@ -1638,21 +1614,21 @@ export const relative = [
     name: '外孙儿',
     words: [
       {
-        word: '孙',
-        id: 4929
+        word: '外头孙',
+        id: 2440
       }
     ],
     relations: {
       fa: '女婿',
       mu: '女亲',
-      xiong: '孙儿',
-      di: '孙儿',
-      jie: '孙女',
-      mei: '孙女',
+      xiong: '外孙儿',
+      di: '外孙儿',
+      jie: '外孙女',
+      mei: '外孙女',
       fu: null,
-      qi: '孙妇',
-      zi: '曾孙',
-      nv: '曾孙'
+      qi: '外孙妇',
+      zi: '外曾孙',
+      nv: '外曾孙'
     }
   },
   {
@@ -1668,25 +1644,27 @@ export const relative = [
       mu: '孙妇',
       xiong: '曾孙',
       di: '曾孙',
-      jie: '曾孙',
-      mei: '曾孙',
+      jie: '曾孙女',
+      mei: '曾孙女',
       fu: null,
       qi: null,
       zi: '玄孙',
       nv: null
-    }
+    },
+    note: '此词条只确认孙子的儿子；未据此推广到女性或外孙母系。'
   },
   {
     name: '曾外孙',
     words: [
       {
-        word: '曾孙',
-        id: 5495
+        word: '曾外孙（兴化语称谓待核）',
+        id: null,
+        definition: '孙女的子女；原词条“曾孙”仅释为孙子的儿子，不能绑定。'
       }
     ],
     relations: {
-      fa: '孙女',
-      mu: '孙婿',
+      fa: '孙婿',
+      mu: '孙女',
       xiong: '曾外孙',
       di: '曾外孙',
       jie: '曾外孙',
@@ -1807,8 +1785,9 @@ export const relative = [
     name: '伯兄妇',
     words: [
       {
-        word: '伯叔婶',
-        id: 271
+        word: '伯兄妇（兴化语称谓待核）',
+        id: null,
+        definition: '原“伯叔婶”词条释义为妯娌合称，面称待核。'
       }
     ],
     relations: {
@@ -1849,8 +1828,9 @@ export const relative = [
     name: '叔弟妇',
     words: [
       {
-        word: '伯叔婶',
-        id: 271
+        word: '叔弟妇（兴化语称谓待核）',
+        id: null,
+        definition: '原“伯叔婶”词条释义为妯娌合称，面称待核。'
       }
     ],
     relations: {
@@ -1966,7 +1946,7 @@ export const relative = [
     name: '舅兄',
     words: [
       {
-        word: '',
+        word: '舅兄（兴化语称谓待核）',
         id: null
       }
     ],
@@ -1974,15 +1954,9 @@ export const relative = [
       fa: '丈父',
       mu: '丈母',
       xiong: '舅兄',
-      di: [
-        '舅弟',
-        '舅兄'
-      ],
+      di: ['舅弟', '舅兄'],
       jie: '姨姊妹',
-      mei: [
-        '姨姊妹',
-        '妻亲'
-      ],
+      mei: ['姨姊妹', '妻亲'],
       fu: null,
       qi: '舅兄妇',
       zi: null,
@@ -1993,7 +1967,7 @@ export const relative = [
     name: '舅兄妇',
     words: [
       {
-        word: '',
+        word: '舅兄妇（兴化语称谓待核）',
         id: null
       }
     ],
@@ -2043,7 +2017,8 @@ export const relative = [
     words: [
       {
         word: '阿妗囝',
-        id: 17
+        id: null,
+        definition: '现有称谓待词条核验；原 ID 17 是“阿妗”，不能绑定。'
       }
     ],
     relations: {
@@ -2070,27 +2045,16 @@ export const relative = [
     relations: {
       fa: '丈父',
       mu: '丈母',
-      xiong: [
-        '舅弟',
-        '舅兄'
-      ],
-      di: [
-        '舅弟',
-        '舅兄'
-      ],
-      jie: [
-        '姨姊妹',
-        '妻亲'
-      ],
-      mei: [
-        '姨姊妹',
-        '妻亲'
-      ],
-      fu: null,
-      qi: '姨姊妹夫',
+      xiong: ['舅弟', '舅兄'],
+      di: ['舅弟', '舅兄'],
+      jie: ['姨姊妹', '妻亲'],
+      mei: ['姨姊妹', '妻亲'],
+      fu: '姨姊妹夫',
+      qi: null,
       zi: null,
       nv: null
-    }
+    },
+    note: '阿姨囝词条只确认妻子的妹妹；妻子的姐姐称谓待核。本页尚未区分二者。'
   },
   {
     name: '姨姊妹夫',
@@ -2112,6 +2076,579 @@ export const relative = [
       zi: null,
       nv: null
     }
+  },
+  {
+    name: '堂姑母',
+    words: [
+      {
+        word: '堂姑母（兴化语称谓待核）',
+        id: null,
+        definition: '关系名称用于继续计算；兴化语称谓及词条待核。'
+      }
+    ],
+    relations: {
+      fa: ['伯祖父', '叔祖父'],
+      mu: ['伯祖母', '叔祖母'],
+      xiong: ['堂伯父', '堂叔父'],
+      di: ['堂伯父', '堂叔父'],
+      jie: '堂姑母',
+      mei: '堂姑母',
+      fu: null,
+      qi: null,
+      zi: '表兄弟',
+      nv: '表姊妹'
+    },
+    note: '父亲的堂姊妹。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。'
+  },
+  {
+    name: '表伯父',
+    words: [
+      {
+        word: '表伯父（兴化语称谓待核）',
+        id: null,
+        definition: '关系名称用于继续计算；兴化语称谓及词条待核。'
+      }
+    ],
+    relations: {
+      fa: null,
+      mu: null,
+      xiong: null,
+      di: null,
+      jie: null,
+      mei: null,
+      fu: null,
+      qi: null,
+      zi: null,
+      nv: null
+    },
+    note: '父亲的年长男性表亲。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。'
+  },
+  {
+    name: '表叔父',
+    words: [
+      {
+        word: '表叔父（兴化语称谓待核）',
+        id: null,
+        definition: '关系名称用于继续计算；兴化语称谓及词条待核。'
+      }
+    ],
+    relations: {
+      fa: null,
+      mu: null,
+      xiong: null,
+      di: null,
+      jie: null,
+      mei: null,
+      fu: null,
+      qi: null,
+      zi: null,
+      nv: null
+    },
+    note: '父亲的年幼男性表亲。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。'
+  },
+  {
+    name: '表姑母',
+    words: [
+      {
+        word: '表姑母（兴化语称谓待核）',
+        id: null,
+        definition: '关系名称用于继续计算；兴化语称谓及词条待核。'
+      }
+    ],
+    relations: {
+      fa: null,
+      mu: null,
+      xiong: null,
+      di: null,
+      jie: null,
+      mei: null,
+      fu: null,
+      qi: null,
+      zi: null,
+      nv: null
+    },
+    note: '父亲的女性表亲。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。'
+  },
+  {
+    name: '曾外祖父',
+    words: [
+      {
+        word: '曾外祖父（兴化语称谓待核）',
+        id: null,
+        definition: '关系名称用于继续计算；兴化语称谓及词条待核。'
+      }
+    ],
+    relations: {
+      fa: null,
+      mu: null,
+      xiong: null,
+      di: null,
+      jie: null,
+      mei: null,
+      fu: null,
+      qi: '曾外祖母',
+      zi: '舅祖父',
+      nv: ['祖母', '姨祖母']
+    },
+    note: '祖母的父亲（沿祖母母家路径）。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。'
+  },
+  {
+    name: '曾外祖母',
+    words: [
+      {
+        word: '曾外祖母（兴化语称谓待核）',
+        id: null,
+        definition: '关系名称用于继续计算；兴化语称谓及词条待核。'
+      }
+    ],
+    relations: {
+      fa: null,
+      mu: null,
+      xiong: null,
+      di: null,
+      jie: null,
+      mei: null,
+      fu: '曾外祖父',
+      qi: null,
+      zi: '舅祖父',
+      nv: ['祖母', '姨祖母']
+    },
+    note: '祖母的母亲（沿祖母母家路径）。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。'
+  },
+  {
+    name: '伯外祖父',
+    words: [
+      {
+        word: '伯外祖父（兴化语称谓待核）',
+        id: null,
+        definition: '关系名称用于继续计算；兴化语称谓及词条待核。'
+      }
+    ],
+    relations: {
+      fa: '外曾祖父',
+      mu: '外曾祖母',
+      xiong: null,
+      di: null,
+      jie: null,
+      mei: null,
+      fu: null,
+      qi: null,
+      zi: null,
+      nv: null
+    },
+    note: '外祖父的哥哥。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。'
+  },
+  {
+    name: '叔外祖父',
+    words: [
+      {
+        word: '叔外祖父（兴化语称谓待核）',
+        id: null,
+        definition: '关系名称用于继续计算；兴化语称谓及词条待核。'
+      }
+    ],
+    relations: {
+      fa: '外曾祖父',
+      mu: '外曾祖母',
+      xiong: null,
+      di: null,
+      jie: null,
+      mei: null,
+      fu: null,
+      qi: null,
+      zi: null,
+      nv: null
+    },
+    note: '外祖父的弟弟。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。'
+  },
+  {
+    name: '姑外祖母',
+    words: [
+      {
+        word: '姑外祖母（兴化语称谓待核）',
+        id: null,
+        definition: '关系名称用于继续计算；兴化语称谓及词条待核。'
+      }
+    ],
+    relations: {
+      fa: '外曾祖父',
+      mu: '外曾祖母',
+      xiong: null,
+      di: null,
+      jie: null,
+      mei: null,
+      fu: null,
+      qi: null,
+      zi: null,
+      nv: null
+    },
+    note: '外祖父的姊妹。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。'
+  },
+  {
+    name: '堂侄男',
+    words: [
+      {
+        word: '堂侄男（兴化语称谓待核）',
+        id: null,
+        definition: '关系名称用于继续计算；兴化语称谓及词条待核。'
+      }
+    ],
+    relations: {
+      fa: '堂兄弟',
+      mu: null,
+      xiong: '堂侄男',
+      di: '堂侄男',
+      jie: '堂侄女',
+      mei: '堂侄女',
+      fu: null,
+      qi: null,
+      zi: null,
+      nv: null
+    },
+    note: '堂兄弟的儿子。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。'
+  },
+  {
+    name: '堂侄女',
+    words: [
+      {
+        word: '堂侄女（兴化语称谓待核）',
+        id: null,
+        definition: '关系名称用于继续计算；兴化语称谓及词条待核。'
+      }
+    ],
+    relations: {
+      fa: '堂兄弟',
+      mu: null,
+      xiong: '堂侄男',
+      di: '堂侄男',
+      jie: '堂侄女',
+      mei: '堂侄女',
+      fu: null,
+      qi: null,
+      zi: null,
+      nv: null
+    },
+    note: '堂兄弟的女儿。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。'
+  },
+  {
+    name: '堂甥男',
+    words: [
+      {
+        word: '堂甥男（兴化语称谓待核）',
+        id: null,
+        definition: '关系名称用于继续计算；兴化语称谓及词条待核。'
+      }
+    ],
+    relations: {
+      fa: null,
+      mu: '堂姊妹',
+      xiong: '堂甥男',
+      di: '堂甥男',
+      jie: '堂甥女',
+      mei: '堂甥女',
+      fu: null,
+      qi: null,
+      zi: null,
+      nv: null
+    },
+    note: '堂姊妹的儿子。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。'
+  },
+  {
+    name: '堂甥女',
+    words: [
+      {
+        word: '堂甥女（兴化语称谓待核）',
+        id: null,
+        definition: '关系名称用于继续计算；兴化语称谓及词条待核。'
+      }
+    ],
+    relations: {
+      fa: null,
+      mu: '堂姊妹',
+      xiong: '堂甥男',
+      di: '堂甥男',
+      jie: '堂甥女',
+      mei: '堂甥女',
+      fu: null,
+      qi: null,
+      zi: null,
+      nv: null
+    },
+    note: '堂姊妹的女儿。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。'
+  },
+  {
+    name: '表侄男',
+    words: [
+      {
+        word: '表侄男（兴化语称谓待核）',
+        id: null,
+        definition: '关系名称用于继续计算；兴化语称谓及词条待核。'
+      }
+    ],
+    relations: {
+      fa: '表兄弟',
+      mu: null,
+      xiong: '表侄男',
+      di: '表侄男',
+      jie: '表侄女',
+      mei: '表侄女',
+      fu: null,
+      qi: null,
+      zi: null,
+      nv: null
+    },
+    note: '表兄弟的儿子。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。'
+  },
+  {
+    name: '表侄女',
+    words: [
+      {
+        word: '表侄女（兴化语称谓待核）',
+        id: null,
+        definition: '关系名称用于继续计算；兴化语称谓及词条待核。'
+      }
+    ],
+    relations: {
+      fa: '表兄弟',
+      mu: null,
+      xiong: '表侄男',
+      di: '表侄男',
+      jie: '表侄女',
+      mei: '表侄女',
+      fu: null,
+      qi: null,
+      zi: null,
+      nv: null
+    },
+    note: '表兄弟的女儿。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。'
+  },
+  {
+    name: '表甥男',
+    words: [
+      {
+        word: '表甥男（兴化语称谓待核）',
+        id: null,
+        definition: '关系名称用于继续计算；兴化语称谓及词条待核。'
+      }
+    ],
+    relations: {
+      fa: null,
+      mu: '表姊妹',
+      xiong: '表甥男',
+      di: '表甥男',
+      jie: '表甥女',
+      mei: '表甥女',
+      fu: null,
+      qi: null,
+      zi: null,
+      nv: null
+    },
+    note: '表姊妹的儿子。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。'
+  },
+  {
+    name: '表甥女',
+    words: [
+      {
+        word: '表甥女（兴化语称谓待核）',
+        id: null,
+        definition: '关系名称用于继续计算；兴化语称谓及词条待核。'
+      }
+    ],
+    relations: {
+      fa: null,
+      mu: '表姊妹',
+      xiong: '表甥男',
+      di: '表甥男',
+      jie: '表甥女',
+      mei: '表甥女',
+      fu: null,
+      qi: null,
+      zi: null,
+      nv: null
+    },
+    note: '表姊妹的女儿。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。'
+  },
+  {
+    name: '外孙女',
+    words: [
+      {
+        word: '外孙女（兴化语称谓待核）',
+        id: null,
+        definition: '女儿的女儿；兴化语称谓待核。'
+      }
+    ],
+    relations: {
+      fa: '女婿',
+      mu: '女亲',
+      xiong: '外孙儿',
+      di: '外孙儿',
+      jie: '外孙女',
+      mei: '外孙女',
+      fu: '外孙婿',
+      qi: null,
+      zi: '外曾外孙',
+      nv: '外曾外孙'
+    },
+    note: '女儿的女儿。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。'
+  },
+  {
+    name: '孙妇',
+    words: [
+      {
+        word: '孙新妇',
+        id: 4931
+      }
+    ],
+    relations: {
+      fa: null,
+      mu: null,
+      xiong: null,
+      di: null,
+      jie: null,
+      mei: null,
+      fu: '孙儿',
+      qi: null,
+      zi: '曾孙',
+      nv: '曾孙女'
+    },
+    note: '孙子的妻子。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。'
+  },
+  {
+    name: '孙婿',
+    words: [
+      {
+        word: '孙婿',
+        id: 4930
+      }
+    ],
+    relations: {
+      fa: null,
+      mu: null,
+      xiong: null,
+      di: null,
+      jie: null,
+      mei: null,
+      fu: null,
+      qi: '孙女',
+      zi: '曾外孙',
+      nv: '曾外孙'
+    },
+    note: '孙女的丈夫。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。'
+  },
+  {
+    name: '外孙妇',
+    words: [
+      {
+        word: '外孙妇（兴化语称谓待核）',
+        id: null,
+        definition: '关系名称用于继续计算；兴化语称谓及词条待核。'
+      }
+    ],
+    relations: {
+      fa: null,
+      mu: null,
+      xiong: null,
+      di: null,
+      jie: null,
+      mei: null,
+      fu: '外孙儿',
+      qi: null,
+      zi: '外曾孙',
+      nv: '外曾孙'
+    },
+    note: '外孙子的妻子。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。'
+  },
+  {
+    name: '外孙婿',
+    words: [
+      {
+        word: '外孙婿（兴化语称谓待核）',
+        id: null,
+        definition: '关系名称用于继续计算；兴化语称谓及词条待核。'
+      }
+    ],
+    relations: {
+      fa: null,
+      mu: null,
+      xiong: null,
+      di: null,
+      jie: null,
+      mei: null,
+      fu: null,
+      qi: '外孙女',
+      zi: '外曾外孙',
+      nv: '外曾外孙'
+    },
+    note: '外孙女的丈夫。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。'
+  },
+  {
+    name: '外曾孙',
+    words: [
+      {
+        word: '外曾孙（兴化语称谓待核）',
+        id: null,
+        definition: '关系名称用于继续计算；兴化语称谓及词条待核。'
+      }
+    ],
+    relations: {
+      fa: '外孙儿',
+      mu: '外孙妇',
+      xiong: null,
+      di: null,
+      jie: null,
+      mei: null,
+      fu: null,
+      qi: null,
+      zi: null,
+      nv: null
+    },
+    note: '外孙子的子女（性别未细分）。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。'
+  },
+  {
+    name: '外曾外孙',
+    words: [
+      {
+        word: '外曾外孙（兴化语称谓待核）',
+        id: null,
+        definition: '关系名称用于继续计算；兴化语称谓及词条待核。'
+      }
+    ],
+    relations: {
+      fa: '外孙婿',
+      mu: '外孙女',
+      xiong: null,
+      di: null,
+      jie: null,
+      mei: null,
+      fu: null,
+      qi: null,
+      zi: null,
+      nv: null
+    },
+    note: '外孙女的子女（性别未细分）。关系按图及现有家系边补全；词条未绑定时，兴化语称谓待核。'
+  },
+  {
+    name: '曾孙女',
+    words: [
+      {
+        word: '曾孙女（兴化语称谓待核）',
+        id: null,
+        definition: '孙子的女儿；兴化语称谓及词条待核。'
+      }
+    ],
+    relations: {
+      fa: '孙儿',
+      mu: '孙妇',
+      xiong: '曾孙',
+      di: '曾孙',
+      jie: '曾孙女',
+      mei: '曾孙女',
+      fu: null,
+      qi: null,
+      zi: null,
+      nv: null
+    },
+    note: '孙子的女儿；不能绑定只表示孙子的儿子的“曾孙”词条。'
   }
 ]
 
@@ -2123,7 +2660,7 @@ export const find = function (next) {
   ) {
     return {
       name: next,
-      words: [],
+      words: [{ word: `${next}（兴化语称谓待核）`, id: null }],
       relations: {
         fa: null,
         mu: null,
